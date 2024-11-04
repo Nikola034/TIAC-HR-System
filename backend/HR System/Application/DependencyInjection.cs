@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Common;
 
 namespace Application
 {
@@ -6,7 +7,7 @@ namespace Application
     {
         public static IServiceCollection RegisterApplication(this IServiceCollection services)
         {
-
+            
             services.AddMediator(typeof(DependencyInjection).Assembly);
             return services;
         }

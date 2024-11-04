@@ -7,6 +7,8 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Common.Exceptions.Handler
 {
@@ -72,7 +74,7 @@ namespace Common.Exceptions.Handler
 
             if (exception is ValidationException validationException)
             {
-                problemDetails.Extensions.Add("ValidationErrors", validationException.Errors);
+                problemDetails.Extensions.Add("ValidationErrors", validationException.Message);
             }
 
             await context.Response.WriteAsJsonAsync(problemDetails, cancellationToken: cancellationToken);
