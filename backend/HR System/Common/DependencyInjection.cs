@@ -5,27 +5,26 @@ using Common.Exceptions.Handler;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Common;
-
-public static class DependencyInjection
+namespace Common
 {
-    public static IServiceCollection AddExceptionHandling(this IServiceCollection services)
+    public static class DependencyInjection
     {
-        services.AddExceptionHandler<CustomExceptionHandler>();
-        services.AddProblemDetails();
-        return services;
-    }
-
-    public static IServiceCollection AddMediator(this IServiceCollection services, Assembly assembly)
-    {
-
-        services.AddMediatR(config =>
+        public static IServiceCollection AddExceptionHandling(this IServiceCollection services)
         {
-            config.RegisterServicesFromAssembly(assembly);
-            config.AddOpenBehavior(typeof(LoggingBehavior<,>));
-        });
-        return services;
+            services.AddExceptionHandler<CustomExceptionHandler>();
+            services.AddProblemDetails();
+            return services;
+        }
+
+        public static IServiceCollection AddMediator(this IServiceCollection services, Assembly assembly)
+        {
+
+            services.AddMediatR(config =>
+            {
+                config.RegisterServicesFromAssembly(assembly);
+                config.AddOpenBehavior(typeof(LoggingBehavior<,>));
+            });
+            return services;
+        }
     }
-
-
 }

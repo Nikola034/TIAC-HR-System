@@ -1,16 +1,17 @@
+﻿using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
-using FluentValidation;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Diagnostics;
 
 namespace Common.Exceptions.Handler
 {
     public class CustomExceptionHandler
-      (ILogger<CustomExceptionHandler> logger)
+    (ILogger<CustomExceptionHandler> logger)
       : IExceptionHandler
     {
         public async ValueTask<bool> TryHandleAsync(HttpContext context, Exception exception, CancellationToken cancellationToken)
