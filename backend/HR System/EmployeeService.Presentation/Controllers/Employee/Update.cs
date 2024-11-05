@@ -1,29 +1,29 @@
 ﻿using EmployeeService.Presentation.Contracts;
-using EmployeeService.Presentation.Mappers;
 using FastEndpoints;
 using MediatR;
+using EmployeeService.Presentation.Mappers;
 
 namespace EmployeeService.Presentation.Controllers.Employee
 {
-    public class Create : Endpoint<CreateEmployeeRequest, CreateEmployeeResponse>
+    public class Update : Endpoint<UpdateEmployeeRequest, UpdateEmployeeResponse>
     {
         private readonly IMediator _mediator;
 
-        public Create(IMediator mediator)
+        public Update(IMediator mediator)
         {
             _mediator = mediator;
         }
 
         public override void Configure()
         {
-            Post("employees");
+            Put("employees/{id}");
             AllowAnonymous();
         }
 
-        public override async Task HandleAsync(CreateEmployeeRequest req, CancellationToken ct)
+        public override async Task HandleAsync(UpdateEmployeeRequest req, CancellationToken ct)
         {
             var employee = await _mediator.Send(req.ToCommand(), ct);
-            await SendOkAsync(employee.ToApiResponseFromCreate(), ct);
+            await SendOkAsync(employee.ToApiResponseFromUpdate(), ct);
         }
     }
 }

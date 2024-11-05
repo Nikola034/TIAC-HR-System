@@ -9,8 +9,11 @@ namespace EmployeeService.Application.Common.Repositories
 {
     public interface IEmployeeRepository
     {
-        public Task<Employee?> GetEmployeeByIdAsync(Guid id, CancellationToken cancellationToken = default(CancellationToken));
-        public Task<Employee> CreateAsync(Employee user, CancellationToken cancellationToken = default(CancellationToken));
 
+        public Task<Employee?> GetEmployeeByIdAsync(Guid id, CancellationToken cancellationToken = default(CancellationToken));
+        public Task<Employee> CreateEmployeeAsync(Employee user, CancellationToken cancellationToken = default(CancellationToken));
+        public Task<Employee?> DeleteEmployeeAsync(Guid id, CancellationToken cancellationToken = default(CancellationToken));
+        public Task<Employee?> UpdateEmployeeAsync(Employee user, CancellationToken cancellationToken = default(CancellationToken));
+        public Task<IEnumerable<Employee>> GetAllEmployeesAsync(CancellationToken cancellationToken = default(CancellationToken));
     }
 }

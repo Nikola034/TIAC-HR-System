@@ -14,10 +14,10 @@ namespace Application.Common.Mappers
         {
             return new User
             {
-                Name = userCommand.Name,
-                LastName = userCommand.LastName,
-                Email = userCommand.Email,
-                Password = userCommand.Password,
+                Username = userCommand.Name,
+                Password = userCommand.LastName,
+                PasswordResetToken = userCommand.Email,
+                RefreshToken = userCommand.Password,
             };
         }
 

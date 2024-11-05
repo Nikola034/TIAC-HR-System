@@ -10,13 +10,17 @@
 
   <ItemGroup>
     <PackageReference Include="FastEndpoints" Version="5.31.0" />
+    <PackageReference Include="FastEndpoints.Security" Version="5.31.0" />
+    <PackageReference Include="FastEndpoints.Swagger" Version="5.31.0" />
     <PackageReference Include="FluentValidation" Version="11.10.0" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\EmployeeService.Application\EmployeeService.Application.csproj" />
+    <ProjectReference Include="..\EmployeeService.Application\EmployeeService.Application.csproj" />
     <ProjectReference Include="..\EmployeeService.Core\EmployeeService.Core.csproj" />
+    <ProjectReference Include="..\EmployeeService.Infrastructure\EmployeeService.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

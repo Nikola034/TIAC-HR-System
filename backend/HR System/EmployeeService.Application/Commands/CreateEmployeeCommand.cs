@@ -28,7 +28,7 @@ namespace EmployeeService.Application.Commands
                 throw new EmployeeAlreadyExistException();
             }
             domainEntity.Id = new Guid();
-            var persistedEmployee = await _employeeRepository.CreateAsync(domainEntity, cancellationToken);
+            var persistedEmployee = await _employeeRepository.CreateEmployeeAsync(domainEntity, cancellationToken);
             return persistedEmployee;
         }
 

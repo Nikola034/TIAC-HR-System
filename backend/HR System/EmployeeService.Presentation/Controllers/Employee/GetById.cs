@@ -17,12 +17,13 @@ namespace EmployeeService.Presentation.Controllers.Employee
 
         public override void Configure()
         {
-            Get("/products/{productId}");
+            Get("/employees/{employeeId}");
+            AllowAnonymous();
         }
 
         public override async Task HandleAsync(CancellationToken ct)
         {
-            var employeeId = Route<Guid>("productId");
+            var employeeId = Route<Guid>("employeeId");
             var employee = await _mediator.Send(new GetEmployeeByIdQuery(employeeId));
             if (employee is null)
             {

@@ -21,5 +21,23 @@ namespace EmployeeService.Application.Common.Mappers
             };
         }
 
+        public static Employee ToDomainEntity(this UpdateEmployeeCommand employeeCommand)
+        {
+            return new Employee
+            {
+                Name = employeeCommand.Name,
+                Surname = employeeCommand.Surname,
+                DaysOff = employeeCommand.DaysOff,
+                Role = employeeCommand.Role,
+            };
+        }
+
+        public static Employee ToDomainEntity(this DeleteEmployeeCommand employeeCommand)
+        {
+            return new Employee
+            {
+                Id = employeeCommand.Id,
+            };
+        }
     }
 }

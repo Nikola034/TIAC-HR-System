@@ -5,25 +5,25 @@ using MediatR;
 
 namespace EmployeeService.Presentation.Controllers.Employee
 {
-    public class Create : Endpoint<CreateEmployeeRequest, CreateEmployeeResponse>
+    public class Delete : Endpoint<DeleteEmployeeRequest, DeleteEmployeeResponse>
     {
         private readonly IMediator _mediator;
 
-        public Create(IMediator mediator)
+        public Delete(IMediator mediator)
         {
             _mediator = mediator;
         }
 
         public override void Configure()
         {
-            Post("employees");
-            AllowAnonymous();
+            Delete("employees/{id}");
+            AllowAnonymous(); 
         }
 
-        public override async Task HandleAsync(CreateEmployeeRequest req, CancellationToken ct)
+        public override async Task HandleAsync(DeleteEmployeeRequest req, CancellationToken ct)
         {
             var employee = await _mediator.Send(req.ToCommand(), ct);
-            await SendOkAsync(employee.ToApiResponseFromCreate(), ct);
+            await SendOkAsync(employee.ToApiResponseFromDelete(), ct);
         }
     }
 }
