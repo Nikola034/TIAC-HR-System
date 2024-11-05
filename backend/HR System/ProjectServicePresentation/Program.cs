@@ -1,8 +1,8 @@
 using FastEndpoints;
 using FastEndpoints.Swagger;
-using Infrastructure;
 using Application;
 using Common;
+using ProjectServiceInfrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 

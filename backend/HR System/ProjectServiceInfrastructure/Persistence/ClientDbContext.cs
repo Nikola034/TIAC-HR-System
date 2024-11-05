@@ -1,12 +1,11 @@
 using Core.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace Infrastructure.Persistance;
+namespace ProjectServiceInfrastructure.Persistence;
 
-public class ClientDbContext :DbContext
+public class ClientDbContext(DbContextOptions options) : DbContext(options)
 {
     public DbSet<Core.Entities.Client> Clients { get; set; }
-    public ClientDbContext(DbContextOptions options) : base(options) { }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
