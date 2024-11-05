@@ -1,5 +1,6 @@
 ﻿using EmployeeService.Application.Queries;
-using EmployeeService.Presentation.Contracts;
+using EmployeeService.Application.Queries.Employee;
+using EmployeeService.Presentation.Contracts.Employee;
 using EmployeeService.Presentation.Mappers;
 using FastEndpoints;
 using MediatR;

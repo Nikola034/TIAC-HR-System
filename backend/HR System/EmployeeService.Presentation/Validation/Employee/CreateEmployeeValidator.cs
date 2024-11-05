@@ -1,8 +1,8 @@
-﻿using EmployeeService.Presentation.Contracts;
+﻿using EmployeeService.Presentation.Contracts.Employee;
 using FastEndpoints;
 using FluentValidation;
 
-namespace EmployeeService.Presentation.Validation
+namespace EmployeeService.Presentation.Validation.Employee
 {
     public class CreateEmployeeValidator : Validator<CreateEmployeeRequest>
     {

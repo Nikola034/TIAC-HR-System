@@ -1,12 +1,12 @@
-﻿using EmployeeService.Application.Commands;
+﻿using EmployeeService.Application.Commands.Employee;
 using EmployeeService.Core.Entities;
-using EmployeeService.Presentation.Contracts;
+using EmployeeService.Presentation.Contracts.Employee;
 
 namespace EmployeeService.Presentation.Mappers
 {
     public static class EmployeeMapper
     {
-        public static EmployeeByIdResponse ToApiResponse(this Employee employee)
+        public static EmployeeByIdResponse ToApiResponse(this Core.Entities.Employee employee)
         {
             return new EmployeeByIdResponse
             {
@@ -19,7 +19,7 @@ namespace EmployeeService.Presentation.Mappers
             };
         }
 
-        public static GetAllEmployeesResponse ToApiResponse(this IEnumerable<Employee> employees)
+        public static GetAllEmployeesResponse ToApiResponse(this IEnumerable<Core.Entities.Employee> employees)
         {
             return new GetAllEmployeesResponse
             {

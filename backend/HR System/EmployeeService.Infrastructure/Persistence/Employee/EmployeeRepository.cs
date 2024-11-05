@@ -1,5 +1,6 @@
 ﻿using EmployeeService.Application.Common.Repositories;
 using EmployeeService.Core.Entities;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -31,9 +32,13 @@ namespace EmployeeService.Infrastructure.Persistance.Employee
             return deletedEntity;
         }
 
-        public async Task<IEnumerable<Core.Entities.Employee>> GetAllEmployeesAsync(CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<Core.Entities.Employee>> GetAllEmployeesAsync(int page, CancellationToken cancellationToken = default)
         {
-            return await _context.Employees.ToListAsync();
+            var employees = await _context.Employees.OrderBy(x => x.Id)
+            .Skip((page - 1) * 10)
+            .Take(10)
+            .ToListAsync(cancellationToken);
+            return employees;
         }
 
         public async Task<Core.Entities.Employee?> GetEmployeeByIdAsync(Guid id, CancellationToken cancellationToken = default(CancellationToken))

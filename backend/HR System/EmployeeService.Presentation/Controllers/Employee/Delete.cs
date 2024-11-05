@@ -1,4 +1,4 @@
-﻿using EmployeeService.Presentation.Contracts;
+﻿using EmployeeService.Presentation.Contracts.Employee;
 using EmployeeService.Presentation.Mappers;
 using FastEndpoints;
 using MediatR;

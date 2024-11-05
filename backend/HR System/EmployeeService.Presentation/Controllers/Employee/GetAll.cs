@@ -1,5 +1,6 @@
 ﻿using EmployeeService.Application.Queries;
-using EmployeeService.Presentation.Contracts;
+using EmployeeService.Application.Queries.Employee;
+using EmployeeService.Presentation.Contracts.Employee;
 using EmployeeService.Presentation.Mappers;
 using FastEndpoints;
 using MediatR;
@@ -17,13 +18,13 @@ namespace EmployeeService.Presentation.Controllers.Employee
 
         public override void Configure()
         {
-            Get("employees");
+            Get("employees/all/{page}");
             AllowAnonymous();
         }
 
         public override async Task HandleAsync(CancellationToken ct)
         {
-            var employee = await _mediator.Send(new GetAllEmployeesQuery());
+            var employee = await _mediator.Send(new GetAllEmployeesQuery(Route<int>("page")));
             if (employee is null)
             {
                 await SendNotFoundAsync(ct);

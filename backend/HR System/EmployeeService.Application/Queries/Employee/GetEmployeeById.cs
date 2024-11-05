@@ -7,9 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EmployeeService.Application.Queries
+namespace EmployeeService.Application.Queries.Employee
 {
-    public class GetEmployeeByIdHandler : IRequestHandler<GetEmployeeByIdQuery, Employee>
+    public class GetEmployeeByIdHandler : IRequestHandler<GetEmployeeByIdQuery, Core.Entities.Employee>
     {
 
         private readonly IEmployeeRepository _employeeRepository;
@@ -17,7 +17,7 @@ namespace EmployeeService.Application.Queries
         {
             _employeeRepository = productRepository;
         }
-        public async Task<Employee> Handle(GetEmployeeByIdQuery request, CancellationToken cancellationToken)
+        public async Task<Core.Entities.Employee> Handle(GetEmployeeByIdQuery request, CancellationToken cancellationToken)
         {
             var employee = await _employeeRepository.GetEmployeeByIdAsync(request.Id, cancellationToken);
             return employee;
@@ -25,5 +25,5 @@ namespace EmployeeService.Application.Queries
     }
 
 
-    public record GetEmployeeByIdQuery(Guid Id) : IRequest<Employee>;
+    public record GetEmployeeByIdQuery(Guid Id) : IRequest<Core.Entities.Employee>;
 }

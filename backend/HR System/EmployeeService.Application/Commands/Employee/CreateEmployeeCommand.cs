@@ -10,16 +10,16 @@ using EmployeeService.Application.Common.Mappers;
 using EmployeeService.Application.Common.Repositories;
 using EmployeeService.Core.Enums;
 
-namespace EmployeeService.Application.Commands
+namespace EmployeeService.Application.Commands.Employee
 {
-    public class CreateEmployeeCommandHandler : IRequestHandler<CreateEmployeeCommand, Employee>
+    public class CreateEmployeeCommandHandler : IRequestHandler<CreateEmployeeCommand, Core.Entities.Employee>
     {
         private readonly IEmployeeRepository _employeeRepository;
         public CreateEmployeeCommandHandler(IEmployeeRepository userRepository)
         {
             _employeeRepository = userRepository;
         }
-        public async Task<Employee> Handle(CreateEmployeeCommand request, CancellationToken cancellationToken)
+        public async Task<Core.Entities.Employee> Handle(CreateEmployeeCommand request, CancellationToken cancellationToken)
         {
             var domainEntity = request.ToDomainEntity();
             var existingEmployee = await _employeeRepository.GetEmployeeByIdAsync(domainEntity.Id);
@@ -34,5 +34,5 @@ namespace EmployeeService.Application.Commands
 
     }
 
-    public record CreateEmployeeCommand(string Name, string Surname, int DaysOff, EmployeeRole Role) : IRequest<Employee>;
+    public record CreateEmployeeCommand(string Name, string Surname, int DaysOff, EmployeeRole Role) : IRequest<Core.Entities.Employee>;
 }

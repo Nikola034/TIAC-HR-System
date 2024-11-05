@@ -1,7 +1,7 @@
-﻿using EmployeeService.Presentation.Contracts;
-using FastEndpoints;
+﻿using FastEndpoints;
 using MediatR;
 using EmployeeService.Presentation.Mappers;
+using EmployeeService.Presentation.Contracts.Employee;
 
 namespace EmployeeService.Presentation.Controllers.Employee
 {

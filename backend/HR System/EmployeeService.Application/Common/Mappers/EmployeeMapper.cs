@@ -1,4 +1,4 @@
-﻿using EmployeeService.Application.Commands;
+﻿using EmployeeService.Application.Commands.Employee;
 using EmployeeService.Core.Entities;
 using System;
 using System.Collections.Generic;

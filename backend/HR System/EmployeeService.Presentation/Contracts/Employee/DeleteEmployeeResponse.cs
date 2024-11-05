@@ -1,4 +1,4 @@
-﻿namespace EmployeeService.Presentation.Contracts
+﻿namespace EmployeeService.Presentation.Contracts.Employee
 {
     public class DeleteEmployeeResponse
     {
