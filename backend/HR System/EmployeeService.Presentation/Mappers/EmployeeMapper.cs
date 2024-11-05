@@ -19,6 +19,14 @@ namespace EmployeeService.Presentation.Mappers
             };
         }
 
+        public static GetAllEmployeesResponse ToApiResponse(this IEnumerable<Employee> employees)
+        {
+            return new GetAllEmployeesResponse
+            {
+                Employees = employees
+            };
+        }
+
         public static CreateEmployeeCommand ToCommand(this CreateEmployeeRequest request) => new CreateEmployeeCommand(request.Name, request.Surname, request.DaysOff, request.Role);
         public static UpdateEmployeeCommand ToCommand(this UpdateEmployeeRequest request) => new UpdateEmployeeCommand(request.Id, request.Name, request.Surname, request.DaysOff, request.Role);
         public static DeleteEmployeeCommand ToCommand(this DeleteEmployeeRequest request) => new DeleteEmployeeCommand(request.Id);

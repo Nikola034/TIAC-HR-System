@@ -13,13 +13,13 @@ namespace EmployeeService.Infrastructure.Persistance.Employee
     {
         public void Configure(EntityTypeBuilder<Core.Entities.Employee> builder)
         {
-            builder.ToTable("employee");
+            builder.ToTable("employees");
 
 
             builder.Property(x => x.Id).HasColumnName("id").HasConversion(id => id.ToString(), id => new Guid(id));
             builder.Property(x => x.Name).HasColumnName("name").HasColumnType("varchar(20)");
             builder.Property(x => x.Surname).HasColumnName("surname").HasColumnType("varchar(20)");
-            builder.Property(x => x.DaysOff).HasColumnName("daysOff").HasColumnType("int");
+            builder.Property(x => x.DaysOff).HasColumnName("daysoff").HasColumnType("int");
             builder.Property(x => x.Role).HasColumnName("role");
 
             builder.HasKey(x => x.Id);

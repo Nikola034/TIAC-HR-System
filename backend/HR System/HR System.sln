@@ -21,13 +21,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common", "Common\Common.csp
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EmployeeService", "EmployeeService", "{5B68B8DF-DC07-46CD-AA55-F8B6437168E1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmployeeService.Presentation", "EmployeeService.Presentation\EmployeeService.Presentation.csproj", "{F7378B05-0375-4C3A-B5CB-0F447FB0D4F0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmployeeService.Presentation", "EmployeeService.Presentation\EmployeeService.Presentation.csproj", "{F7378B05-0375-4C3A-B5CB-0F447FB0D4F0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmployeeService.Core", "EmployeeService.Core\EmployeeService.Core.csproj", "{8306F2A3-6493-4675-8279-8084B0EEFF35}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmployeeService.Core", "EmployeeService.Core\EmployeeService.Core.csproj", "{8306F2A3-6493-4675-8279-8084B0EEFF35}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmployeeService.Application", "EmployeeService.Application\EmployeeService.Application.csproj", "{FE846FBF-E52F-436A-95BC-7BD5CEC5D5FB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmployeeService.Application", "EmployeeService.Application\EmployeeService.Application.csproj", "{FE846FBF-E52F-436A-95BC-7BD5CEC5D5FB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmployeeService.Infrastructure", "EmployeeService.Infrastructure\EmployeeService.Infrastructure.csproj", "{93EAB774-EC7B-43F9-9BD5-81DCE1495B07}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmployeeService.Infrastructure", "EmployeeService.Infrastructure\EmployeeService.Infrastructure.csproj", "{93EAB774-EC7B-43F9-9BD5-81DCE1495B07}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

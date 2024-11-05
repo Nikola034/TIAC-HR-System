@@ -13,13 +13,13 @@ namespace EmployeeService.Infrastructure
         public static IServiceCollection RegisterInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
             var assembly = typeof(DependencyInjection).Assembly;
-            var connectionString = configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<EmployeeDbContext>(options =>
             {
-                options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
+                options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"));
             });
 
             services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+
             return services;
         }
     }

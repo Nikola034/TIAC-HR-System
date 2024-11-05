@@ -19,8 +19,8 @@ namespace EmployeeService.Application.Queries
         }
         public async Task<Employee> Handle(GetEmployeeByIdQuery request, CancellationToken cancellationToken)
         {
-            var product = await _employeeRepository.GetEmployeeByIdAsync(request.Id, cancellationToken);
-            return product;
+            var employee = await _employeeRepository.GetEmployeeByIdAsync(request.Id, cancellationToken);
+            return employee;
         }
     }
 

@@ -16,7 +16,7 @@ namespace EmployeeService.Presentation.Controllers.Employee
 
         public override void Configure()
         {
-            Put("employees/{id}");
+            Put("employees");
             AllowAnonymous();
         }
 
