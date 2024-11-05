@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Core.Exceptions
 {
-    public class UserAlreadyExistException : BadRequestException
+    public class EmployeeAlreadyExistException : BadRequestException
     {
-        public UserAlreadyExistException() : base("User with provided email already exists.")
+        public EmployeeAlreadyExistException() : base("User with provided email already exists.")
         {
 
         }
