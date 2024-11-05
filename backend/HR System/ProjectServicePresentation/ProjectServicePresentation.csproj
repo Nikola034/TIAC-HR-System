@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="FastEndpoints" Version="5.31.0.1-beta" />
+      <PackageReference Include="FastEndpoints.Swagger" Version="5.31.0.1-beta" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Common\Common.csproj" />
+      <ProjectReference Include="..\ProjectServiceApplication\ProjectServiceApplication.csproj" />
+      <ProjectReference Include="..\ProjectServiceCore\ProjectServiceCore.csproj" />
+      <ProjectReference Include="..\ProjectServiceInfrastructure\ProjectServiceInfrastructure.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Contracts\Project\" />
+      <Folder Include="Controllers\Project\" />
+      <Folder Include="Validators\" />
+    </ItemGroup>
+
+</Project>

@@ -7,9 +7,9 @@ using Common.Exceptions;
 
 namespace Core.Exceptions
 {
-    public class UserAlreadyExistException : BadRequestException
+    public class ClientDoesNotExistException : BadRequestException
     {
-        public UserAlreadyExistException() : base("User with provided email already exists.")
+        public ClientDoesNotExistException() : base("Client does not exist")
         {
 
         }

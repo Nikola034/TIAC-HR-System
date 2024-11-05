@@ -24,7 +24,7 @@ namespace Infrastructure.Persistance.User
 
         public async Task<Core.Entities.User?> GetUserByEmailAsync(string email, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return await _context.Users.AsNoTracking().FirstOrDefaultAsync(x => x.Email == email);
+            return await _context.Users.AsNoTracking().FirstOrDefaultAsync(x => x.Username == email);
         }
     }
 }

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Core.Entities;
 
 namespace Application.Common.Mappers
 {
@@ -13,9 +14,7 @@ namespace Application.Common.Mappers
         {
             return new User
             {
-                Name = userCommand.Name,
-                LastName = userCommand.LastName,
-                Email = userCommand.Email,
+                Username = userCommand.Username,
                 Password = userCommand.Password,
             };
         }

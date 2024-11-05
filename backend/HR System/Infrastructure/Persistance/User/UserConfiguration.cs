@@ -1,11 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace Infrastructure.Persistance.User
 {
     public class UserConfiguration : IEntityTypeConfiguration<Core.Entities.User>
@@ -22,7 +16,7 @@ namespace Infrastructure.Persistance.User
             builder.Property(x => x.Password).HasColumnName("password");
 
             builder.HasKey(x => x.Id);
-            builder.HasIndex(x => x.Email).IsUnique();
+            builder.HasIndex(x => x.Username).IsUnique();
         }
     }
 }

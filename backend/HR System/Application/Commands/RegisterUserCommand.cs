@@ -5,6 +5,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Application.Common.Mappers;
+using Application.Common.Repositories;
+using Application.Common.Services;
+using Core.Entities;
+using Core.Exceptions;
 
 namespace Application.Commands
 {
@@ -20,7 +25,7 @@ namespace Application.Commands
         public async Task<User> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
         {
             var domainEntity = request.ToDomainEntity();
-            var existingUser = await _userRepository.GetUserByEmailAsync(domainEntity.Email);
+            var existingUser = await _userRepository.GetUserByEmailAsync(domainEntity.Username);
             if (existingUser is not null)
             {
                 throw new UserAlreadyExistException();
@@ -33,5 +38,5 @@ namespace Application.Commands
 
     }
 
-    public record RegisterUserCommand(string Name, string LastName, string Email, string Password) : IRequest<User>;
+    public record RegisterUserCommand(string Username, string Password) : IRequest<User>;
 }

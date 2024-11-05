@@ -1,8 +1,9 @@
 ﻿using Application.Common.Repositories;
 using Application.Common.Services;
-using Infrastructure.Persistance.User;
 using Infrastructure.Persistance;
+using Infrastructure.Persistance.User;
 using Infrastructure.Services;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
