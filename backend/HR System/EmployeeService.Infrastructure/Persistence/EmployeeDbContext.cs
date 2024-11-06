@@ -1,5 +1,6 @@
 ﻿using EmployeeService.Core.Entities;
 using EmployeeService.Infrastructure.Persistance.Employee;
+using EmployeeService.Infrastructure.Persistence.HolidayRequest;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System;
@@ -14,6 +15,7 @@ namespace EmployeeService.Infrastructure.Persistance
     public class EmployeeDbContext : DbContext
     {
         public DbSet<Core.Entities.Employee> Employees { get; set; }
+        public DbSet<Core.Entities.HolidayRequest> HolidayRequests { get; set; }
         public EmployeeDbContext(DbContextOptions<EmployeeDbContext> options) : base(options)
         {
         }
@@ -21,6 +23,7 @@ namespace EmployeeService.Infrastructure.Persistance
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new EmployeeConfiguration());
+            modelBuilder.ApplyConfiguration(new HolidayRequestConfiguration());
             base.OnModelCreating(modelBuilder);
         }
     }

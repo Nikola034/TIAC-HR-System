@@ -1,6 +1,7 @@
 ﻿using EmployeeService.Application.Common.Repositories;
 using EmployeeService.Infrastructure.Persistance;
 using EmployeeService.Infrastructure.Persistance.Employee;
+using EmployeeService.Infrastructure.Persistence.HolidayRequest;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -19,6 +20,7 @@ namespace EmployeeService.Infrastructure
             });
 
             services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+            services.AddScoped<IHolidayRequestRepository, HolidayRequestRepository>();
 
             return services;
         }
