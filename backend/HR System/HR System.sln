@@ -31,13 +31,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmployeeService.Infrastruct
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ProjectService", "ProjectService", "{BE228437-0FA9-4C64-9BBD-E4213D004DBC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectServiceCore", "ProjectServiceCore\ProjectServiceCore.csproj", "{8C69E07B-24B1-4E5D-8C30-A207485BB43B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectService.Core", "ProjectService.Core\ProjectService.Core.csproj", "{8C69E07B-24B1-4E5D-8C30-A207485BB43B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectServiceApplication", "ProjectServiceApplication\ProjectServiceApplication.csproj", "{92DD1295-19F7-4F27-9957-EA74B587FC8F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectService.Application", "ProjectService.Application\ProjectService.Application.csproj", "{92DD1295-19F7-4F27-9957-EA74B587FC8F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectServicePresentation", "ProjectServicePresentation\ProjectServicePresentation.csproj", "{355EAD46-A8F4-437B-A27C-AC66DAB29488}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectService.Presentation", "ProjectService.Presentation\ProjectService.Presentation.csproj", "{355EAD46-A8F4-437B-A27C-AC66DAB29488}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectServiceInfrastructure", "ProjectServiceInfrastructure\ProjectServiceInfrastructure.csproj", "{74006B3C-BD2E-42F1-AD25-F9A3F9D042A1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectService.Infrastructure", "ProjectService.Infrastructure\ProjectService.Infrastructure.csproj", "{74006B3C-BD2E-42F1-AD25-F9A3F9D042A1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
