@@ -12,15 +12,18 @@ namespace EmployeeService.Infrastructure.Persistence.HolidayRequest
     {
         public void Configure(EntityTypeBuilder<Core.Entities.HolidayRequest> builder)
         {
-            builder.ToTable("holidayRequests");
+            builder.ToTable("holidayrequests");
 
 
             builder.Property(x => x.Id).HasColumnName("id").HasConversion(id => id.ToString(), id => new Guid(id));
             builder.Property(x => x.Start).HasColumnName("start").HasColumnType("date");
             builder.Property(x => x.End).HasColumnName("end").HasColumnType("date");
             builder.Property(x => x.Status).HasColumnName("status");
+            builder.Property(x => x.SenderId).HasColumnName("senderid");
 
             builder.HasKey(x => x.Id);
+
+            builder.HasOne(x => x.Sender).WithMany().HasForeignKey(x => x.SenderId).OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

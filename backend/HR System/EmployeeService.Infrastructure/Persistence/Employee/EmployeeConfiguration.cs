@@ -23,16 +23,6 @@ namespace EmployeeService.Infrastructure.Persistance.Employee
             builder.Property(x => x.Role).HasColumnName("role");
 
             builder.HasKey(x => x.Id);
-
-            builder.HasMany(e => e.SentHolidayRequests)
-                   .WithOne(e => e.Sender)
-                   .HasForeignKey(e => e.SenderId)
-                   .HasPrincipalKey(e => e.Id);
-
-            builder.HasMany(e => e.ReceivedtHolidayRequests)
-                   .WithOne(e => e.Approver)
-                   .HasForeignKey(e => e.ApproverId)
-                   .HasPrincipalKey(e => e.Id);
         }
     }
 }

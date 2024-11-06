@@ -7,5 +7,6 @@ namespace EmployeeService.Presentation.Contracts.HolidayRequest
         public DateTime Start { get; set; }
         public DateTime End { get; set; }
         public HolidayRequestStatus Status { get; set; }
+        public Guid SenderId { get; set; }
     }
 }

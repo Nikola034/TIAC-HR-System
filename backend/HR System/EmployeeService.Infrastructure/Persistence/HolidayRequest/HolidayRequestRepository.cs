@@ -43,7 +43,7 @@ namespace EmployeeService.Infrastructure.Persistence.HolidayRequest
 
         public async Task<Core.Entities.HolidayRequest?> GetHolidayRequestByIdAsync(Guid id, CancellationToken cancellationToken = default)
         {
-            return await _context.HolidayRequests.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
+            return await _context.HolidayRequests.Include(x => x.Sender).AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<Core.Entities.HolidayRequest?> UpdateHolidayRequestAsync(Core.Entities.HolidayRequest holidayRequest, CancellationToken cancellationToken = default)

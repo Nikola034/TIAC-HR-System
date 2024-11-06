@@ -18,6 +18,26 @@ namespace EmployeeService.Application.Common.Mappers
                 Start = holidayRequestCommand.Start,
                 End = holidayRequestCommand.End,
                 Status = holidayRequestCommand.Status,
+                SenderId = holidayRequestCommand.SenderId
+            };
+        }
+
+        public static HolidayRequest ToDomainEntity(this UpdateHolidayRequestCommand holidayRequestCommand)
+        {
+            return new HolidayRequest
+            {
+                Id = holidayRequestCommand.Id,
+                Start = holidayRequestCommand.Start,
+                End = holidayRequestCommand.End,
+                Status = holidayRequestCommand.Status,
+            };
+        }
+
+        public static HolidayRequest ToDomainEntity(this DeleteHolidayRequestCommand holidayRequestCommand)
+        {
+            return new HolidayRequest
+            {
+                Id = holidayRequestCommand.Id,
             };
         }
     }

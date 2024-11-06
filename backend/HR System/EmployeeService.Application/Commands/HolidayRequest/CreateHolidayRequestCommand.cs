@@ -21,17 +21,17 @@ namespace EmployeeService.Application.Commands.HolidayRequest
         public async Task<Core.Entities.HolidayRequest> Handle(CreateHolidayRequestCommand request, CancellationToken cancellationToken)
         {
             var domainEntity = request.ToDomainEntity();
-            var existingEmployee = await _holidayRequestRepository.GetHolidayRequestByIdAsync(domainEntity.Id);
-            if (existingEmployee is not null)
+            var existingHolidayRequest = await _holidayRequestRepository.GetHolidayRequestByIdAsync(domainEntity.Id, cancellationToken);
+            if (existingHolidayRequest is not null)
             {
                 throw new EmployeeAlreadyExistException();
             }
             domainEntity.Id = new Guid();
-            var persistedEmployee = await _holidayRequestRepository.CreateHolidayRequestAsync(domainEntity, cancellationToken);
-            return persistedEmployee;
+            var persistedHolidayRequest = await _holidayRequestRepository.CreateHolidayRequestAsync(domainEntity, cancellationToken);
+            return persistedHolidayRequest;
         }
 
     }
 
-    public record CreateHolidayRequestCommand(DateTime Start, DateTime End, HolidayRequestStatus Status) : IRequest<Core.Entities.HolidayRequest>;
+    public record CreateHolidayRequestCommand(DateTime Start, DateTime End, HolidayRequestStatus Status, Guid SenderId) : IRequest<Core.Entities.HolidayRequest>;
 }

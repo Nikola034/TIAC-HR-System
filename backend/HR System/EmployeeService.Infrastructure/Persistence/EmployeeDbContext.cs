@@ -1,6 +1,7 @@
 ﻿using EmployeeService.Core.Entities;
 using EmployeeService.Infrastructure.Persistance.Employee;
 using EmployeeService.Infrastructure.Persistence.HolidayRequest;
+using EmployeeService.Infrastructure.Persistence.HolidayRequestApprover;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System;
@@ -16,6 +17,7 @@ namespace EmployeeService.Infrastructure.Persistance
     {
         public DbSet<Core.Entities.Employee> Employees { get; set; }
         public DbSet<Core.Entities.HolidayRequest> HolidayRequests { get; set; }
+        public DbSet<Core.Entities.HolidayRequestApprover> HolidayRequestApprovers { get; set; }
         public EmployeeDbContext(DbContextOptions<EmployeeDbContext> options) : base(options)
         {
         }
@@ -24,6 +26,7 @@ namespace EmployeeService.Infrastructure.Persistance
         {
             modelBuilder.ApplyConfiguration(new EmployeeConfiguration());
             modelBuilder.ApplyConfiguration(new HolidayRequestConfiguration());
+            modelBuilder.ApplyConfiguration(new HolidayRequestApproverConfiguration());
             base.OnModelCreating(modelBuilder);
         }
     }
