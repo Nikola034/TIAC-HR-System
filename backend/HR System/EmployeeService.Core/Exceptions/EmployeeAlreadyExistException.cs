@@ -4,13 +4,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Common.Exceptions;
 
 namespace Core.Exceptions
 {
-    public class ClientDoesNotExistException : BadRequestException
+    public class EmployeeAlreadyExistException : BadRequestException
     {
-        public ClientDoesNotExistException() : base("Client does not exist")
+        public EmployeeAlreadyExistException() : base("User with provided email already exists.")
         {
 
         }

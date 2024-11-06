@@ -5,6 +5,7 @@ using Common.Exceptions.Handler;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 
+
 namespace Common
 {
     public static class DependencyInjection
