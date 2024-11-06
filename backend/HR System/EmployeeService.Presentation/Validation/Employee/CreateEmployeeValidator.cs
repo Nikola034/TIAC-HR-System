@@ -8,12 +8,9 @@ namespace EmployeeService.Presentation.Validation.Employee
     {
         public CreateEmployeeValidator()
         {
-            RuleFor(employee => employee.Name).NotEmpty()
-                                            .NotNull()
-                                            .WithMessage("Name is required.");
+            RuleFor(employee => employee.Name).NotEmpty();
             RuleFor(employee => employee.Surname).NotEmpty();
             RuleFor(employee => employee.DaysOff).NotEmpty();
-            RuleFor(employee => employee.Role).NotEmpty();
         }
     }
 }

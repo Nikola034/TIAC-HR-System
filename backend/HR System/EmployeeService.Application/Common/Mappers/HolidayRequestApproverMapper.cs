@@ -11,12 +11,22 @@ namespace EmployeeService.Application.Common.Mappers
 {
     public static class HolidayRequestApproverMapper
     {
+
         public static HolidayRequestApprover ToDomainEntity(this CreateHolidayRequestApproverCommand holidayRequestApproverCommand)
         {
             return new HolidayRequestApprover
             {
                 ApproverId = holidayRequestApproverCommand.ApproverId,
                 RequestId = holidayRequestApproverCommand.RequestId,
+                Status = holidayRequestApproverCommand.Status,
+            };
+        }
+        public static HolidayRequestApprover ToDomainEntity(this UpdateHolidayRequestApproverCommand holidayRequestApproverCommand)
+        {
+            return new HolidayRequestApprover
+            {
+                RequestId = holidayRequestApproverCommand.RequestId,
+                ApproverId = holidayRequestApproverCommand.ApproverId,
                 Status = holidayRequestApproverCommand.Status,
             };
         }

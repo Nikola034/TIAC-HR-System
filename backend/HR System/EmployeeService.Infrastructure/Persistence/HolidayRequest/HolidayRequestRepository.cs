@@ -28,13 +28,14 @@ namespace EmployeeService.Infrastructure.Persistence.HolidayRequest
         {
             Core.Entities.HolidayRequest deletedEntity = await _context.HolidayRequests.FindAsync(id);
             _context.HolidayRequests.Remove(deletedEntity);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(cancellationToken);
             return deletedEntity;
         }
 
         public async Task<IEnumerable<Core.Entities.HolidayRequest>> GetAllHolidayRequestsAsync(int page, CancellationToken cancellationToken = default)
         {
             var holidayRequests = await _context.HolidayRequests.OrderBy(x => x.Id)
+            .Include(x => x.Sender)
             .Skip((page - 1) * 10)
             .Take(10)
             .ToListAsync(cancellationToken);
@@ -49,7 +50,7 @@ namespace EmployeeService.Infrastructure.Persistence.HolidayRequest
         public async Task<Core.Entities.HolidayRequest?> UpdateHolidayRequestAsync(Core.Entities.HolidayRequest holidayRequest, CancellationToken cancellationToken = default)
         {
             _context.HolidayRequests.Update(holidayRequest);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(cancellationToken);
             return holidayRequest;
         }
     }

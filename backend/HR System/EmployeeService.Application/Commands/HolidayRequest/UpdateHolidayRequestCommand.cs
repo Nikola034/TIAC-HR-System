@@ -22,7 +22,7 @@ namespace EmployeeService.Application.Commands.HolidayRequest
         public async Task<Core.Entities.HolidayRequest> Handle(UpdateHolidayRequestCommand request, CancellationToken cancellationToken)
         {
             var domainEntity = request.ToDomainEntity();
-            var existingHolidayRequest = await _holidayrequestRepository.GetHolidayRequestByIdAsync(domainEntity.Id);
+            var existingHolidayRequest = await _holidayrequestRepository.GetHolidayRequestByIdAsync(domainEntity.Id, cancellationToken);
             if (existingHolidayRequest is null)
             {
                 throw new NotFoundException("Employee with that ID doesn't exist!");

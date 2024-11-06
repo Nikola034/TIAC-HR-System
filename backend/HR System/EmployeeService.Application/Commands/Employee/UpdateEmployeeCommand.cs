@@ -23,7 +23,7 @@ namespace EmployeeService.Application.Commands.Employee
         public async Task<Core.Entities.Employee> Handle(UpdateEmployeeCommand request, CancellationToken cancellationToken)
         {
             var domainEntity = request.ToDomainEntity();
-            var existingEmployee = await _employeeRepository.GetEmployeeByIdAsync(domainEntity.Id);
+            var existingEmployee = await _employeeRepository.GetEmployeeByIdAsync(domainEntity.Id, cancellationToken);
             if (existingEmployee is null)
             {
                 throw new NotFoundException("Employee with that ID doesn't exist!");

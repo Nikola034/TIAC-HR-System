@@ -12,12 +12,12 @@ namespace EmployeeService.Infrastructure.Persistence.HolidayRequestApprover
     {
         public void Configure(EntityTypeBuilder<Core.Entities.HolidayRequestApprover> builder)
         {
-            builder.ToTable("holidayRequestApprovers");
+            builder.ToTable("holidayrequestapprovers");
 
 
             builder.Property(x => x.Id).HasColumnName("id").HasConversion(id => id.ToString(), id => new Guid(id));
-            builder.Property(x => x.ApproverId).HasColumnName("approverId").HasConversion(id => id.ToString(), id => new Guid(id));
-            builder.Property(x => x.RequestId).HasColumnName("requestId").HasConversion(id => id.ToString(), id => new Guid(id));
+            builder.Property(x => x.ApproverId).HasColumnName("approverid").HasConversion(id => id.ToString(), id => new Guid(id));
+            builder.Property(x => x.RequestId).HasColumnName("requestid").HasConversion(id => id.ToString(), id => new Guid(id));
             builder.Property(x => x.Status).HasColumnName("status");
 
             builder.HasKey(x => x.Id);
