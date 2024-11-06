@@ -3,23 +3,23 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /app
 
 COPY Common/Common/Common.csproj Common/Common/
-COPY EmployeeService/Core/Core.csproj EmployeeService/Core/
-COPY EmployeeService/Application/Application.csproj EmployeeService/Application/
-COPY EmployeeService/Infrastructure/Infrastructure.csproj EmployeeService/Infrastructure/
-COPY EmployeeService/Presentation/Presentation.csproj EmployeeService/Presentation/
+COPY ProjectService/Core/Core.csproj ProjectService/Core/
+COPY ProjectService/Application/Application.csproj ProjectService/Application/
+COPY ProjectService/Infrastructure/Infrastructure.csproj ProjectService/Infrastructure/
+COPY ProjectService/Presentation/Presentation.csproj ProjectService/Presentation/
 
 # Restore dependencies
-RUN dotnet restore EmployeeService/Presentation/Presentation.csproj
+RUN dotnet restore ProjectService/Presentation/Presentation.csproj
 
 # Copy the rest of the code
 COPY Common/Common/ Common/Common/
-COPY EmployeeService/Core/. EmployeeService/Core/
-COPY EmployeeService/Application/. EmployeeService/Application/
-COPY EmployeeService/Infrastructure/. EmployeeService/Infrastructure/
-COPY EmployeeService/Presentation/. EmployeeService/Presentation/
+COPY ProjectService/Core/. ProjectService/Core/
+COPY ProjectService/Application/. ProjectService/Application/
+COPY ProjectService/Infrastructure/. ProjectService/Infrastructure/
+COPY ProjectService/Presentation/. ProjectService/Presentation/
 
 # Build the solution
-RUN dotnet build EmployeeService/Presentation/Presentation.csproj -c Release -o /app/build
+RUN dotnet build ProjectService/Presentation/Presentation.csproj -c Release -o /app/build
 
 # Stage 2: Publish
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS publish
@@ -28,13 +28,13 @@ WORKDIR /app
 # Copy the build artifacts and project files
 COPY --from=build /app/build /app/build
 COPY --from=build /app/Common/Common /app/Common/Common
-COPY --from=build /app/EmployeeService/Core /app/EmployeeService/Core
-COPY --from=build /app/EmployeeService/Application /app/EmployeeService/Application
-COPY --from=build /app/EmployeeService/Infrastructure /app/EmployeeService//Infrastructure
-COPY --from=build /app/EmployeeService/Presentation /app/EmployeeService/Presentation
+COPY --from=build /app/ProjectService/Core /app/ProjectService/Core
+COPY --from=build /app/ProjectService/Application /app/ProjectService/Application
+COPY --from=build /app/ProjectService/Infrastructure /app/ProjectService//Infrastructure
+COPY --from=build /app/ProjectService/Presentation /app/ProjectService/Presentation
 
 # Publish the project
-RUN dotnet publish EmployeeService/Presentation/Presentation.csproj -c Release -o /app/publish
+RUN dotnet publish ProjectService/Presentation/Presentation.csproj -c Release -o /app/publish
 
 # Stage 3: Runtime
 FROM mcr.microsoft.com/dotnet/aspnet:8.0

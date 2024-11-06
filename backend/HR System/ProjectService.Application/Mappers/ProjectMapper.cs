@@ -10,6 +10,7 @@ public static class ProjectMapper
     {
         return new Project
         {
+            Id = new Guid(),
             Title = command.Title,
             Description = command.Description,
             ClientId = command.ClientId,

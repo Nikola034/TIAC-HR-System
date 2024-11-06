@@ -34,3 +34,9 @@ CREATE TABLE projects (
 	teamleadid text REFERENCES employees,
 	clientid text REFERENCES clients
 );
+
+CREATE TABLE employeeprojects (
+    id text PRIMARY KEY,
+	employeeid text REFERENCES employees,
+	projectid text REFERENCES projects
+);

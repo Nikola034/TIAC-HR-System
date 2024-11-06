@@ -51,4 +51,12 @@ public class ProjectRepository(ProjectDbContext dbContext) : IProjectRepository
             .ToListAsync(cancellationToken);
         return projects;
     }
+    
+    public async Task<IEnumerable<Core.Entities.Project>> GetAllProjectsByIdAsync(IEnumerable<Guid> ids, CancellationToken cancellationToken = default)
+    {
+        var projects = await dbContext.Projects.Include(x => x.Client)
+            .Where(p => ids.Contains(p.Id))
+            .ToListAsync(cancellationToken);
+        return projects;
+    }
 }
