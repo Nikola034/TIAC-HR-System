@@ -20,7 +20,7 @@ namespace EmployeeService.Infrastructure.Persistance.Employee
             builder.Property(x => x.Name).HasColumnName("name").HasColumnType("varchar(20)");
             builder.Property(x => x.Surname).HasColumnName("surname").HasColumnType("varchar(20)");
             builder.Property(x => x.DaysOff).HasColumnName("daysoff").HasColumnType("int");
-            builder.Property(x => x.Role).HasColumnName("role");
+            builder.Property(x => x.Role).HasColumnName("role").HasColumnType("int");
 
             builder.HasKey(x => x.Id);
         }

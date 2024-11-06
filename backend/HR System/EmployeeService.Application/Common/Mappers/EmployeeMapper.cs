@@ -25,6 +25,7 @@ namespace EmployeeService.Application.Common.Mappers
         {
             return new Employee
             {
+                Id = employeeCommand.Id,
                 Name = employeeCommand.Name,
                 Surname = employeeCommand.Surname,
                 DaysOff = employeeCommand.DaysOff,

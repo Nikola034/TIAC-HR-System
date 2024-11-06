@@ -20,15 +20,15 @@ namespace EmployeeService.Infrastructure.Persistance.Employee
         public async Task<Core.Entities.Employee> CreateEmployeeAsync(Core.Entities.Employee employee, CancellationToken cancellationToken = default(CancellationToken))
         {
             var savedEntity = await _context.Employees.AddAsync(employee);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(cancellationToken);
             return savedEntity.Entity;
         }
 
         public async Task<Core.Entities.Employee?> DeleteEmployeeAsync(Guid id, CancellationToken cancellationToken = default)
         {
-            Core.Entities.Employee deletedEntity = await _context.Employees.FindAsync(id);
+            Core.Entities.Employee deletedEntity = await _context.Employees.FindAsync(id, cancellationToken);
             _context.Employees.Remove(deletedEntity);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(cancellationToken);
             return deletedEntity;
         }
 
@@ -43,13 +43,13 @@ namespace EmployeeService.Infrastructure.Persistance.Employee
 
         public async Task<Core.Entities.Employee?> GetEmployeeByIdAsync(Guid id, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return await _context.Employees.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
+            return await _context.Employees.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
         }
 
         public async Task<Core.Entities.Employee?> UpdateEmployeeAsync(Core.Entities.Employee user, CancellationToken cancellationToken = default)
         {
             _context.Employees.Update(user);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(cancellationToken);
             return user;
         }
     }

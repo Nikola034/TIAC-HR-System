@@ -13,9 +13,9 @@ namespace EmployeeService.Application.Queries.Employee
     {
 
         private readonly IEmployeeRepository _employeeRepository;
-        public GetAllEmployeesHandler(IEmployeeRepository productRepository)
+        public GetAllEmployeesHandler(IEmployeeRepository employeeRepository)
         {
-            _employeeRepository = productRepository;
+            _employeeRepository = employeeRepository;
         }
         public async Task<IEnumerable<Core.Entities.Employee>> Handle(GetAllEmployeesQuery request, CancellationToken cancellationToken)
         {

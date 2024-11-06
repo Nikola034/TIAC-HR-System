@@ -22,7 +22,7 @@ namespace EmployeeService.Application.Commands.Employee
         public async Task<Core.Entities.Employee> Handle(CreateEmployeeCommand request, CancellationToken cancellationToken)
         {
             var domainEntity = request.ToDomainEntity();
-            var existingEmployee = await _employeeRepository.GetEmployeeByIdAsync(domainEntity.Id);
+            var existingEmployee = await _employeeRepository.GetEmployeeByIdAsync(domainEntity.Id, cancellationToken);
             if (existingEmployee is not null)
             {
                 throw new EmployeeAlreadyExistException();
