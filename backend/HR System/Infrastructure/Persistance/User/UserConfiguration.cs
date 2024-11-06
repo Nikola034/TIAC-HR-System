@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Infrastructure.Persistance.User
+namespace Infrastructure.Persistance.Employee
 {
     public class UserConfiguration : IEntityTypeConfiguration<Core.Entities.User>
     {

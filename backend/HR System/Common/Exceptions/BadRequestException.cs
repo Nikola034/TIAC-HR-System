@@ -19,3 +19,4 @@ namespace Common.Exceptions
 
         public string? Details { get; }
     }
+}
