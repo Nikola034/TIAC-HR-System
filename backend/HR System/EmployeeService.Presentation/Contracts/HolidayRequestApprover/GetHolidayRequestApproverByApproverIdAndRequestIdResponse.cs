@@ -2,7 +2,7 @@
 {
     public class GetHolidayRequestApproverByApproverIdAndRequestIdResponse
     {
-        public Core.Entities.HolidayRequest HolidayRequest { get; set; }
+        public Core.Entities.HolidayRequestApprover HolidayRequestApprover { get; set; }
 
     }
 }

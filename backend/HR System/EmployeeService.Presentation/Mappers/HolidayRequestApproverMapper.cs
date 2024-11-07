@@ -9,17 +9,38 @@ namespace EmployeeService.Presentation.Mappers
 {
     public static class HolidayRequestApproverMapper
     {
-        public static GetHolidayRequestApproverByIdResponse ToApiResponse(this Core.Entities.HolidayRequestApprover holidayRequest)
+        public static GetHolidayRequestApproverByIdResponse ToApiResponseFromGetById(this Core.Entities.HolidayRequestApprover holidayRequest)
         {
             return new GetHolidayRequestApproverByIdResponse
             {
                 HolidayRequestApprover = holidayRequest
             };
         }
+        public static GetHolidayRequestApproverByApproverIdAndRequestIdResponse ToApiResponseFromGetByResponseIdAndApproverId(this Core.Entities.HolidayRequestApprover holidayRequest)
+        {
+            return new GetHolidayRequestApproverByApproverIdAndRequestIdResponse
+            {
+                HolidayRequestApprover = holidayRequest
+            };
+        }
 
-        public static GetAllHolidayRequestApproversResponse ToApiResponse(this IEnumerable<Core.Entities.HolidayRequestApprover> holidayRequests)
+        public static GetAllHolidayRequestApproversResponse ToApiResponseFromGetAll(this IEnumerable<Core.Entities.HolidayRequestApprover> holidayRequests)
         {
             return new GetAllHolidayRequestApproversResponse
+            {
+                HolidayRequestApprovers = holidayRequests
+            };
+        }
+        public static GetAllHolidayRequestApproversByRequestIdResponse ToApiResponseFromGetAllByRequestId(this IEnumerable<Core.Entities.HolidayRequestApprover> holidayRequests)
+        {
+            return new GetAllHolidayRequestApproversByRequestIdResponse
+            {
+                HolidayRequestApprovers = holidayRequests
+            };
+        }
+        public static GetAllHolidayRequestApproversByApproverIdResponse ToApiResponseFromGetAllByApproverId(this IEnumerable<Core.Entities.HolidayRequestApprover> holidayRequests)
+        {
+            return new GetAllHolidayRequestApproversByApproverIdResponse
             {
                 HolidayRequestApprovers = holidayRequests
             };

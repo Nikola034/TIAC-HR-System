@@ -25,8 +25,4 @@
     <ProjectReference Include="..\EmployeeService.Infrastructure\EmployeeService.Infrastructure.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Validation\HolidayRequest\" />
-  </ItemGroup>
-
 </Project>

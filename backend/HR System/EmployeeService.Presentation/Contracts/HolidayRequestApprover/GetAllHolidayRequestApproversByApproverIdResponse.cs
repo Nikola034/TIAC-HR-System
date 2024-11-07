@@ -2,7 +2,7 @@
 {
     public class GetAllHolidayRequestApproversByApproverIdResponse
     {
-        public IEnumerable<Core.Entities.HolidayRequest> HolidayRequests { get; set; }
+        public IEnumerable<Core.Entities.HolidayRequestApprover> HolidayRequestApprovers { get; set; }
 
     }
 }
