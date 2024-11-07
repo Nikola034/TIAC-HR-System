@@ -1,6 +1,8 @@
-﻿using EmployeeService.Application.Common.Repositories;
+﻿using Common.Exceptions;
+using EmployeeService.Application.Common.Repositories;
 using EmployeeService.Core.Entities;
 using MediatR;
+using Microsoft.AspNetCore.Http.HttpResults;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +22,10 @@ namespace EmployeeService.Application.Queries.Employee
         public async Task<Core.Entities.Employee> Handle(GetEmployeeByIdQuery request, CancellationToken cancellationToken)
         {
             var employee = await _employeeRepository.GetEmployeeByIdAsync(request.Id, cancellationToken);
+            if(employee is null)
+            {
+                throw new NotFoundException("Employee with provided Id doesn't exist!");
+            }
             return employee;
         }
     }
