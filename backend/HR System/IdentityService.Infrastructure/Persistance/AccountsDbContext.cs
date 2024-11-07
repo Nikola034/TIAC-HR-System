@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Infrastructure.Persistance.Account;
 using Infrastructure.Persistance.User;
 using Microsoft.EntityFrameworkCore;
 

@@ -20,6 +20,7 @@ namespace Infrastructure.Services
         {
             _configuration = configuration;
         }
+
         public Task<TokenResponse> GenerateTokensAsync(string username)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
@@ -41,7 +42,15 @@ namespace Infrastructure.Services
 
             return Task.FromResult(new TokenResponse(tokenString));
         }
+        public string GenerateByteToken()
+        {
+            var randomNumber = new byte[32];
+
+            using (var rng = RandomNumberGenerator.Create())
+            {
+                rng.GetBytes(randomNumber);
+                return Convert.ToBase64String(randomNumber);
+            }
+        }
     }
-
-
 }

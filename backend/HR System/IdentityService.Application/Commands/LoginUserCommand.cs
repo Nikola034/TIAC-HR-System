@@ -12,20 +12,20 @@ namespace Application.Commands
     public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, TokenResponse>
     {
 
-        private readonly IAccountRepository _userRepository;
+        private readonly IAccountRepository _accountRepository;
         private readonly IPasswordHasher _passwordHasher;
         private readonly IJwtService _jwtService;
 
-        public LoginUserCommandHandler(IAccountRepository userRepository, IPasswordHasher passwordHasher, IJwtService jwtService)
+        public LoginUserCommandHandler(IAccountRepository accountRepository, IPasswordHasher passwordHasher, IJwtService jwtService)
         {
-            _userRepository = userRepository;
+            _accountRepository = accountRepository;
             _passwordHasher = passwordHasher;
             _jwtService = jwtService;
         }
 
         public async Task<TokenResponse> Handle(LoginUserCommand request, CancellationToken cancellationToken)
         {
-            var user = await _userRepository.GetUserByEmailAsync(request.Email, cancellationToken);
+            var user = await _accountRepository.GetUserByEmailAsync(request.Email, cancellationToken);
             if (user is null)
             {
                 throw new WrongCredentialsException();
@@ -36,6 +36,9 @@ namespace Application.Commands
             {
                 throw new WrongCredentialsException();
             }
+
+            var refreshToken = _jwtService.GenerateByteToken();
+            await _accountRepository.UpdateRefreshToken(request.Email, refreshToken, cancellationToken);
 
             var tokens = await _jwtService.GenerateTokensAsync(user.Email);
 

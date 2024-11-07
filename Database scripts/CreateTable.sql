@@ -1,9 +1,20 @@
+CREATE TABLE accounts (
+    id text PRIMARY KEY,
+    email varchar(30),
+    password varchar(100),
+    refreshtoken varchar(100),
+    refreshtokenvalidto timestamp,
+    passwordresettoken varchar(100),
+    passwordresettokenvalidto timestamp 
+);
+
 CREATE TABLE employees (
     id text PRIMARY KEY,
     name varchar(20),
     surname varchar(20),
     daysoff integer,
-    role int
+    role int,
+    accountId text REFERENCES accounts
 );
 
 CREATE TABLE holidayrequests (
