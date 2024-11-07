@@ -15,7 +15,8 @@ namespace EmployeeService.Presentation.Mappers
                 Name = employee.Name,
                 Surname = employee.Surname,
                 Role = employee.Role,
-                DaysOff = employee.DaysOff
+                DaysOff = employee.DaysOff,
+                AccountId = employee.AccountId
             };
         }
 
@@ -27,7 +28,7 @@ namespace EmployeeService.Presentation.Mappers
             };
         }
 
-        public static CreateEmployeeCommand ToCommand(this CreateEmployeeRequest request) => new CreateEmployeeCommand(request.Name, request.Surname, request.DaysOff, request.Role);
+        public static CreateEmployeeCommand ToCommand(this CreateEmployeeRequest request) => new CreateEmployeeCommand(request.Name, request.Surname, request.DaysOff, request.Role, request.AccountId);
         public static UpdateEmployeeCommand ToCommand(this UpdateEmployeeRequest request) => new UpdateEmployeeCommand(request.Id, request.Name, request.Surname, request.DaysOff, request.Role);
         public static DeleteEmployeeCommand ToCommand(this DeleteEmployeeRequest request) => new DeleteEmployeeCommand(request.Id);
 
@@ -40,7 +41,8 @@ namespace EmployeeService.Presentation.Mappers
                 Name = employee.Name,
                 Surname = employee.Surname,
                 Role = employee.Role,
-                DaysOff = employee.DaysOff
+                DaysOff = employee.DaysOff,
+                AccountId = employee.AccountId
             };
         }
         public static UpdateEmployeeResponse ToApiResponseFromUpdate(this Employee employee)
