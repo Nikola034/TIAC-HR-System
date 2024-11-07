@@ -30,6 +30,7 @@ namespace EmployeeService.Application.Commands.Employee
             }
             var persistedEmployee = await _employeeRepository.DeleteEmployeeAsync(domainEntity.Id, cancellationToken);
             return persistedEmployee;
+            //TODO Delete account in identity-service
         }
 
     }

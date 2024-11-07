@@ -14,5 +14,6 @@ namespace EmployeeService.Core.Entities
         public string Surname { get; set; }
         public int DaysOff {  get; set; }
         public EmployeeRole Role { get; set; }
+        public Guid AccountId { get; set; }
     }
 }

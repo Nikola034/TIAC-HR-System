@@ -34,5 +34,5 @@ namespace EmployeeService.Application.Commands.Employee
 
     }
 
-    public record CreateEmployeeCommand(string Name, string Surname, int DaysOff, EmployeeRole Role) : IRequest<Core.Entities.Employee>;
+    public record CreateEmployeeCommand(string Name, string Surname, int DaysOff, EmployeeRole Role, Guid AccountId) : IRequest<Core.Entities.Employee>;
 }

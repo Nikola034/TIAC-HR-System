@@ -8,5 +8,6 @@ namespace EmployeeService.Presentation.Contracts.Employee
         public string Surname { get; set; }
         public EmployeeRole Role { get; set; }
         public int DaysOff { get; set; }
+        public Guid AccountId { get; set; }
     }
 }

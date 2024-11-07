@@ -18,6 +18,7 @@ namespace EmployeeService.Application.Common.Mappers
                 Surname = employeeCommand.Surname,
                 DaysOff = employeeCommand.DaysOff,
                 Role = employeeCommand.Role,
+                AccountId = employeeCommand.AccountId
             };
         }
 
