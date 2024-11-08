@@ -1,11 +1,12 @@
-﻿using EmployeeService.Presentation.Contracts.Employee;
+﻿using EmployeeService.Application.Commands.Employee;
+using EmployeeService.Presentation.Contracts.Employee;
 using EmployeeService.Presentation.Mappers;
 using FastEndpoints;
 using MediatR;
 
 namespace EmployeeService.Presentation.Controllers.Employee
 {
-    public class Delete : Endpoint<DeleteEmployeeRequest, DeleteEmployeeResponse>
+    public class Delete : EndpointWithoutRequest<bool>
     {
         private readonly IMediator _mediator;
 
@@ -20,10 +21,12 @@ namespace EmployeeService.Presentation.Controllers.Employee
             AllowAnonymous(); 
         }
 
-        public override async Task HandleAsync(DeleteEmployeeRequest req, CancellationToken ct)
+        public override async Task HandleAsync(CancellationToken ct)
         {
-            var employee = await _mediator.Send(req.ToCommand(), ct);
-            await SendOkAsync(employee.ToApiResponseFromDelete(), ct);
+            var result = await _mediator.Send(new DeleteEmployeeCommand(Route<Guid>("id")), ct);
+            if (!result)
+                await SendNotFoundAsync(ct);
+            await SendOkAsync(ct);
         }
     }
 }

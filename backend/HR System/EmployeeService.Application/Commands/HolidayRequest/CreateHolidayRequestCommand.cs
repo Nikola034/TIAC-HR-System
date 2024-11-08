@@ -2,6 +2,7 @@
 using EmployeeService.Application.Common.Mappers;
 using EmployeeService.Application.Common.Repositories;
 using EmployeeService.Core.Enums;
+using EmployeeService.Core.Exceptions;
 using MediatR;
 using Microsoft.AspNetCore.Razor.Language;
 using System;
@@ -16,18 +17,20 @@ namespace EmployeeService.Application.Commands.HolidayRequest
     {
         private readonly IHolidayRequestRepository _holidayRequestRepository;
         private readonly IHolidayRequestApproverRepository _holidayRequestApproverRepository;
-        public CreateHolidayRequestCommandHandler(IHolidayRequestRepository holidayRequestRepository, IHolidayRequestApproverRepository holidayRequestApproverRepository)
+        private readonly IEmployeeRepository _employeeRepository;
+        public CreateHolidayRequestCommandHandler(IHolidayRequestRepository holidayRequestRepository, IHolidayRequestApproverRepository holidayRequestApproverRepository, IEmployeeRepository employeeRepository)
         {
             _holidayRequestRepository = holidayRequestRepository;
             _holidayRequestApproverRepository = holidayRequestApproverRepository;
+            _employeeRepository = employeeRepository;
         }
         public async Task<Core.Entities.HolidayRequest> Handle(CreateHolidayRequestCommand request, CancellationToken cancellationToken)
         {
             var domainEntity = request.ToDomainEntity();
-            var existingHolidayRequest = await _holidayRequestRepository.GetHolidayRequestByIdAsync(domainEntity.Id, cancellationToken);
-            if (existingHolidayRequest is not null)
+            var existingHolidayRequest = await _holidayRequestRepository.CheckHolidayRequestExistenceAsync(request.SenderId, request.Start, request.End, cancellationToken);
+            if (existingHolidayRequest)
             {
-                throw new EmployeeAlreadyExistException();
+                throw new HolidayRequestAlreadyExistException();
             }
             domainEntity.Id = new Guid();
             // find ALL TEAM LEADERS or MANAGER
@@ -56,8 +59,16 @@ namespace EmployeeService.Application.Commands.HolidayRequest
              *  holidayRequestApprover.Status = Pending;
              * }
             */
-            var persistedHolidayRequest = await _holidayRequestRepository.CreateHolidayRequestAsync(domainEntity, cancellationToken);
-            return persistedHolidayRequest;
+            var sender = await _employeeRepository.GetEmployeeByIdAsync(domainEntity.SenderId);
+            int wantedDays = (request.End - request.Start).Days;
+            if(sender.DaysOff >= wantedDays)
+            {
+                sender.DaysOff -= wantedDays;
+                await _employeeRepository.UpdateEmployeeAsync(sender, cancellationToken);
+                var persistedHolidayRequest = await _holidayRequestRepository.CreateHolidayRequestAsync(domainEntity, cancellationToken);
+                return persistedHolidayRequest;
+            }
+            throw new NoAvailableDaysOffException();
         }
 
     }

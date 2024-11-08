@@ -1,4 +1,5 @@
 ﻿using EmployeeService.Application.Commands.Employee;
+using EmployeeService.Application.Queries.Employee;
 using EmployeeService.Core.Entities;
 using EmployeeService.Presentation.Contracts.Employee;
 
@@ -20,18 +21,19 @@ namespace EmployeeService.Presentation.Mappers
             };
         }
 
-        public static GetAllEmployeesResponse ToApiResponse(this IEnumerable<Core.Entities.Employee> employees)
+        public static GetAllEmployeesResponse ToApiResponse(this GetAllEmployeesQueryResponse response)
         {
             return new GetAllEmployeesResponse
             {
-                Employees = employees
+                Employees = response.Employees,
+                Page = response.Page,
+                TotalPages = response.TotalPages,
+                ItemsPerPage = response.ItemsPerPage,
             };
         }
 
         public static CreateEmployeeCommand ToCommand(this CreateEmployeeRequest request) => new CreateEmployeeCommand(request.Name, request.Surname, request.DaysOff, request.Role, request.AccountId);
         public static UpdateEmployeeCommand ToCommand(this UpdateEmployeeRequest request) => new UpdateEmployeeCommand(request.Id, request.Name, request.Surname, request.DaysOff, request.Role);
-        public static DeleteEmployeeCommand ToCommand(this DeleteEmployeeRequest request) => new DeleteEmployeeCommand(request.Id);
-
 
         public static CreateEmployeeResponse ToApiResponseFromCreate(this Employee employee)
         {
@@ -54,14 +56,6 @@ namespace EmployeeService.Presentation.Mappers
                 Surname = employee.Surname,
                 Role = employee.Role,
                 DaysOff = employee.DaysOff
-            };
-        }
-
-        public static DeleteEmployeeResponse ToApiResponseFromDelete(this Employee employee)
-        {
-            return new DeleteEmployeeResponse
-            {
-                Id = employee.Id,
             };
         }
     }

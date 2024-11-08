@@ -18,13 +18,26 @@ namespace EmployeeService.Presentation.Controllers.Employee
 
         public override void Configure()
         {
-            Get("employees/all/{page}");
+            Get("employees");
             AllowAnonymous();
         }
 
         public override async Task HandleAsync(CancellationToken ct)
         {
-            var employee = await _mediator.Send(new GetAllEmployeesQuery(Route<int>("page")));
+            var pageQuery = Query<string>("page", isRequired: false);
+            var itemsPerPageQuery = Query<string>("items-per-page", isRequired: false);
+            int page = 1;
+            if (pageQuery != null) 
+            {
+                page = Convert.ToInt32(pageQuery);
+            }
+            int itemsPerPage = 10;
+            if (itemsPerPageQuery != null)
+            {
+                itemsPerPage = Convert.ToInt32(itemsPerPageQuery);
+
+            }
+            var employee = await _mediator.Send(new GetAllEmployeesQuery(page, itemsPerPage));
             if (employee is null)
             {
                 await SendNotFoundAsync(ct);

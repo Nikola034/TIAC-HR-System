@@ -24,19 +24,23 @@ namespace EmployeeService.Infrastructure.Persistance.Employee
             return savedEntity.Entity;
         }
 
-        public async Task<Core.Entities.Employee?> DeleteEmployeeAsync(Guid id, CancellationToken cancellationToken = default)
+        public async Task<bool> DeleteEmployeeAsync(Guid id, CancellationToken cancellationToken = default)
         {
             Core.Entities.Employee deletedEntity = await _context.Employees.FindAsync(id, cancellationToken);
+            if (deletedEntity == null)
+            {
+                return true;
+            }
             _context.Employees.Remove(deletedEntity);
             await _context.SaveChangesAsync(cancellationToken);
-            return deletedEntity;
+            return false;
         }
 
-        public async Task<IEnumerable<Core.Entities.Employee>> GetAllEmployeesAsync(int page, CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<Core.Entities.Employee>> GetAllEmployeesAsync(int page, int items, CancellationToken cancellationToken = default)
         {
             var employees = await _context.Employees.OrderBy(x => x.Id)
-            .Skip((page - 1) * 10)
-            .Take(10)
+            .Skip((page - 1) * items)
+            .Take(items)
             .ToListAsync(cancellationToken);
             return employees;
         }
@@ -44,6 +48,12 @@ namespace EmployeeService.Infrastructure.Persistance.Employee
         public async Task<Core.Entities.Employee?> GetEmployeeByIdAsync(Guid id, CancellationToken cancellationToken = default(CancellationToken))
         {
             return await _context.Employees.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+        }
+
+        public async Task<decimal> GetTotalPagesAsync(int page, int items, CancellationToken cancellationToken = default)
+        {
+            var count = await _context.Employees.CountAsync(cancellationToken);
+            return Math.Floor((decimal)((decimal)count / (decimal)items));
         }
 
         public async Task<Core.Entities.Employee?> UpdateEmployeeAsync(Core.Entities.Employee user, CancellationToken cancellationToken = default)

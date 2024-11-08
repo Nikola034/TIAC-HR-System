@@ -11,8 +11,10 @@ namespace EmployeeService.Application.Common.Repositories
     {
         public Task<HolidayRequest?> GetHolidayRequestByIdAsync(Guid id, CancellationToken cancellationToken = default(CancellationToken));
         public Task<HolidayRequest> CreateHolidayRequestAsync(HolidayRequest holidayRequest, CancellationToken cancellationToken = default(CancellationToken));
-        public Task<HolidayRequest?> DeleteHolidayRequestAsync(Guid id, CancellationToken cancellationToken = default(CancellationToken));
+        public Task<bool> DeleteHolidayRequestAsync(Guid id, CancellationToken cancellationToken = default(CancellationToken));
         public Task<HolidayRequest?> UpdateHolidayRequestAsync(HolidayRequest holidayRequest, CancellationToken cancellationToken = default(CancellationToken));
-        public Task<IEnumerable<HolidayRequest>> GetAllHolidayRequestsAsync(int page, CancellationToken cancellationToken = default(CancellationToken));
+        public Task<IEnumerable<HolidayRequest>> GetAllHolidayRequestsAsync(int page, int items, CancellationToken cancellationToken = default(CancellationToken));
+        public Task<int> GetTotalPagesAsync(int page, int items, CancellationToken cancellationToken = default(CancellationToken));
+        public Task<bool> CheckHolidayRequestExistenceAsync(Guid senderId, DateTime start, DateTime end, CancellationToken cancellationToken = default(CancellationToken));
     }
 }

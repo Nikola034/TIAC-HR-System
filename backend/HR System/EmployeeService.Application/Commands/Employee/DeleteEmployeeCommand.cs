@@ -10,17 +10,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace EmployeeService.Application.Commands.Employee
 {
-    public class DeleteEmployeeCommandHandler : IRequestHandler<DeleteEmployeeCommand, Core.Entities.Employee>
+    public class DeleteEmployeeCommandHandler : IRequestHandler<DeleteEmployeeCommand, bool>
     {
         private readonly IEmployeeRepository _employeeRepository;
+
         public DeleteEmployeeCommandHandler(IEmployeeRepository userRepository)
         {
             _employeeRepository = userRepository;
         }
-        public async Task<Core.Entities.Employee> Handle(DeleteEmployeeCommand request, CancellationToken cancellationToken)
+        public async Task<bool> Handle(DeleteEmployeeCommand request, CancellationToken cancellationToken)
         {
             var domainEntity = request.ToDomainEntity();
             var existingEmployee = await _employeeRepository.GetEmployeeByIdAsync(domainEntity.Id, cancellationToken);
@@ -35,5 +37,5 @@ namespace EmployeeService.Application.Commands.Employee
 
     }
 
-    public record DeleteEmployeeCommand(Guid Id) : IRequest<Core.Entities.Employee>;
+    public record DeleteEmployeeCommand(Guid Id) : IRequest<bool>;
 }

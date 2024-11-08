@@ -24,7 +24,7 @@ namespace EmployeeService.Application.Queries.Employee
             var employee = await _employeeRepository.GetEmployeeByIdAsync(request.Id, cancellationToken);
             if(employee is null)
             {
-                throw new NotFoundException("Employee with provided Id doesn't exist!");
+                throw new NotFoundException("Employee with provided ID doesn't exist!");
             }
             return employee;
         }
