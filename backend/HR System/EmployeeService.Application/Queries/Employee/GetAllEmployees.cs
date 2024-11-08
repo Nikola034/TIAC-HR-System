@@ -28,5 +28,5 @@ namespace EmployeeService.Application.Queries.Employee
 
     public record GetAllEmployeesQuery(int page, int items) : IRequest<GetAllEmployeesQueryResponse>;
 
-    public record GetAllEmployeesQueryResponse(IEnumerable<Core.Entities.Employee> Employees, int Page, int TotalPages, int ItemsPerPage);
+    public record GetAllEmployeesQueryResponse(IEnumerable<Core.Entities.Employee> Employees, int Page, decimal TotalPages, int ItemsPerPage);
 }

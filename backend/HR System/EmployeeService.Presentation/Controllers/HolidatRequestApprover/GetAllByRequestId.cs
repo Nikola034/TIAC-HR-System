@@ -17,7 +17,7 @@ namespace EmployeeService.Presentation.Controllers.HolidatRequestApprover
 
         public override void Configure()
         {
-            Get("holidayRequestApprovers/byRequest/{requestId}");
+            Get("employees/holidayRequestApprovers/byRequest/{requestId}");
             AllowAnonymous();
         }
 

@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace EmployeeService.Core.Exceptions
 {
-    public class HolidayRequestAlreadyExistException : BadRequestException
+    public class NoAvailableDaysOffException : BadRequestException
     {
-        public HolidayRequestAlreadyExistException() : base("Holiday request for provided user and time already exists.")
+        public NoAvailableDaysOffException() : base("Provided user has no available days off.")
         {
 
         }

@@ -17,7 +17,7 @@ namespace EmployeeService.Presentation.Controllers.HolidayRequest
 
         public override void Configure()
         {
-            Put("holidayRequests");
+            Put("employees/holidayRequests");
             AllowAnonymous();
         }
 

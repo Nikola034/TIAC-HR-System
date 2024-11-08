@@ -36,14 +36,20 @@ namespace EmployeeService.Infrastructure.Persistence.HolidayRequest
             return true;
         }
 
-        public async Task<IEnumerable<Core.Entities.HolidayRequest>> GetAllHolidayRequestsAsync(int page, CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<Core.Entities.HolidayRequest>> GetAllHolidayRequestsAsync(int page, int items, CancellationToken cancellationToken = default)
         {
             var holidayRequests = await _context.HolidayRequests.OrderBy(x => x.Id)
             .Include(x => x.Sender)
-            .Skip((page - 1) * 10)
-            .Take(10)
+            .Skip((page - 1) * items)
+            .Take(items)
             .ToListAsync(cancellationToken);
             return holidayRequests;
+        }
+
+        public async Task<int> GetTotalPagesAsync(int page, int items, CancellationToken cancellationToken = default)
+        {
+            var count = await _context.HolidayRequests.CountAsync(cancellationToken);
+            return (int)Math.Ceiling((double)(count / items));
         }
 
         public async Task<Core.Entities.HolidayRequest?> GetHolidayRequestByIdAsync(Guid id, CancellationToken cancellationToken = default)
@@ -56,6 +62,11 @@ namespace EmployeeService.Infrastructure.Persistence.HolidayRequest
             _context.HolidayRequests.Update(holidayRequest);
             await _context.SaveChangesAsync(cancellationToken);
             return holidayRequest;
+        }
+
+        public async Task<bool> CheckHolidayRequestExistenceAsync(Guid senderId, DateTime start, DateTime end, CancellationToken cancellationToken = default)
+        {
+            return await _context.HolidayRequests.AsNoTracking().FirstOrDefaultAsync(x => x.SenderId == senderId && x.Start.Date == start.Date && x.End.Date == end.Date) is not null;
         }
     }
 }

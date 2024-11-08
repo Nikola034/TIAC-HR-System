@@ -1,5 +1,6 @@
 ﻿using EmployeeService.Application.Commands.Employee;
 using EmployeeService.Application.Commands.HolidayRequest;
+using EmployeeService.Application.Queries.HolidayRequest;
 using EmployeeService.Core.Entities;
 using EmployeeService.Presentation.Contracts.Employee;
 using EmployeeService.Presentation.Contracts.HolidayRequest;
@@ -22,11 +23,14 @@ namespace EmployeeService.Presentation.Mappers
             };
         }
 
-        public static GetAllHolidayRequestsResponse ToApiResponse(this IEnumerable<Core.Entities.HolidayRequest> holidayRequests)
+        public static GetAllHolidayRequestsResponse ToApiResponse(this GetAllHolidayRequestsQueryResponse response)
         {
             return new GetAllHolidayRequestsResponse
             {
-                HolidayRequests = holidayRequests
+                HolidayRequests = response.HolidayRequests,
+                ItemsPerPage = response.ItemsPerPage,
+                TotalPages = response.TotalPages,
+                Page = response.Page,
             };
         }
         public static CreateHolidayRequestResponse ToApiResponseFromCreate(this HolidayRequest holidayRequest)

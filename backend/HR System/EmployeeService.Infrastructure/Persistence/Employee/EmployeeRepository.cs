@@ -50,10 +50,10 @@ namespace EmployeeService.Infrastructure.Persistance.Employee
             return await _context.Employees.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
         }
 
-        public async Task<int> GetTotalPagesAsync(int page, int items, CancellationToken cancellationToken = default)
+        public async Task<decimal> GetTotalPagesAsync(int page, int items, CancellationToken cancellationToken = default)
         {
             var count = await _context.Employees.CountAsync(cancellationToken);
-            return (int)Math.Ceiling((double)(count / items));
+            return Math.Floor((decimal)((decimal)count / (decimal)items));
         }
 
         public async Task<Core.Entities.Employee?> UpdateEmployeeAsync(Core.Entities.Employee user, CancellationToken cancellationToken = default)
