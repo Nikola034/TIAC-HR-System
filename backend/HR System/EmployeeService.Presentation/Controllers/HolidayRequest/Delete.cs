@@ -1,4 +1,6 @@
-﻿using EmployeeService.Presentation.Contracts.Employee;
+﻿using EmployeeService.Application.Commands.Employee;
+using EmployeeService.Application.Commands.HolidayRequest;
+using EmployeeService.Presentation.Contracts.Employee;
 using EmployeeService.Presentation.Contracts.HolidayRequest;
 using EmployeeService.Presentation.Mappers;
 using FastEndpoints;
@@ -6,7 +8,7 @@ using MediatR;
 
 namespace EmployeeService.Presentation.Controllers.HolidayRequest
 {
-    public class Delete : Endpoint<DeleteHolidayRequestRequest, DeleteHolidayRequestResponse>
+    public class Delete : EndpointWithoutRequest<bool>
     {
         private readonly IMediator _mediator;
 
@@ -21,10 +23,12 @@ namespace EmployeeService.Presentation.Controllers.HolidayRequest
             AllowAnonymous();
         }
 
-        public override async Task HandleAsync(DeleteHolidayRequestRequest req, CancellationToken ct)
+        public override async Task HandleAsync(CancellationToken ct)
         {
-            var holidayRequest = await _mediator.Send(req.ToCommand(), ct);
-            await SendOkAsync(holidayRequest.ToApiResponseFromDelete(), ct);
+            var result = await _mediator.Send(new DeleteHolidayRequestCommand(Route<Guid>("id")), ct);
+            if (!result)
+                await SendNotFoundAsync(ct);
+            await SendOkAsync(ct);
         }
     }
 }

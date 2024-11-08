@@ -24,12 +24,16 @@ namespace EmployeeService.Infrastructure.Persistence.HolidayRequest
             return savedEntity.Entity;
         }
 
-        public async Task<Core.Entities.HolidayRequest?> DeleteHolidayRequestAsync(Guid id, CancellationToken cancellationToken = default)
+        public async Task<bool> DeleteHolidayRequestAsync(Guid id, CancellationToken cancellationToken = default)
         {
             Core.Entities.HolidayRequest deletedEntity = await _context.HolidayRequests.FindAsync(id);
+            if (deletedEntity is null)
+            {
+                return false;
+            }
             _context.HolidayRequests.Remove(deletedEntity);
             await _context.SaveChangesAsync(cancellationToken);
-            return deletedEntity;
+            return true;
         }
 
         public async Task<IEnumerable<Core.Entities.HolidayRequest>> GetAllHolidayRequestsAsync(int page, CancellationToken cancellationToken = default)

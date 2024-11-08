@@ -52,19 +52,7 @@ namespace EmployeeService.Presentation.Mappers
             };
         }
 
-        public static DeleteHolidayRequestResponse ToApiResponseFromDelete(this HolidayRequest holidayRequest)
-        {
-            return new DeleteHolidayRequestResponse
-            {
-                Id = holidayRequest.Id,
-                Start = holidayRequest.Start,
-                End = holidayRequest.End,
-                Status = holidayRequest.Status,
-                Sender = holidayRequest.Sender
-            };
-        }
         public static CreateHolidayRequestCommand ToCommand(this CreateHolidayRequestRequest request) => new CreateHolidayRequestCommand(request.Start, request.End, request.Status, request.SenderId);
         public static UpdateHolidayRequestCommand ToCommand(this UpdateHolidayRequestRequest request) => new UpdateHolidayRequestCommand(request.Id, request.Start, request.End, request.Status);
-        public static DeleteHolidayRequestCommand ToCommand(this DeleteHolidayRequestRequest request) => new DeleteHolidayRequestCommand(request.Id);
     }
 }
