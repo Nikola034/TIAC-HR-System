@@ -32,11 +32,11 @@ namespace EmployeeService.Infrastructure.Persistance.Employee
             return deletedEntity;
         }
 
-        public async Task<IEnumerable<Core.Entities.Employee>> GetAllEmployeesAsync(int page, CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<Core.Entities.Employee>> GetAllEmployeesAsync(int page, int items, CancellationToken cancellationToken = default)
         {
             var employees = await _context.Employees.OrderBy(x => x.Id)
-            .Skip((page - 1) * 10)
-            .Take(10)
+            .Skip((page - 1) * items)
+            .Take(items)
             .ToListAsync(cancellationToken);
             return employees;
         }

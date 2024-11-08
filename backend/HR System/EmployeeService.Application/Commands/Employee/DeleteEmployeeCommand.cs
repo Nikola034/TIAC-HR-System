@@ -16,6 +16,7 @@ namespace EmployeeService.Application.Commands.Employee
     public class DeleteEmployeeCommandHandler : IRequestHandler<DeleteEmployeeCommand, Core.Entities.Employee>
     {
         private readonly IEmployeeRepository _employeeRepository;
+
         public DeleteEmployeeCommandHandler(IEmployeeRepository userRepository)
         {
             _employeeRepository = userRepository;

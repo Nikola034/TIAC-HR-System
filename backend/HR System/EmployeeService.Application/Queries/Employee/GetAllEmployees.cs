@@ -19,10 +19,10 @@ namespace EmployeeService.Application.Queries.Employee
         }
         public async Task<IEnumerable<Core.Entities.Employee>> Handle(GetAllEmployeesQuery request, CancellationToken cancellationToken)
         {
-            return await _employeeRepository.GetAllEmployeesAsync(request.page, cancellationToken);
+            return await _employeeRepository.GetAllEmployeesAsync(request.page, request.items, cancellationToken);
         }
     }
 
 
-    public record GetAllEmployeesQuery(int page) : IRequest<IEnumerable<Core.Entities.Employee>>;
+    public record GetAllEmployeesQuery(int page, int items) : IRequest<IEnumerable<Core.Entities.Employee>>;
 }
