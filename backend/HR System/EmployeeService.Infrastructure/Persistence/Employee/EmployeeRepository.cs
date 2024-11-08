@@ -62,5 +62,10 @@ namespace EmployeeService.Infrastructure.Persistance.Employee
             await _context.SaveChangesAsync(cancellationToken);
             return user;
         }
+        
+        public async Task<Core.Entities.Employee?> GetEmployeeByAccountIdAsync(Guid id, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return await _context.Employees.AsNoTracking().FirstOrDefaultAsync(x => x.AccountId == id, cancellationToken);
+        }
     }
 }

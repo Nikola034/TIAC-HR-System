@@ -1,3 +1,4 @@
+
 INSERT INTO accounts (id, email, password, refreshtoken, refreshtokenvalidto, passwordresettoken, passwordresettokenvalidto)
 VALUES
 ('387e3434-d303-4ebe-8109-f35b848b6f0f', 'john.doe@gmail.com', '$2a$11$kETI6AH7J5XMwtL05vOJGOos6kV9WxihWexCxRQP4QVUjx/JbYRdK', null, null, null, null),
@@ -6,7 +7,7 @@ VALUES
 ('9eac01ad-37e5-4d49-82bf-ee445c691fad', 'stan.doe@gmail.com', '$2a$11$35Jj8APcNlp1Z8oXwzsT7uJyDw59i95y3C8HJr7YsqhwEr9aK/GNq', null, null, null, null),
 ('ae9071f9-1442-482d-8920-8e01b47d0c24', 'rachel.doe@gmail.com', '$2a$11$.yqa4Wfk768LqbAGIYmeROxmRaqh37OO78GykHWAjUwyX9jrNHE5G', null, null, null, null),
 ('b12f1dfd-9dbe-4f21-85b1-283c312301df', 'alan.doe@gmail.com', '$2a$11$DBgBsHkwhrXyj2d.Q6vgMuYsOcBW.u2.Ld8QvtBDMN7gjgY0kX5Bm', null, null, null, null),
-('cb601d30-1616-4e18-aadc-8ee2babd20fb', 'owen.doe@gmail.com', '$2a$11$wgVvDB3k9Qk7hO4QvDLHCuXWckAwU7vW5rbTkvzBty9erLYIg1w.y', null, null, null, null),
+('cb601d30-1616-4e18-aadc-8ee2babd20fb', 'owen.doe@gmail.com', '$2a$11$wgVvDB3k9Qk7hO4QvDLHCuXWckAwU7vW5rbTkvzBty9erLYIg1w.y', null, null, null, null);
 
 INSERT INTO employees (id, name, surname, daysoff, role, accountid)
 VALUES

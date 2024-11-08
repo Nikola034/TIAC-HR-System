@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Application.Common.Repositories;
 using Application.Common.Services;
+using Common.HttpCLients;
 using Core.Exceptions;
 using MediatR;
 
@@ -14,11 +15,13 @@ namespace Application.Commands
 
         private readonly IAccountRepository _accountRepository;
         private readonly IJwtService _jwtService;
+        private readonly IEmployeeHttpClient _employeeHttpClient;
 
-        public RefreshTokenCommandHandler(IAccountRepository accountRepository, IJwtService jwtService)
+        public RefreshTokenCommandHandler(IAccountRepository accountRepository, IJwtService jwtService, IEmployeeHttpClient employeeHttpClient)
         {
             _accountRepository = accountRepository;
             _jwtService = jwtService;
+            _employeeHttpClient = employeeHttpClient;
         }
 
         public async Task<TokenResponse> Handle(RefreshTokenCommand req, CancellationToken cancellationToken)
@@ -29,7 +32,8 @@ namespace Application.Commands
                 throw new InvalidRefreshTokenException();
             }
             
-            var tokens = await _jwtService.GenerateTokensAsync(user.Email);
+            var userRole = await _employeeHttpClient.GetEmployeeRole(user.Id);
+            var tokens = await _jwtService.GenerateTokensAsync(user.Email,userRole);
             await _accountRepository.UpdateRefreshTokenAsync(user.Email, tokens.RefreshToken, cancellationToken);
             return tokens;
         }

@@ -3,6 +3,7 @@ using System.Reflection;
 using Common.Behaviors;
 using Common.Exceptions.Handler;
 using Common.HttpCLients;
+using Common.HttpClients.Implementation;
 using Common.HttpCLients.Implementation;
 using MediatR;
 using Microsoft.Extensions.Configuration;
@@ -39,6 +40,13 @@ namespace Common
             });
 
             services.AddScoped<IAccountHolidayHttpClient, AccountHttpClient>();
+            
+            services.AddHttpClient("EmployeeServiceClient", client =>
+            {
+                client.BaseAddress = new Uri(configuration["HttpClientsConfig:EmployeeServiceClientUrl"]);
+            });
+
+            services.AddScoped<IEmployeeHttpClient, EmployeeHttpClient>();
             return services;
         }
 
