@@ -15,9 +15,7 @@ namespace ProjectServiceApplication.Commands.Project
 
         public async Task<bool> Handle(RemoveEmployeeFromProjectCommand req, CancellationToken ct)
         {
-            var employeeProject = new EmployeeProject
-                { EmployeeId = req.EmployeeId, ProjectId = req.ProjectId };
-            var result = await _employeeProjectRepository.RemoveEmployeeFromProjectAsync(employeeProject, ct);
+            var result = await _employeeProjectRepository.RemoveEmployeeFromProjectAsync(req.EmployeeId,req.ProjectId, ct);
             return result;
         }
     }
