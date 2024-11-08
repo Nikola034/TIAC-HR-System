@@ -13,7 +13,7 @@ namespace Application.Commands
 
         public async Task<bool> Handle(DeleteClientCommand request, CancellationToken cancellationToken)
         {
-            var result = await _clientRepository.DeleteClientAsync(request.Id,cancellationToken);
+            var result = await _clientRepository.DeleteClientAsync(request.Id, cancellationToken);
             return result;
         }
     }
