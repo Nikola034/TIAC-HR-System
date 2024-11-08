@@ -1,4 +1,5 @@
 ﻿using FastEndpoints;
+using IdentityService.Application.Commands;
 using MediatR;
 
 namespace IdentityService.Presentation.Controllers.User

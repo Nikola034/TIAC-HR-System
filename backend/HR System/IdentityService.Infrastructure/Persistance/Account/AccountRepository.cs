@@ -53,6 +53,7 @@ namespace Infrastructure.Persistance.User
         public async Task<Core.Entities.Account> GetUserByIdAsync(Guid id, CancellationToken cancellationToken)
         {
             return await _context.Accounts.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+        }
         public async Task<Core.Entities.Account?> FindUserByRefreshTokenAsync(string refreshToken, CancellationToken cancellationToken = default(CancellationToken))
         {
             return await _context.Accounts.
