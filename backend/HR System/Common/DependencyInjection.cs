@@ -4,7 +4,6 @@ using Common.Behaviors;
 using Common.Exceptions.Handler;
 using Common.HttpCLients;
 using Common.HttpClients.Implementation;
-using Common.HttpCLients.Implementation;
 using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -34,12 +33,10 @@ namespace Common
 
         public static IServiceCollection AddHttpServiceClients(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddHttpClient("EmployeeHolidayServiceClient", client =>
+            services.AddHttpClient("AccountServiceClient", client =>
             {
-                client.BaseAddress = new Uri(configuration["HttpClientsConfig:EmployeeHolidayServiceClientUrl"]);
+                client.BaseAddress = new Uri(configuration["HttpClientsConfig:AccountServiceClientUrl"]);
             });
-
-            services.AddScoped<IAccountHolidayHttpClient, AccountHttpClient>();
             
             services.AddHttpClient("EmployeeServiceClient", client =>
             {
@@ -47,6 +44,8 @@ namespace Common
             });
 
             services.AddScoped<IEmployeeHttpClient, EmployeeHttpClient>();
+            services.AddScoped<IAccountServiceHttpClient, AccountServiceHttpClient>();
+
             return services;
         }
 

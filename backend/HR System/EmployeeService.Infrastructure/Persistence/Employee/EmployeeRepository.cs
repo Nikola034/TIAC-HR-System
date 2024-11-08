@@ -29,11 +29,11 @@ namespace EmployeeService.Infrastructure.Persistance.Employee
             Core.Entities.Employee deletedEntity = await _context.Employees.FindAsync(id, cancellationToken);
             if (deletedEntity == null)
             {
-                return true;
+                return false;
             }
             _context.Employees.Remove(deletedEntity);
             await _context.SaveChangesAsync(cancellationToken);
-            return false;
+            return true;
         }
 
         public async Task<IEnumerable<Core.Entities.Employee>> GetAllEmployeesAsync(int page, int items, CancellationToken cancellationToken = default)
