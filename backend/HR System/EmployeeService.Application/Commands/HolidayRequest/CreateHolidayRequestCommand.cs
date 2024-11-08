@@ -1,4 +1,5 @@
-﻿using Core.Exceptions;
+﻿using Common.HttpCLients;
+using Core.Exceptions;
 using EmployeeService.Application.Common.Mappers;
 using EmployeeService.Application.Common.Repositories;
 using EmployeeService.Core.Enums;
@@ -18,11 +19,13 @@ namespace EmployeeService.Application.Commands.HolidayRequest
         private readonly IHolidayRequestRepository _holidayRequestRepository;
         private readonly IHolidayRequestApproverRepository _holidayRequestApproverRepository;
         private readonly IEmployeeRepository _employeeRepository;
-        public CreateHolidayRequestCommandHandler(IHolidayRequestRepository holidayRequestRepository, IHolidayRequestApproverRepository holidayRequestApproverRepository, IEmployeeRepository employeeRepository)
+        private readonly IProjectHttpClient _projectHttpClient;
+        public CreateHolidayRequestCommandHandler(IHolidayRequestRepository holidayRequestRepository, IHolidayRequestApproverRepository holidayRequestApproverRepository, IEmployeeRepository employeeRepository, IProjectHttpClient projectHttpClient)
         {
             _holidayRequestRepository = holidayRequestRepository;
             _holidayRequestApproverRepository = holidayRequestApproverRepository;
             _employeeRepository = employeeRepository;
+            _projectHttpClient = projectHttpClient;
         }
         public async Task<Core.Entities.HolidayRequest> Handle(CreateHolidayRequestCommand request, CancellationToken cancellationToken)
         {
@@ -33,6 +36,7 @@ namespace EmployeeService.Application.Commands.HolidayRequest
                 throw new HolidayRequestAlreadyExistException();
             }
             domainEntity.Id = new Guid();
+            await _projectHttpClient.GetTeamLeadsForEmployee(domainEntity.SenderId, cancellationToken);
             // find ALL TEAM LEADERS or MANAGER
             // var approvers = new List<approver>();
             /* if(!userProjects.empty){

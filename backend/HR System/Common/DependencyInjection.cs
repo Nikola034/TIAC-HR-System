@@ -7,6 +7,7 @@ using Common.HttpClients.Implementation;
 using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Common.HttpCLients.Implementation;
 
 
 namespace Common
@@ -43,8 +44,14 @@ namespace Common
                 client.BaseAddress = new Uri(configuration["HttpClientsConfig:EmployeeServiceClientUrl"]);
             });
 
+            services.AddHttpClient("ProjectServiceClient", client =>
+            {
+                client.BaseAddress = new Uri(configuration["HttpClientsConfig:ProjectServiceClientUrl"]);
+            });
+
             services.AddScoped<IEmployeeHttpClient, EmployeeHttpClient>();
             services.AddScoped<IAccountServiceHttpClient, AccountServiceHttpClient>();
+            services.AddScoped<IProjectHttpClient, ProjectHttpClient>();
 
             return services;
         }

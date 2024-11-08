@@ -13,7 +13,7 @@ public class EmployeeHttpClient : IEmployeeHttpClient
 
     }
 
-    public async Task<string> GetEmployeeRole(Guid employeeAccountId)
+    public async Task<string> GetEmployeeRole(Guid employeeAccountId, CancellationToken cancellationToken = default(CancellationToken))
     {
         var httpClient = _httpClientFactory.CreateClient("EmployeeServiceClient");
         var request = new HttpRequestMessage
