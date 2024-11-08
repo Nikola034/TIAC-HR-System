@@ -15,7 +15,7 @@ namespace IdentityService.Presentation.Controllers.User
 
         public override void Configure()
         {
-            Delete("accounts/{accountId}");
+            Delete("auth/{accountId}");
             AllowAnonymous();
         }
 

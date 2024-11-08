@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Common.HttpCLients
 {
-    public interface IAccountHolidayHttpClient
+    public interface IAccountServiceHttpClient
     {
-        public Task<bool> DeleteEmployeeAccount(Guid employeeId);
+        public Task<bool> DeleteEmployeeAccount(Guid employeeId, CancellationToken cancellationToken = default(CancellationToken));
     }
 }

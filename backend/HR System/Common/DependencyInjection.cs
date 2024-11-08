@@ -33,12 +33,12 @@ namespace Common
 
         public static IServiceCollection AddHttpServiceClients(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddHttpClient("EmployeeHolidayServiceClient", client =>
+            services.AddHttpClient("AccountServiceClient", client =>
             {
-                client.BaseAddress = new Uri(configuration["HttpClientsConfig:EmployeeHolidayServiceClientUrl"]);
+                client.BaseAddress = new Uri(configuration["HttpClientsConfig:AccountServiceClientUrl"]);
             });
 
-            services.AddScoped<IAccountHolidayHttpClient, AccountHttpClient>();
+            services.AddScoped<IAccountServiceHttpClient, AccountServiceHttpClient>();
             return services;
         }
 

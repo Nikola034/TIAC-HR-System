@@ -7,26 +7,24 @@ using System.Threading.Tasks;
 
 namespace Common.HttpCLients.Implementation
 {
-    public class AccountHttpClient : IAccountHolidayHttpClient
+    public class AccountServiceHttpClient : IAccountServiceHttpClient
     {
         private readonly IHttpClientFactory _httpClientFactory;
 
-        public AccountHttpClient(IHttpClientFactory httpClientFactory)
+        public AccountServiceHttpClient(IHttpClientFactory httpClientFactory)
         {
             _httpClientFactory = httpClientFactory;
-
         }
 
-        public async Task<bool> DeleteEmployeeAccount(Guid accountId)
+        public async Task<bool> DeleteEmployeeAccount(Guid accountId, CancellationToken cancellationToken = default)
         {
-            var httpClient = _httpClientFactory.CreateClient("EmployeeHolidayServiceClient");
+            var httpClient = _httpClientFactory.CreateClient("AccountServiceClient");
             HttpRequestMessage request = new HttpRequestMessage
             {
-                Content = JsonContent.Create(accountId),
                 Method = HttpMethod.Delete,
-                RequestUri = new Uri("api/accounts", UriKind.Relative)
+                RequestUri = new Uri("auth/" + accountId, UriKind.Relative)
             };
-            var response = await httpClient.SendAsync(request);
+            var response = await httpClient.SendAsync(request, cancellationToken);
 
             return response.StatusCode != System.Net.HttpStatusCode.InternalServerError;
 
