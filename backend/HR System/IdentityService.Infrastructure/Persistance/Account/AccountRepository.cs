@@ -16,29 +16,29 @@ namespace Infrastructure.Persistance.User
         }
         public async Task<Core.Entities.Account> CreateAsync(Core.Entities.Account user, CancellationToken cancellationToken = default(CancellationToken))
         {
-            var savedEntity = await _context.Accounts.AddAsync(user);
-            await _context.SaveChangesAsync();
+            var savedEntity = await _context.Accounts.AddAsync(user,cancellationToken);
+            await _context.SaveChangesAsync(cancellationToken);
             return savedEntity.Entity;
         }
 
         public async Task<Core.Entities.Account?> GetUserByEmailAsync(string email, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return await _context.Accounts.AsNoTracking().FirstOrDefaultAsync(x => x.Email == email);
+            return await _context.Accounts.AsNoTracking().FirstOrDefaultAsync(x => x.Email == email,cancellationToken);
         }
-        public async Task<bool> UpdateRefreshToken(string email, string refreshToken, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<bool> UpdateRefreshTokenAsync(string email, string refreshToken, CancellationToken cancellationToken = default(CancellationToken))
         {
-            var savedEntity = await _context.Accounts.FirstOrDefaultAsync(x => x.Email == email);
+            var savedEntity = await _context.Accounts.FirstOrDefaultAsync(x => x.Email == email,cancellationToken);
             savedEntity.RefreshToken = refreshToken;
             savedEntity.RefreshTokenValidTo = DateTime.Now.AddHours(24);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(cancellationToken);
             return true;
         }
-        public async Task<bool> UpdatePasswordResetToken(string email, string passwordResetToken, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<bool> UpdatePasswordResetTokenAsync(string email, string passwordResetToken, CancellationToken cancellationToken = default(CancellationToken))
         {
-            var savedEntity = await _context.Accounts.FirstOrDefaultAsync(x => x.Email == email);
+            var savedEntity = await _context.Accounts.FirstOrDefaultAsync(x => x.Email == email,cancellationToken);
             savedEntity.PasswordResetToken = passwordResetToken;
             savedEntity.PasswordResetTokenValidTo = DateTime.Now.AddHours(24);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(cancellationToken);
             return true;
         }
 
@@ -53,6 +53,23 @@ namespace Infrastructure.Persistance.User
         public async Task<Core.Entities.Account> GetUserByIdAsync(Guid id, CancellationToken cancellationToken)
         {
             return await _context.Accounts.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+        public async Task<Core.Entities.Account?> FindUserByRefreshTokenAsync(string refreshToken, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return await _context.Accounts.
+                FirstOrDefaultAsync(x => x.RefreshToken == refreshToken && x.RefreshTokenValidTo > DateTime.Now, cancellationToken);
+        }
+        
+        public async Task<Core.Entities.Account?> FindUserByPasswordResetTokenAsync(string passwordResetToken, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return await _context.Accounts.
+                FirstOrDefaultAsync(x => x.PasswordResetToken == passwordResetToken && x.PasswordResetTokenValidTo > DateTime.Now, cancellationToken);
+        }
+
+        public async Task ChangePasswordAsync(string email, string password, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var existingAccount = await _context.Accounts.FirstOrDefaultAsync(x => x.Email == email, cancellationToken);
+            existingAccount.Password = password;
+            await _context.SaveChangesAsync(cancellationToken);
         }
     }
 }

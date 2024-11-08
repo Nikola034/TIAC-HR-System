@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace EmployeeService.Application.Queries.Employee
 {
-    public class GetAllEmployeesHandler : IRequestHandler<GetAllEmployeesQuery, IEnumerable<Core.Entities.Employee>>
+    public class GetAllEmployeesHandler : IRequestHandler<GetAllEmployeesQuery, GetAllEmployeesQueryResponse>
     {
 
         private readonly IEmployeeRepository _employeeRepository;
@@ -17,12 +17,16 @@ namespace EmployeeService.Application.Queries.Employee
         {
             _employeeRepository = employeeRepository;
         }
-        public async Task<IEnumerable<Core.Entities.Employee>> Handle(GetAllEmployeesQuery request, CancellationToken cancellationToken)
+        public async Task<GetAllEmployeesQueryResponse> Handle(GetAllEmployeesQuery request, CancellationToken cancellationToken)
         {
-            return await _employeeRepository.GetAllEmployeesAsync(request.page, cancellationToken);
+            var employees = await _employeeRepository.GetAllEmployeesAsync(request.page, request.items, cancellationToken);
+            var totalPages = await _employeeRepository.GetTotalPagesAsync(request.page, request.items, cancellationToken);
+            return new GetAllEmployeesQueryResponse(employees, request.page, totalPages, request.items);
         }
     }
 
 
-    public record GetAllEmployeesQuery(int page) : IRequest<IEnumerable<Core.Entities.Employee>>;
+    public record GetAllEmployeesQuery(int page, int items) : IRequest<GetAllEmployeesQueryResponse>;
+
+    public record GetAllEmployeesQueryResponse(IEnumerable<Core.Entities.Employee> Employees, int Page, decimal TotalPages, int ItemsPerPage);
 }

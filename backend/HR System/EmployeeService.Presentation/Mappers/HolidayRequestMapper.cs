@@ -1,5 +1,6 @@
 ﻿using EmployeeService.Application.Commands.Employee;
 using EmployeeService.Application.Commands.HolidayRequest;
+using EmployeeService.Application.Queries.HolidayRequest;
 using EmployeeService.Core.Entities;
 using EmployeeService.Presentation.Contracts.Employee;
 using EmployeeService.Presentation.Contracts.HolidayRequest;
@@ -22,11 +23,14 @@ namespace EmployeeService.Presentation.Mappers
             };
         }
 
-        public static GetAllHolidayRequestsResponse ToApiResponse(this IEnumerable<Core.Entities.HolidayRequest> holidayRequests)
+        public static GetAllHolidayRequestsResponse ToApiResponse(this GetAllHolidayRequestsQueryResponse response)
         {
             return new GetAllHolidayRequestsResponse
             {
-                HolidayRequests = holidayRequests
+                HolidayRequests = response.HolidayRequests,
+                ItemsPerPage = response.ItemsPerPage,
+                TotalPages = response.TotalPages,
+                Page = response.Page,
             };
         }
         public static CreateHolidayRequestResponse ToApiResponseFromCreate(this HolidayRequest holidayRequest)
@@ -52,19 +56,7 @@ namespace EmployeeService.Presentation.Mappers
             };
         }
 
-        public static DeleteHolidayRequestResponse ToApiResponseFromDelete(this HolidayRequest holidayRequest)
-        {
-            return new DeleteHolidayRequestResponse
-            {
-                Id = holidayRequest.Id,
-                Start = holidayRequest.Start,
-                End = holidayRequest.End,
-                Status = holidayRequest.Status,
-                Sender = holidayRequest.Sender
-            };
-        }
         public static CreateHolidayRequestCommand ToCommand(this CreateHolidayRequestRequest request) => new CreateHolidayRequestCommand(request.Start, request.End, request.Status, request.SenderId);
         public static UpdateHolidayRequestCommand ToCommand(this UpdateHolidayRequestRequest request) => new UpdateHolidayRequestCommand(request.Id, request.Start, request.End, request.Status);
-        public static DeleteHolidayRequestCommand ToCommand(this DeleteHolidayRequestRequest request) => new DeleteHolidayRequestCommand(request.Id);
     }
 }

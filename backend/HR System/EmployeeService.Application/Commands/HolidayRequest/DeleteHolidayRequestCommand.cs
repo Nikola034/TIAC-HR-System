@@ -11,14 +11,14 @@ using System.Threading.Tasks;
 
 namespace EmployeeService.Application.Commands.HolidayRequest
 {
-    public class DeleteHolidayRequestCommandHandler : IRequestHandler<DeleteHolidayRequestCommand, Core.Entities.HolidayRequest>
+    public class DeleteHolidayRequestCommandHandler : IRequestHandler<DeleteHolidayRequestCommand, bool>
     {
         private readonly IHolidayRequestRepository _holidayrequestRepository;
         public DeleteHolidayRequestCommandHandler(IHolidayRequestRepository holidayrequestRepository)
         {
             _holidayrequestRepository = holidayrequestRepository;
         }
-        public async Task<Core.Entities.HolidayRequest> Handle(DeleteHolidayRequestCommand request, CancellationToken cancellationToken)
+        public async Task<bool> Handle(DeleteHolidayRequestCommand request, CancellationToken cancellationToken)
         {
             var domainEntity = request.ToDomainEntity();
             var existingHolidayRequest = await _holidayrequestRepository.GetHolidayRequestByIdAsync(domainEntity.Id);
@@ -32,5 +32,5 @@ namespace EmployeeService.Application.Commands.HolidayRequest
 
     }
 
-    public record DeleteHolidayRequestCommand(Guid Id) : IRequest<Core.Entities.HolidayRequest>;
+    public record DeleteHolidayRequestCommand(Guid Id) : IRequest<bool>;
 }

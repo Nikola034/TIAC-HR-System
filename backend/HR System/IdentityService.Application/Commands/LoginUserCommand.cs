@@ -36,17 +36,14 @@ namespace Application.Commands
             {
                 throw new WrongCredentialsException();
             }
-
-            var refreshToken = _jwtService.GenerateByteToken();
-            await _accountRepository.UpdateRefreshToken(request.Email, refreshToken, cancellationToken);
-
+            
             var tokens = await _jwtService.GenerateTokensAsync(user.Email);
-
+            await _accountRepository.UpdateRefreshTokenAsync(request.Email, tokens.RefreshToken, cancellationToken);
             return tokens;
         }
     }
 
     public record LoginUserCommand(string Email, string Password) : IRequest<TokenResponse>;
 
-    public record TokenResponse(string AccessToken);
+    public record TokenResponse(string AccessToken, string RefreshToken);
 }

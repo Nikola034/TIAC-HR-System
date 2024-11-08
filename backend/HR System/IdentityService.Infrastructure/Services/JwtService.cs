@@ -29,9 +29,10 @@ namespace Infrastructure.Services
             {
                 Subject = new ClaimsIdentity(
                 [
-                    new Claim(ClaimTypes.Name, username)
+                    new Claim(ClaimTypes.Name, username),
+                    //new Claim("Role",  )
                  ]),
-                Expires = DateTime.Now.AddMinutes(5),
+                Expires = DateTime.Now.AddMinutes(15),
                 Issuer = _configuration["JWT:Issuer"],
                 Audience = _configuration["JWT:Audience"],
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(tokenKey), SecurityAlgorithms.HmacSha256Signature)
@@ -39,8 +40,8 @@ namespace Infrastructure.Services
 
             var securityToken = tokenHandler.CreateToken(tokenDescriptor);
             var tokenString = tokenHandler.WriteToken(securityToken);
-
-            return Task.FromResult(new TokenResponse(tokenString));
+            var refreshToken = GenerateByteToken();
+            return Task.FromResult(new TokenResponse(tokenString,refreshToken));
         }
         public string GenerateByteToken()
         {
