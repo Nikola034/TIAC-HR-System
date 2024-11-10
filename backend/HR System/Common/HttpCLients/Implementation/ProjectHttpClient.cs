@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Components;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -25,8 +28,23 @@ namespace Common.HttpCLients.Implementation
             };
             var response = await httpClient.SendAsync(request);
             response.EnsureSuccessStatusCode();
-            await response.Content.ReadAsStringAsync();
-            return new List<Guid> { new Guid() };
+
+            var responseString = await response.Content.ReadAsStringAsync(cancellationToken);
+
+            var teamLeadIds = new List<Guid>();
+            var jsonObject = JObject.Parse(responseString);
+
+            foreach (var project in jsonObject["projects"])
+            {
+                var teamLeadIdString = (string)project["teamLeadId"];
+                if(teamLeadIdString != null)
+                {
+                    Guid teamLeadId = Guid.Parse(teamLeadIdString);
+                    teamLeadIds.Add(teamLeadId);
+                }
+            }
+
+            return teamLeadIds;
         }
     }
 }

@@ -35,7 +35,13 @@ namespace EmployeeService.Infrastructure.Persistance.Employee
             await _context.SaveChangesAsync(cancellationToken);
             return true;
         }
-
+        public async Task<IEnumerable<Core.Entities.Employee>> GetAllManagersAsync(CancellationToken cancellationToken = default)
+        {
+            var employees = await _context.Employees.OrderBy(x => x.Id)
+            .Where(x => x.Role == Core.Enums.EmployeeRole.Manager)
+            .ToListAsync(cancellationToken);
+            return employees;
+        }
         public async Task<IEnumerable<Core.Entities.Employee>> GetAllEmployeesAsync(int page, int items, CancellationToken cancellationToken = default)
         {
             var employees = await _context.Employees.OrderBy(x => x.Id)
