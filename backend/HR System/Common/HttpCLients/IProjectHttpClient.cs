@@ -8,6 +8,11 @@ namespace Common.HttpCLients
 {
     public interface IProjectHttpClient
     {
-        public Task<IEnumerable<Guid>> GetTeamLeadsForEmployee(Guid employeeId, CancellationToken cancellationToken = default(CancellationToken));
+        public Task<IEnumerable<Guid>> GetTeamLeadsForEmployeeAsync(Guid employeeId, CancellationToken cancellationToken = default(CancellationToken));
+        public Task<IEnumerable<Guid>> GetProjectsForEmployeeAsync(Guid employeeId, CancellationToken cancellationToken = default(CancellationToken));
+        public Task<bool> RemoveEmployeeFromProjectAsync(Guid employeeId, Guid projectId, CancellationToken cancellationToken = default(CancellationToken));
+        public Task<IEnumerable<Guid>> GetLeadingProjectIdsForEmployeeAsync(Guid employeeId, CancellationToken cancellationToken = default(CancellationToken));
+        public Task<bool> RemoveTeamLeadFromProjectAsync(Guid projectId, CancellationToken cancellationToken = default);
+
     }
 }
