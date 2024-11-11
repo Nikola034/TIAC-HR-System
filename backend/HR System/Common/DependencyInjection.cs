@@ -2,8 +2,12 @@
 using System.Reflection;
 using Common.Behaviors;
 using Common.Exceptions.Handler;
+using Common.HttpCLients;
+using Common.HttpClients.Implementation;
 using MediatR;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Common.HttpCLients.Implementation;
 
 
 namespace Common
@@ -27,5 +31,30 @@ namespace Common
             });
             return services;
         }
+
+        public static IServiceCollection AddHttpServiceClients(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddHttpClient("AccountServiceClient", client =>
+            {
+                client.BaseAddress = new Uri(configuration["HttpClientsConfig:AccountServiceClientUrl"]);
+            });
+            
+            services.AddHttpClient("EmployeeServiceClient", client =>
+            {
+                client.BaseAddress = new Uri(configuration["HttpClientsConfig:EmployeeServiceClientUrl"]);
+            });
+
+            services.AddHttpClient("ProjectServiceClient", client =>
+            {
+                client.BaseAddress = new Uri(configuration["HttpClientsConfig:ProjectServiceClientUrl"]);
+            });
+
+            services.AddScoped<IEmployeeHttpClient, EmployeeHttpClient>();
+            services.AddScoped<IAccountServiceHttpClient, AccountServiceHttpClient>();
+            services.AddScoped<IProjectHttpClient, ProjectHttpClient>();
+
+            return services;
+        }
+
     }
 }

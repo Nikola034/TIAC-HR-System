@@ -8,7 +8,7 @@
       },
       "launchUrl": "swagger",
       "dotnetRunMessages": true,
-      "applicationUrl": "http://localhost:5298"
+      "applicationUrl": "http://localhost:8082"
     },
     "https": {
       "commandName": "Project",

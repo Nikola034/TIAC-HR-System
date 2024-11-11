@@ -45,7 +45,13 @@ namespace EmployeeService.Infrastructure.Persistence.HolidayRequest
             .ToListAsync(cancellationToken);
             return holidayRequests;
         }
-
+        public async Task<IEnumerable<Core.Entities.HolidayRequest>> GetAllHolidayRequestsBySenderIdAsync(Guid senderId, CancellationToken cancellationToken = default)
+        {
+            var holidayRequests = await _context.HolidayRequests.OrderBy(x => x.Id)
+            .Where(x =>  x.SenderId == senderId)
+            .ToListAsync(cancellationToken);
+            return holidayRequests;
+        }
         public async Task<int> GetTotalPagesAsync(int page, int items, CancellationToken cancellationToken = default)
         {
             var count = await _context.HolidayRequests.CountAsync(cancellationToken);

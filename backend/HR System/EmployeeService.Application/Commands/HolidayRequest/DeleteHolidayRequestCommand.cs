@@ -14,9 +14,11 @@ namespace EmployeeService.Application.Commands.HolidayRequest
     public class DeleteHolidayRequestCommandHandler : IRequestHandler<DeleteHolidayRequestCommand, bool>
     {
         private readonly IHolidayRequestRepository _holidayrequestRepository;
-        public DeleteHolidayRequestCommandHandler(IHolidayRequestRepository holidayrequestRepository)
+        private readonly IHolidayRequestApproverRepository _holidayrequestApproversRepository;
+        public DeleteHolidayRequestCommandHandler(IHolidayRequestRepository holidayrequestRepository, IHolidayRequestApproverRepository holidayRequestApproverRepository)
         {
             _holidayrequestRepository = holidayrequestRepository;
+            _holidayrequestApproversRepository = holidayRequestApproverRepository;
         }
         public async Task<bool> Handle(DeleteHolidayRequestCommand request, CancellationToken cancellationToken)
         {
@@ -26,6 +28,13 @@ namespace EmployeeService.Application.Commands.HolidayRequest
             {
                 throw new NotFoundException("Holiday request with that ID doesn't exist!");
             }
+
+            IEnumerable<Core.Entities.HolidayRequestApprover> holidayRequestApprovers = await _holidayrequestApproversRepository.GetHolidayRequestApproversByRequestIdAsync(existingHolidayRequest.Id, cancellationToken);
+            foreach(var holidayRequest in holidayRequestApprovers)
+            {
+                await _holidayrequestApproversRepository.DeleteHolidayRequestApproverAsync(holidayRequest.Id, cancellationToken);
+            }
+
             var persistedHolidayRequest = await _holidayrequestRepository.DeleteHolidayRequestAsync(domainEntity.Id, cancellationToken);
             return persistedHolidayRequest;
         }
