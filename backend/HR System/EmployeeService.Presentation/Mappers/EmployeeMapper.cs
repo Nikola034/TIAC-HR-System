@@ -35,7 +35,7 @@ namespace EmployeeService.Presentation.Mappers
         public static CreateEmployeeCommand ToCommand(this CreateEmployeeRequest request) => new CreateEmployeeCommand(request.Name, request.Surname, request.DaysOff, request.Role, request.AccountId);
         public static UpdateEmployeeCommand ToCommand(this UpdateEmployeeRequest request) => new UpdateEmployeeCommand(request.Id, request.Name, request.Surname, request.DaysOff, request.Role);
 
-        public static CreateEmployeeResponse ToApiResponseFromCreate(this Employee employee)
+        public static CreateEmployeeResponse ToApiResponseFromCreate(this Core.Entities.Employee employee)
         {
             return new CreateEmployeeResponse
             {
