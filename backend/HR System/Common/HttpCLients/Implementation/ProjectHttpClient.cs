@@ -4,8 +4,10 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Common.HttpCLients.Implementation
@@ -120,7 +122,7 @@ namespace Common.HttpCLients.Implementation
 
             return response.StatusCode != System.Net.HttpStatusCode.InternalServerError;
         }
-        public async Task<bool> RemoveTeamLeadFromProjectAsync(Guid projectId, CancellationToken cancellationToken = default)
+        public async Task<HttpResponseMessage> GetProjectByIdAsync(Guid projectId, CancellationToken cancellationToken = default)
         {
             var httpClient = _httpClientFactory.CreateClient("ProjectServiceClient");
             var projectRequest = new HttpRequestMessage
@@ -128,8 +130,15 @@ namespace Common.HttpCLients.Implementation
                 Method = HttpMethod.Get,
                 RequestUri = new Uri("projects/" + projectId, UriKind.Relative)
             };
-
             var projectResponse = await httpClient.SendAsync(projectRequest, cancellationToken);
+            
+            return projectResponse;
+        }
+        public async Task<bool> RemoveTeamLeadFromProjectAsync(Guid projectId, CancellationToken cancellationToken = default)
+        {
+            var httpClient = _httpClientFactory.CreateClient("ProjectServiceClient");
+            
+            var projectResponse = await GetProjectByIdAsync(projectId, cancellationToken);
 
             var jsonObject = JObject.Parse(await projectResponse.Content.ReadAsStringAsync(cancellationToken));
             jsonObject["teamLeadId"] = JValue.CreateNull();
@@ -140,11 +149,12 @@ namespace Common.HttpCLients.Implementation
             {
                 Method = HttpMethod.Put,
                 Content = JsonContent.Create(jsonObject),
-                RequestUri = new Uri(httpClient.BaseAddress.ToString() + "projects", UriKind.RelativeOrAbsolute)
+                RequestUri = new Uri(httpClient.BaseAddress, "projects")
             };
             var response = await httpClient.SendAsync(request, cancellationToken);
 
             return response.StatusCode != System.Net.HttpStatusCode.InternalServerError;
         }
+
     }
 }

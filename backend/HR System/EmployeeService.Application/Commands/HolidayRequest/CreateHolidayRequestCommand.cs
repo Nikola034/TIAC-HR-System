@@ -62,7 +62,7 @@ namespace EmployeeService.Application.Commands.HolidayRequest
                 else
                 {
                     IEnumerable<Core.Entities.Employee> managers = await _employeeRepository.GetAllManagersAsync(cancellationToken);
-                    foreach (var manager in managers)
+                    foreach (var manager in managers.Where(x => x.Id != request.SenderId))
                     {
                         Core.Entities.HolidayRequestApprover holidayRequestApprover = new Core.Entities.HolidayRequestApprover();
                         holidayRequestApprover.Id = new Guid();

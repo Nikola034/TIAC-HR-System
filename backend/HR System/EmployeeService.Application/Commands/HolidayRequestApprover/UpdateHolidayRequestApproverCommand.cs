@@ -51,7 +51,7 @@ namespace EmployeeService.Application.Commands.HolidayRequestApprover
                 await _holidayRequestRepository.UpdateHolidayRequestAsync(holidayRequestForApproval, cancellationToken);   
             }
             else if(!holidayRequestApproversForRequest
-                .Where(x => x.Status == HolidayRequestStatus.Denied || x.Status == HolidayRequestStatus.Pending)
+                .Where(x => (x.Status == HolidayRequestStatus.Denied || x.Status == HolidayRequestStatus.Pending) && x.Id != domainEntity.Id)
                 .Any())
             {
 
@@ -59,7 +59,6 @@ namespace EmployeeService.Application.Commands.HolidayRequestApprover
                 await _holidayRequestRepository.UpdateHolidayRequestAsync(holidayRequestForApproval, cancellationToken);
             }
 
-            
             var persistedHolidayRequestApprover = await _holidayRequestApproverRepository.UpdateHolidayRequestApproverAsync(domainEntity, cancellationToken);
             return persistedHolidayRequestApprover;
         }
