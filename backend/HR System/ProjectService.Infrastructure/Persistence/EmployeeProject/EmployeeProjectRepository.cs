@@ -12,10 +12,10 @@ public class EmployeeProjectRepository(ProjectDbContext dbContext) : IEmployeePr
         return newEmployeeProject.Entity;
     }
 
-    public async Task<bool> RemoveEmployeeFromProjectAsync(Core.Entities.EmployeeProject employeeProject, CancellationToken ct = default(CancellationToken))
+    public async Task<bool> RemoveEmployeeFromProjectAsync(Guid employeeId,Guid projectId, CancellationToken ct = default(CancellationToken))
     {
         var existingEmployeeProject = await dbContext.EmployeeProjects.
-            FirstOrDefaultAsync(x => x.EmployeeId == employeeProject.EmployeeId && x.ProjectId == employeeProject.ProjectId, ct);
+            FirstOrDefaultAsync(x => x.EmployeeId == employeeId && x.ProjectId == projectId, ct);
         if (existingEmployeeProject == null)
         {
             return false;
@@ -25,17 +25,17 @@ public class EmployeeProjectRepository(ProjectDbContext dbContext) : IEmployeePr
         return true;
     }
 
-    public async Task<IEnumerable<Guid>> GetAllProjectsForEmployeeAsync(Guid EmployeeId, CancellationToken ct = default(CancellationToken))
+    public async Task<IEnumerable<Guid>> GetAllProjectsForEmployeeAsync(Guid employeeId, CancellationToken ct = default(CancellationToken))
     {
         var projects = await dbContext.EmployeeProjects
-            .Where(x => x.EmployeeId == EmployeeId).Select(x=> x.ProjectId).ToListAsync(ct);
+            .Where(x => x.EmployeeId == employeeId).Select(x=> x.ProjectId).ToListAsync(ct);
         return projects;
     }
 
-    public async Task<IEnumerable<Guid>> GetAllEmployeesOnProjectAsync(Guid ProjectId, CancellationToken ct = default(CancellationToken))
+    public async Task<IEnumerable<Guid>> GetAllEmployeesOnProjectAsync(Guid projectId, CancellationToken ct = default(CancellationToken))
     {
         var employees = await dbContext.EmployeeProjects
-            .Where(x => x.ProjectId == ProjectId).Select(x=> x.EmployeeId).ToListAsync(ct);
+            .Where(x => x.ProjectId == projectId).Select(x=> x.EmployeeId).ToListAsync(ct);
         return employees;
     }
 }
