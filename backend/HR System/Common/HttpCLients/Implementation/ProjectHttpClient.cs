@@ -155,6 +155,5 @@ namespace Common.HttpCLients.Implementation
 
             return response.StatusCode != System.Net.HttpStatusCode.InternalServerError;
         }
-
     }
 }

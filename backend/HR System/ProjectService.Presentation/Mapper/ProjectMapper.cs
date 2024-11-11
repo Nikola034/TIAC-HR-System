@@ -1,7 +1,9 @@
 using Application.Commands;
 using Application.Commands.Project;
 using Core.Entities;
+using ProjectService.Presentation.Contracts.Project;
 using ProjectServiceApplication.Commands.Project;
+using ProjectServiceApplication.Queries.Project;
 using ProjectServicePresentation.Contracts;
 
 namespace ProjectServicePresentation.Mapper
@@ -20,6 +22,22 @@ namespace ProjectServicePresentation.Mapper
             };
         }
         
+        public static GetProjectsReportResponse ToApiResponse(this GetProjectsReportQueryResponse response)
+        {
+            return new GetProjectsReportResponse
+            {
+                Reports = response.Reports
+            };
+        }
+
+        public static GetProjectInfoResponse ToApiResponse(this ProjectInfo projectInfo)
+        {
+            return new GetProjectInfoResponse
+            {
+                ProjectInfo = projectInfo
+            };
+        }
+
         public static CreateProjectCommand ToCommand(this CreateProjectRequest request)
             => new CreateProjectCommand(request.Title, request.Description,request.ClientId,request.TeamLeadId);
         

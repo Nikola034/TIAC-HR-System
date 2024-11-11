@@ -13,6 +13,19 @@ public class EmployeeHttpClient : IEmployeeHttpClient
 
     }
 
+    public async Task<string> GetEmployeeByIdAsync(Guid employeeId, CancellationToken cancellationToken = default)
+    {
+        var httpClient = _httpClientFactory.CreateClient("EmployeeServiceClient");
+        var request = new HttpRequestMessage
+        {
+            Method = HttpMethod.Get,
+            RequestUri = new Uri("employees/" + employeeId, UriKind.Relative)
+        };
+        var response = await httpClient.SendAsync(request);
+        response.EnsureSuccessStatusCode();
+        return await response.Content.ReadAsStringAsync();
+    }
+
     public async Task<string> GetEmployeeRole(Guid employeeAccountId, CancellationToken cancellationToken = default(CancellationToken))
     {
         var httpClient = _httpClientFactory.CreateClient("EmployeeServiceClient");

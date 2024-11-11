@@ -1,5 +1,7 @@
 using Application.Common.Repositories;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using System.Threading;
 
 namespace ProjectServiceInfrastructure.Persistence.Project;
 
@@ -57,6 +59,13 @@ public class ProjectRepository(ProjectDbContext dbContext) : IProjectRepository
         var projects = await dbContext.Projects.Include(x => x.Client)
             .Where(p => ids.Contains(p.Id))
             .ToListAsync(cancellationToken);
+        return projects;
+    }
+
+    public async Task<IEnumerable<Core.Entities.Project>> GetAllProjectsWithoutPagingAsync(CancellationToken ct = default)
+    {
+        var projects = await dbContext.Projects.Include(x => x.Client).OrderBy(x => x.Id)
+            .ToListAsync(ct);
         return projects;
     }
 }
