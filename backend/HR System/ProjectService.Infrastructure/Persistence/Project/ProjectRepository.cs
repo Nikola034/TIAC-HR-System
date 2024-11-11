@@ -46,8 +46,8 @@ public class ProjectRepository(ProjectDbContext dbContext) : IProjectRepository
     public async Task<IEnumerable<Core.Entities.Project>> GetAllProjectsAsync(int page, CancellationToken cancellationToken = default)
     {
         var projects = await dbContext.Projects.Include(x => x.Client).OrderBy(x => x.Id)
-            //.Skip((page - 1) * 10)
-            //.Take(10)
+            .Skip((page - 1) * 10)
+            .Take(10)
             .ToListAsync(cancellationToken);
         return projects;
     }
