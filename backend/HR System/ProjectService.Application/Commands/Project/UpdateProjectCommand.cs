@@ -16,13 +16,13 @@ namespace Application.Commands.Project
         public async Task<Core.Entities.Project> Handle(UpdateProjectCommand request, CancellationToken cancellationToken)
         {
             var domainEntity = request.ToDomainEntity();
-            var existingUser = await _projectRepository.GetProjectByIdAsync(domainEntity.Id);
+            var existingUser = await _projectRepository.GetProjectByIdAsync(domainEntity.Id, cancellationToken);
             if (existingUser is null)
             {
                 throw new ProjectDoesNotExistException();
             }
 
-            var persistedProject = await _projectRepository.UpdateProjectAsync(domainEntity);
+            var persistedProject = await _projectRepository.UpdateProjectAsync(domainEntity,cancellationToken);
             return persistedProject;
         }
 
