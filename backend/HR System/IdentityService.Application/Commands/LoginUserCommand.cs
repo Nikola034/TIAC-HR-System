@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Application.Common.Repositories;
 using Application.Common.Services;
+using Common.HttpCLients;
 using Core.Exceptions;
 using MediatR;
 
@@ -15,12 +16,14 @@ namespace Application.Commands
         private readonly IAccountRepository _accountRepository;
         private readonly IPasswordHasher _passwordHasher;
         private readonly IJwtService _jwtService;
+        private readonly IEmployeeHttpClient _employeeHttpClient;
 
-        public LoginUserCommandHandler(IAccountRepository accountRepository, IPasswordHasher passwordHasher, IJwtService jwtService)
+        public LoginUserCommandHandler(IAccountRepository accountRepository, IPasswordHasher passwordHasher, IJwtService jwtService, IEmployeeHttpClient employeeHttpClient)
         {
             _accountRepository = accountRepository;
             _passwordHasher = passwordHasher;
             _jwtService = jwtService;
+            _employeeHttpClient = employeeHttpClient;
         }
 
         public async Task<TokenResponse> Handle(LoginUserCommand request, CancellationToken cancellationToken)
@@ -36,8 +39,9 @@ namespace Application.Commands
             {
                 throw new WrongCredentialsException();
             }
-            
-            var tokens = await _jwtService.GenerateTokensAsync(user.Email);
+
+            var userRole = await _employeeHttpClient.GetEmployeeRole(user.Id);
+            var tokens = await _jwtService.GenerateTokensAsync(user.Email,userRole);
             await _accountRepository.UpdateRefreshTokenAsync(request.Email, tokens.RefreshToken, cancellationToken);
             return tokens;
         }

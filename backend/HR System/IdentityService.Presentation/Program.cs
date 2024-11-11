@@ -15,6 +15,7 @@ builder.Services.RegisterApplication()
                 .RegisterInfrastructure(builder.Configuration);
 
 builder.Services.AddExceptionHandling();
+builder.Services.AddHttpServiceClients(builder.Configuration);
 
 var app = builder.Build();
 

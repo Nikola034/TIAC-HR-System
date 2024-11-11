@@ -42,6 +42,18 @@ namespace Infrastructure.Persistance.User
             return true;
         }
 
+        public async Task<bool> DeleteAccountAsync(Guid id, CancellationToken cancellationToken = default)
+        {
+            var account = await _context.Accounts.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+            _context.Accounts.Remove(account);
+            await _context.SaveChangesAsync(cancellationToken);
+            return true;
+        }
+
+        public async Task<Core.Entities.Account> GetUserByIdAsync(Guid id, CancellationToken cancellationToken)
+        {
+            return await _context.Accounts.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+        }
         public async Task<Core.Entities.Account?> FindUserByRefreshTokenAsync(string refreshToken, CancellationToken cancellationToken = default(CancellationToken))
         {
             return await _context.Accounts.

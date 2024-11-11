@@ -6,6 +6,7 @@ using FastEndpoints.Security;
 using EmployeeService.Infrastructure.Persistance;
 using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
+using Common;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.RegisterApplication()
@@ -17,11 +18,12 @@ builder.Services.AddAuthenticationJwtBearer(s => s.SigningKey = builder.Configur
    .AddAuthorization() //add this
    .AddFastEndpoints();
 
+builder.Services.AddHttpServiceClients(builder.Configuration);
+
 var app = builder.Build();
 app.UseExceptionHandler();
 app.UseSwaggerGen();
 app.UseOpenApi();
-
 app
 .UseAuthentication()
 .UseAuthorization()

@@ -63,6 +63,7 @@ namespace EmployeeService.Infrastructure.Persistence.HolidayRequestApprover
         public async Task<IEnumerable<Core.Entities.HolidayRequestApprover>> GetHolidayRequestApproversByRequestIdAsync(Guid RequestId, CancellationToken cancellationToken = default)
         {
             var holidayRequestApprovers = await _context.HolidayRequestApprovers
+            .AsNoTracking()
             .Where(x => x.RequestId == RequestId)
             .ToListAsync(cancellationToken);
             return holidayRequestApprovers;

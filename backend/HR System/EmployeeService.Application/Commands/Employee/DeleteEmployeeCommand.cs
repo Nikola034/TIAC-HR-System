@@ -1,4 +1,5 @@
 ﻿using Common.Exceptions;
+using Common.HttpCLients;
 using Core.Exceptions;
 using EmployeeService.Application.Common.Mappers;
 using EmployeeService.Application.Common.Repositories;
@@ -17,10 +18,18 @@ namespace EmployeeService.Application.Commands.Employee
     public class DeleteEmployeeCommandHandler : IRequestHandler<DeleteEmployeeCommand, bool>
     {
         private readonly IEmployeeRepository _employeeRepository;
+        private readonly IHolidayRequestRepository _holidayRequestRepository;
+        private readonly IHolidayRequestApproverRepository _holidayRequestApproverRepository;
 
-        public DeleteEmployeeCommandHandler(IEmployeeRepository userRepository)
+        private readonly IAccountServiceHttpClient _accountServiceHttpClient;
+        private readonly IProjectHttpClient _projectHttpClient;
+        public DeleteEmployeeCommandHandler(IEmployeeRepository userRepository, IHolidayRequestRepository holidayRequestRepository, IHolidayRequestApproverRepository holidayRequestApproverRepository, IAccountServiceHttpClient accountServiceHttpClient, IProjectHttpClient projectHttpClient)
         {
             _employeeRepository = userRepository;
+            _holidayRequestRepository = holidayRequestRepository;
+            _holidayRequestApproverRepository = holidayRequestApproverRepository;
+            _accountServiceHttpClient = accountServiceHttpClient;
+            _projectHttpClient = projectHttpClient;
         }
         public async Task<bool> Handle(DeleteEmployeeCommand request, CancellationToken cancellationToken)
         {
@@ -30,11 +39,58 @@ namespace EmployeeService.Application.Commands.Employee
             {
                 throw new NotFoundException("Employee with that ID doesn't exist!");
             }
-            var persistedEmployee = await _employeeRepository.DeleteEmployeeAsync(domainEntity.Id, cancellationToken);
-            return persistedEmployee;
-            //TODO Delete account in identity-service
-        }
 
+            var holidayRequests = await _holidayRequestRepository.GetAllHolidayRequestsBySenderIdAsync(existingEmployee.Id, cancellationToken);
+
+            if (holidayRequests.Any())
+            {
+                foreach (var holidayRequest in holidayRequests)
+                {
+                    var holidayRequestApprovers = await _holidayRequestApproverRepository.GetHolidayRequestApproversByRequestIdAsync(holidayRequest.Id, cancellationToken);
+
+                    if (holidayRequestApprovers.Any())
+                    {
+                        foreach(var holidayRequestApprover in holidayRequestApprovers)
+                        {
+                            await _holidayRequestApproverRepository.DeleteHolidayRequestApproverAsync(holidayRequestApprover.Id, cancellationToken);
+                        }
+                    }
+
+                    await _holidayRequestRepository.DeleteHolidayRequestAsync(holidayRequest.Id, cancellationToken);
+                }
+            }
+
+            var employeeProjectsIds = await _projectHttpClient.GetProjectsForEmployeeAsync(existingEmployee.Id, cancellationToken);
+
+            if (employeeProjectsIds.Any())
+            {
+                foreach(var projectId in employeeProjectsIds)
+                {
+                    await _projectHttpClient.RemoveEmployeeFromProjectAsync(existingEmployee.Id, projectId, cancellationToken);
+                }
+            }
+
+            var leadingProjectsIds = await _projectHttpClient.GetLeadingProjectIdsForEmployeeAsync(existingEmployee.Id, cancellationToken);
+
+            if(leadingProjectsIds.Any())
+            {
+                foreach(var leadingProject in leadingProjectsIds)
+                {
+                    await _projectHttpClient.RemoveTeamLeadFromProjectAsync(leadingProject, cancellationToken);
+                }
+            }
+
+            var persistedEmployee = await _employeeRepository.DeleteEmployeeAsync(existingEmployee.Id, cancellationToken);
+
+            var deletedAccount = await _accountServiceHttpClient.DeleteEmployeeAccount(existingEmployee.AccountId, cancellationToken);
+
+            if (!deletedAccount)
+            {
+                return false;
+            }
+
+            return persistedEmployee;
+        }
     }
 
     public record DeleteEmployeeCommand(Guid Id) : IRequest<bool>;

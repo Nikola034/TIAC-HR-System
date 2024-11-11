@@ -8,7 +8,7 @@ namespace Application.Common.Services
 {
     public interface IJwtService
     {
-        public Task<TokenResponse> GenerateTokensAsync(string username);
+        public Task<TokenResponse> GenerateTokensAsync(string username, string role);
         public string GenerateByteToken();
     }
 }

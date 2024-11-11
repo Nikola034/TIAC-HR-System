@@ -21,17 +21,19 @@ namespace Infrastructure.Services
             _configuration = configuration;
         }
 
-        public Task<TokenResponse> GenerateTokensAsync(string username)
+        public Task<TokenResponse> GenerateTokensAsync(string username, string role)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var tokenKey = Encoding.UTF8.GetBytes(_configuration["JWT:Key"]);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(
-                [
-                    new Claim(ClaimTypes.Name, username),
-                    //new Claim("Role",  )
-                 ]),
+                    new[]
+                    {
+                        new Claim(ClaimTypes.Name, username),
+                        new Claim("Role", role),
+                    }
+                ),
                 Expires = DateTime.Now.AddMinutes(15),
                 Issuer = _configuration["JWT:Issuer"],
                 Audience = _configuration["JWT:Audience"],
