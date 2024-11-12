@@ -16,7 +16,7 @@ public class GetAll : EndpointWithoutRequest<GetAllClientsResponse>
 
     public override void Configure()
     {
-        Get("/clients/all/{page}");
+        Get("/projects/clients/all/{page}");
         AllowAnonymous();
     }
 

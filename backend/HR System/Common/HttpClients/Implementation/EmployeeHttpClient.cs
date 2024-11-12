@@ -1,5 +1,6 @@
 using System.Net.Http.Json;
 using Common.HttpCLients;
+using Newtonsoft.Json.Linq;
 
 namespace Common.HttpClients.Implementation;
 
@@ -32,10 +33,12 @@ public class EmployeeHttpClient : IEmployeeHttpClient
         var request = new HttpRequestMessage
         {
             Method = HttpMethod.Get,
-            RequestUri = new Uri("api/employees/getRole/" + employeeAccountId, UriKind.Relative)
+            RequestUri = new Uri("employees/getRole/" + employeeAccountId, UriKind.Relative)
         };
         var response = await httpClient.SendAsync(request);
         response.EnsureSuccessStatusCode();
-        return await response.Content.ReadAsStringAsync();
+        var responseString = await response.Content.ReadAsStringAsync(cancellationToken);
+        var jsonObj = JObject.Parse(responseString);
+        return jsonObj["role"].ToString();
     }
 }

@@ -17,7 +17,13 @@ builder.Services.AddProblemDetails();
 builder.Services.AddAuthenticationJwtBearer(s => s.SigningKey = builder.Configuration["JWT:Key"]) //add this
    .AddAuthorization() //add this
    .AddFastEndpoints();
-
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("ManagersOnly", policy =>
+        policy.RequireClaim("Role", "Manager"));
+    options.AddPolicy("DevelopersOnly", policy =>
+        policy.RequireClaim("Role", "Developer"));
+});
 builder.Services.AddHttpServiceClients(builder.Configuration);
 
 var app = builder.Build();

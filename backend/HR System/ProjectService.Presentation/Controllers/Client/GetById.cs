@@ -17,7 +17,7 @@ public class GetById : EndpointWithoutRequest<ClientByIdResponse>
 
     public override void Configure()
     {
-        Get("/clients/{clientId}");
+        Get("/projects/clients/{clientId}");
         AllowAnonymous();
     }
     
