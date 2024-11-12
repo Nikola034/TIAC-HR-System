@@ -9,12 +9,15 @@ using Core.Exceptions;
 using EmployeeService.Application.Common.Mappers;
 using EmployeeService.Application.Common.Repositories;
 using EmployeeService.Core.Enums;
+using EmployeeService.Core.Primitives.Result;
+using EmployeeService.Core.Errors;
 
 namespace EmployeeService.Application.Commands.Employee
 {
     public class CreateEmployeeCommandHandler : IRequestHandler<CreateEmployeeCommand, Core.Entities.Employee>
     {
         private readonly IEmployeeRepository _employeeRepository;
+    
         public CreateEmployeeCommandHandler(IEmployeeRepository userRepository)
         {
             _employeeRepository = userRepository;

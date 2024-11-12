@@ -18,8 +18,8 @@ public class Create: Endpoint<CreateClientRequest,CreateClientResponse>
 
     public override void Configure()
     {
-        Post("/clients");
-        AllowAnonymous();
+        Post("/projects/clients");
+        Policies("ManagersOnly");
     }
     
     public override async Task HandleAsync(CreateClientRequest req,CancellationToken ct)

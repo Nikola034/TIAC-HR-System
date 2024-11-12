@@ -1,4 +1,6 @@
 ﻿using EmployeeService.Application.Commands.Employee;
+using EmployeeService.Core.Errors;
+using EmployeeService.Core.Primitives.Result;
 using EmployeeService.Presentation.Contracts.Employee;
 using EmployeeService.Presentation.Mappers;
 using FastEndpoints;
@@ -24,7 +26,7 @@ namespace EmployeeService.Presentation.Controllers.Employee
         public override async Task HandleAsync(CancellationToken ct)
         {
             var result = await _mediator.Send(new DeleteEmployeeCommand(Route<Guid>("id")), ct);
-            if (!result)
+            if (result == Result.Failure<Core.Entities.Employee>(DomainErrors.Employee.NotFound))
                 await SendNotFoundAsync(ct);
             await SendOkAsync(ct);
         }

@@ -1,0 +1,11 @@
+.toolbar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.button-row {
+    display: flex;
+    gap: 20px; 
+}
+
+  

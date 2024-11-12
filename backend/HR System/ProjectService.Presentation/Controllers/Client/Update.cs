@@ -16,7 +16,7 @@ public class Update: Endpoint<UpdateClientRequest,UpdateClientResponse>
     
     public override void Configure()
     {
-        Put("clients");
+        Put("/projects/clients");
         AllowAnonymous();
     }
 

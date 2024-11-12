@@ -31,7 +31,7 @@ namespace Infrastructure.Services
                     new[]
                     {
                         new Claim(ClaimTypes.Name, username),
-                        new Claim("Role", role),
+                        new Claim(ClaimTypes.Role, role),
                     }
                 ),
                 Expires = DateTime.Now.AddMinutes(15),

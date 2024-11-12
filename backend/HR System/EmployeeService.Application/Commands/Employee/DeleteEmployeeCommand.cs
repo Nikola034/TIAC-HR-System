@@ -5,10 +5,13 @@ using EmployeeService.Application.Common.Mappers;
 using EmployeeService.Application.Common.Repositories;
 using EmployeeService.Core.Entities;
 using EmployeeService.Core.Enums;
+using EmployeeService.Core.Errors;
+using EmployeeService.Core.Primitives.Result;
 using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices.Marshalling;
 using System.Text;
 using System.Threading.Tasks;
 using static System.Runtime.InteropServices.JavaScript.JSType;
@@ -20,7 +23,6 @@ namespace EmployeeService.Application.Commands.Employee
         private readonly IEmployeeRepository _employeeRepository;
         private readonly IHolidayRequestRepository _holidayRequestRepository;
         private readonly IHolidayRequestApproverRepository _holidayRequestApproverRepository;
-
         private readonly IAccountServiceHttpClient _accountServiceHttpClient;
         private readonly IProjectHttpClient _projectHttpClient;
         public DeleteEmployeeCommandHandler(IEmployeeRepository userRepository, IHolidayRequestRepository holidayRequestRepository, IHolidayRequestApproverRepository holidayRequestApproverRepository, IAccountServiceHttpClient accountServiceHttpClient, IProjectHttpClient projectHttpClient)
@@ -37,7 +39,7 @@ namespace EmployeeService.Application.Commands.Employee
             var existingEmployee = await _employeeRepository.GetEmployeeByIdAsync(domainEntity.Id, cancellationToken);
             if (existingEmployee is null)
             {
-                throw new NotFoundException("Employee with that ID doesn't exist!");
+                return false;
             }
 
             var holidayRequests = await _holidayRequestRepository.GetAllHolidayRequestsBySenderIdAsync(existingEmployee.Id, cancellationToken);
@@ -84,12 +86,7 @@ namespace EmployeeService.Application.Commands.Employee
 
             var deletedAccount = await _accountServiceHttpClient.DeleteEmployeeAccount(existingEmployee.AccountId, cancellationToken);
 
-            if (!deletedAccount)
-            {
-                return false;
-            }
-
-            return persistedEmployee;
+            return true;
         }
     }
 
