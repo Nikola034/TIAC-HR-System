@@ -1,23 +1,8 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
-import { CommonModule } from '@angular/common';
-import { BrowserModule } from '@angular/platform-browser';
-import {MatIconModule} from '@angular/material/icon';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
-  selector: 'reset-password-form',
-  standalone: true,
-  imports: [
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule,
-    CommonModule,
-    MatIconModule
-  ],
+  selector: 'app-reset-password-form',
   templateUrl: './reset-password-form.component.html',
   styleUrl: './reset-password-form.component.css'
 })
@@ -35,4 +20,5 @@ export class ResetPasswordFormComponent {
       console.log('Form Submitted', this.resetPasswordForm.value);
     }
   }
+
 }

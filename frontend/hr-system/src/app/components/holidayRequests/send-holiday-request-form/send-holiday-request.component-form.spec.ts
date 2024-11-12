@@ -2,13 +2,13 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SendHolidayRequestFormComponent } from './send-holiday-request-form.component';
 
-describe('SendHolidayRequestFormComponent', () => {
+describe('SendHolidayRequestComponent', () => {
   let component: SendHolidayRequestFormComponent;
   let fixture: ComponentFixture<SendHolidayRequestFormComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SendHolidayRequestFormComponent]
+      declarations: [SendHolidayRequestFormComponent]
     })
     .compileComponents();
     
