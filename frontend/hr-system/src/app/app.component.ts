@@ -6,11 +6,12 @@ import { EditProfileFormComponent } from './components/employees/edit-profile-fo
 import { ProjectCardComponent } from './components/projects/project-card/project-card.component';
 import { Project } from './model/entities/Project';
 import { CommonModule } from '@angular/common';
+import { SendHolidayRequestFormComponent } from './components/holidayrequests/send-holiday-request-form/send-holiday-request-form.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, LoginFormComponent, ResetPasswordFormComponent, EditProfileFormComponent, ProjectCardComponent, CommonModule],
+  imports: [RouterOutlet, LoginFormComponent, ResetPasswordFormComponent, EditProfileFormComponent, ProjectCardComponent, CommonModule, SendHolidayRequestFormComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
