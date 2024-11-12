@@ -47,7 +47,7 @@ namespace EmployeeService.Application.Commands.HolidayRequest
                 var persistedHolidayRequest = await _holidayRequestRepository.CreateHolidayRequestAsync(domainEntity, cancellationToken);
 
                 IEnumerable<Guid> teamLeadIds = await _projectHttpClient.GetTeamLeadsForEmployeeAsync(domainEntity.SenderId, cancellationToken);
-                if (teamLeadIds.Any())
+                if (teamLeadIds.Where(x => x != sender.Id).Any())
                 {
                     foreach (var teamLeadId in teamLeadIds)
                     {
