@@ -1,0 +1,35 @@
+<div class="edit-profile-container">
+    <div class="header .full-width">
+        <h3>Edit Profile</h3>
+    </div>
+    <form [formGroup]="editProfileForm" (ngSubmit)="onSubmit()">
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Name</mat-label>
+        <input
+          matInput
+          formControlName="name"
+          type="text"
+          placeholder="Enter your name"
+        />
+        <mat-error *ngIf="editProfileForm.get('name')?.hasError('required')"
+          >Name is required</mat-error
+        >
+      </mat-form-field>
+    
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Surname</mat-label>
+        <input
+          matInput
+          formControlName="surname"
+          type="text"
+          placeholder="Enter your surname"
+        />
+        <mat-error *ngIf="editProfileForm.get('surname')?.hasError('required')"
+          >Surname is required</mat-error
+        >
+      </mat-form-field>  
+      <button mat-raised-button color="primary" type="submit">
+        Submit
+      </button>
+    </form>
+  </div>

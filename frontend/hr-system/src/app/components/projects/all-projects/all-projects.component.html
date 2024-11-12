@@ -21,8 +21,8 @@
 
 <div class="pagination">
     <button
-      (click)="loadNewPage(currentPage - 1)"
-      [disabled]="currentPage === 1"
+      (click)="loadNewPage(pageNumber - 1)"
+      [disabled]="pageNumber === 1"
       class="pagination-button"
     >
       Previous
@@ -30,17 +30,17 @@
   
     <!-- Page number buttons -->
     <button
-      *ngFor="let page of generatePagination(currentPage, totalPages)"
+      *ngFor="let page of generatePagination(pageNumber, totalPages)"
       (click)="loadNewPage(page)"
-      [class.active]="page === currentPage"
+      [class.active]="page === pageNumber"
       class="pagination-button"
     >
       {{ page }}
     </button>
   
     <button
-      (click)="loadNewPage(currentPage + 1)"
-      [disabled]="currentPage === totalPages"
+      (click)="loadNewPage(pageNumber + 1)"
+      [disabled]="pageNumber === totalPages"
       class="pagination-button"
     >
       Next

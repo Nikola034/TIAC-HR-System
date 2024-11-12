@@ -2,12 +2,15 @@ import { Component } from '@angular/core';
 import {MatTableModule} from '@angular/material/table'; 
 import { ProjectService } from '../../../services/project.service';
 import { Router } from '@angular/router';
+import { Project } from '../../../model/entities/Project';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-all-projects',
   standalone: true,
   imports: [
     MatTableModule,
+    CommonModule
   ],
   templateUrl: './all-projects.component.html',
   styleUrl: './all-projects.component.css'
