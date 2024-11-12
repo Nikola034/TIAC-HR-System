@@ -1,23 +1,13 @@
-import { Component } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { JwtService } from '../../services/jwt.service';
-import {MatButtonModule} from '@angular/material/button';
-import { CommonModule } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { JwtService } from '../../core/services/jwt.service';
+import { Router } from '@angular/router';
 
 @Component({
-  selector: 'navbar',
-  standalone: true,
-  imports: [
-    RouterLink,
-    CommonModule,
-    MatToolbarModule,
-    MatButtonModule,
-  ],
+  selector: 'app-navbar',
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css'
 })
-export class NavbarComponent {
+export class NavbarComponent implements OnInit {
 
   userRole: string = '';
 
@@ -29,7 +19,7 @@ export class NavbarComponent {
       }
   }
 
-  LogOut() : void {
+  logOut() : void {
     this.jwtService.Logout();
     this.userRole = ""
   } 

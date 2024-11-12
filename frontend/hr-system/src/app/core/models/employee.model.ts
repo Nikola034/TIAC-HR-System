@@ -1,4 +1,3 @@
-import { EmployeeRole } from "../enums/EmployeeRole";
 
 export interface Employee{
     id: string, 
@@ -7,4 +6,9 @@ export interface Employee{
     daysOff: number,
     role: EmployeeRole,
     accountId: string
+}
+
+export enum EmployeeRole{ 
+    Developer, 
+    Manager
 }

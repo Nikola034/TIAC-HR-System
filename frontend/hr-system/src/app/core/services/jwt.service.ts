@@ -54,5 +54,4 @@ import { jwtDecode } from 'jwt-decode';
         localStorage.removeItem('refresh_token');
     }
 
-  }
-  
+}
