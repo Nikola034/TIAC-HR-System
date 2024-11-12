@@ -1,0 +1,6 @@
+.project-card{
+    width: 22rem;
+    -webkit-box-shadow: 11px 10px 7px -3px rgba(191,191,191,1);
+    -moz-box-shadow: 11px 10px 7px -3px rgba(191,191,191,1);
+    box-shadow: 11px 10px 7px -3px rgba(191,191,191,1);
+}
