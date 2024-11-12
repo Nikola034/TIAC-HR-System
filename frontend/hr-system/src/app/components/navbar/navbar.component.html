@@ -1,0 +1,22 @@
+<mat-toolbar class="toolbar">
+    <div class="button-row">
+        <button mat-button routerLink="projects"  aria-label="Go to Projects page">
+            Projects
+        </button>   
+        <button mat-button routerLink="/employees" *ngIf="userRole === 'Manager'">
+            Employees
+        </button>
+        <button mat-button routerLink="/holiday-requests" *ngIf="userRole === 'Manager'">
+            Holiday requests
+        </button>
+        <button mat-button routerLink="/my-holiday-requests" *ngIf="userRole === 'Developer'">
+            My holiday requests
+        </button>
+    </div>
+    <div class="logout">
+        <button mat-button routerLink="/" (click)="LogOut()">
+            Logout
+        </button>
+    </div>
+</mat-toolbar>
+  
