@@ -21,11 +21,12 @@ export class AllProjectsComponent implements OnInit, OnDestroy {
   constructor(private projectService: ProjectService, private router: Router) {}
 
   ngOnInit() {
-    this.projectService.getAllProjects(this.getQueryString()).subscribe( response => {
+    this.projectService.getAllProjects(this.getQueryString())
+      .pipe(takeUntil(this.destroy$), tap((response) =>{
         this.projects = response.projects
         this.totalPages = response.totalPages
-      }
-    )
+      })).subscribe();
+    
   }
 
   getQueryString() : string {
