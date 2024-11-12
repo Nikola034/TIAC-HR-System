@@ -29,9 +29,21 @@ builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("restricted-endpoint", policy => policy.RequireAuthenticatedUser());
 });
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("_defaultCorsPolicy", builder =>
+    {
+        builder.AllowAnyHeader();
+        builder.AllowAnyMethod();
+        builder.AllowAnyOrigin();
+    });
+});
+
 builder.Services.AddReverseProxy().LoadFromConfig(builder.Configuration.GetSection("ReverseProxy"));
 
 var app = builder.Build();
+app.UseCors("_defaultCorsPolicy");
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapReverseProxy();
