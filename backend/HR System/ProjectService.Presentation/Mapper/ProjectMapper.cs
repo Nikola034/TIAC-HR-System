@@ -1,7 +1,10 @@
 using Application.Commands;
 using Application.Commands.Project;
+using Application.Queries.Project;
 using Core.Entities;
+using ProjectService.Presentation.Contracts.Project;
 using ProjectServiceApplication.Commands.Project;
+using ProjectServiceApplication.Queries.Project;
 using ProjectServicePresentation.Contracts;
 
 namespace ProjectServicePresentation.Mapper
@@ -20,6 +23,22 @@ namespace ProjectServicePresentation.Mapper
             };
         }
         
+        public static GetProjectsReportResponse ToApiResponse(this GetProjectsReportQueryResponse response)
+        {
+            return new GetProjectsReportResponse
+            {
+                Reports = response.Reports
+            };
+        }
+
+        public static GetProjectInfoResponse ToApiResponse(this ProjectInfo projectInfo)
+        {
+            return new GetProjectInfoResponse
+            {
+                ProjectInfo = projectInfo
+            };
+        }
+
         public static CreateProjectCommand ToCommand(this CreateProjectRequest request)
             => new CreateProjectCommand(request.Title, request.Description,request.ClientId,request.TeamLeadId);
         
@@ -47,6 +66,17 @@ namespace ProjectServicePresentation.Mapper
                 Description = project.Description,
                 ClientId = project.ClientId,
                 TeamLeadId = project.TeamLeadId
+            };
+        }
+
+        public static GetAllProjectsResponse ToApiResponse(this GetAllProjectsQueryResponse response)
+        {
+            return new GetAllProjectsResponse()
+            {
+                Projects = response.Projects,
+                Page = response.PageNumber,
+                ItemsPerPage = response.ItemNumber,
+                TotalPages = response.TotalPages
             };
         }
     }

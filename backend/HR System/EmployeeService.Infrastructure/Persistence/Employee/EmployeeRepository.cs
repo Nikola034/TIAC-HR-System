@@ -73,5 +73,12 @@ namespace EmployeeService.Infrastructure.Persistance.Employee
         {
             return await _context.Employees.AsNoTracking().FirstOrDefaultAsync(x => x.AccountId == id, cancellationToken);
         }
+
+        public async Task<IEnumerable<Core.Entities.Employee>> GetAllEmployeesWithoutPagingAsync(CancellationToken cancellationToken = default)
+        {
+            var employees = await _context.Employees.OrderBy(x => x.Id)
+            .ToListAsync(cancellationToken);
+            return employees;
+        }
     }
 }

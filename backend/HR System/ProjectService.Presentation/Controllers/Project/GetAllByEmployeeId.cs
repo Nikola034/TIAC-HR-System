@@ -5,11 +5,11 @@ using ProjectServicePresentation.Contracts;
 
 namespace ProjectServicePresentation.Controllers.Project;
 
-public class GetAllById : EndpointWithoutRequest<GetAllProjectsResponse>
+public class GetAllByEmployeeId : EndpointWithoutRequest<GetAllProjectsResponse>
 {
     IMediator _mediator;
 
-    public GetAllById(IMediator mediator)
+    public GetAllByEmployeeId(IMediator mediator)
     {
         _mediator = mediator;
     }

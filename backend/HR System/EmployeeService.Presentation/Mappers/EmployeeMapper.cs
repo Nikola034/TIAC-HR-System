@@ -32,6 +32,14 @@ namespace EmployeeService.Presentation.Mappers
             };
         }
 
+        public static GetDaysOffForEmployeesResponse ToApiResponse(this GetDaysOffForEmployeesQueryResponse response)
+        {
+            return new GetDaysOffForEmployeesResponse
+            {
+                Reports = response.Reports,
+            };
+        }
+
         public static CreateEmployeeCommand ToCommand(this CreateEmployeeRequest request) => new CreateEmployeeCommand(request.Name, request.Surname, request.DaysOff, request.Role, request.AccountId);
         public static UpdateEmployeeCommand ToCommand(this UpdateEmployeeRequest request) => new UpdateEmployeeCommand(request.Id, request.Name, request.Surname, request.DaysOff, request.Role);
 

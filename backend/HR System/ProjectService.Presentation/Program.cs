@@ -12,7 +12,7 @@ builder.Services.AddFastEndpoints();
 builder.Services.SwaggerDocument();
 builder.Services.RegisterApplication()
     .RegisterInfrastructure(builder.Configuration);
-
+builder.Services.AddHttpServiceClients(builder.Configuration);
 builder.Services.AddExceptionHandling();
 var app = builder.Build();
 

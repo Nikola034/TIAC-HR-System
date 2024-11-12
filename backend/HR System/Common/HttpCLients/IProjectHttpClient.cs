@@ -13,7 +13,6 @@ namespace Common.HttpCLients
         public Task<bool> RemoveEmployeeFromProjectAsync(Guid employeeId, Guid projectId, CancellationToken cancellationToken = default(CancellationToken));
         public Task<IEnumerable<Guid>> GetLeadingProjectIdsForEmployeeAsync(Guid employeeId, CancellationToken cancellationToken = default(CancellationToken));
         public Task<HttpResponseMessage> GetProjectByIdAsync(Guid projectId, CancellationToken cancellationToken = default);
-
         public Task<bool> RemoveTeamLeadFromProjectAsync(Guid projectId, CancellationToken cancellationToken = default);
     }
 }
