@@ -18,7 +18,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace EmployeeService.Application.Commands.Employee
 {
-    public class DeleteEmployeeCommandHandler : IRequestHandler<DeleteEmployeeCommand, Result<Core.Entities.Employee>>
+    public class DeleteEmployeeCommandHandler : IRequestHandler<DeleteEmployeeCommand, bool>
     {
         private readonly IEmployeeRepository _employeeRepository;
         private readonly IHolidayRequestRepository _holidayRequestRepository;
@@ -33,13 +33,13 @@ namespace EmployeeService.Application.Commands.Employee
             _accountServiceHttpClient = accountServiceHttpClient;
             _projectHttpClient = projectHttpClient;
         }
-        public async Task<Result<Core.Entities.Employee>> Handle(DeleteEmployeeCommand request, CancellationToken cancellationToken)
+        public async Task<bool> Handle(DeleteEmployeeCommand request, CancellationToken cancellationToken)
         {
             var domainEntity = request.ToDomainEntity();
             var existingEmployee = await _employeeRepository.GetEmployeeByIdAsync(domainEntity.Id, cancellationToken);
             if (existingEmployee is null)
             {
-                return Result.Failure<Core.Entities.Employee>(DomainErrors.Employee.NotFound);
+                return false;
             }
 
             var holidayRequests = await _holidayRequestRepository.GetAllHolidayRequestsBySenderIdAsync(existingEmployee.Id, cancellationToken);
@@ -86,9 +86,9 @@ namespace EmployeeService.Application.Commands.Employee
 
             var deletedAccount = await _accountServiceHttpClient.DeleteEmployeeAccount(existingEmployee.AccountId, cancellationToken);
 
-            return existingEmployee;
+            return true;
         }
     }
 
-    public record DeleteEmployeeCommand(Guid Id) : IRequest<Result<Core.Entities.Employee>>;
+    public record DeleteEmployeeCommand(Guid Id) : IRequest<bool>;
 }
