@@ -1,0 +1,45 @@
+﻿using Common.Exceptions;
+using EmployeeService.Application.Common.Mappers;
+using EmployeeService.Application.Common.Repositories;
+using EmployeeService.Core.Entities;
+using MediatR;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace EmployeeService.Application.Commands.HolidayRequest
+{
+    public class DeleteHolidayRequestCommandHandler : IRequestHandler<DeleteHolidayRequestCommand, bool>
+    {
+        private readonly IHolidayRequestRepository _holidayrequestRepository;
+        private readonly IHolidayRequestApproverRepository _holidayrequestApproversRepository;
+        public DeleteHolidayRequestCommandHandler(IHolidayRequestRepository holidayrequestRepository, IHolidayRequestApproverRepository holidayRequestApproverRepository)
+        {
+            _holidayrequestRepository = holidayrequestRepository;
+            _holidayrequestApproversRepository = holidayRequestApproverRepository;
+        }
+        public async Task<bool> Handle(DeleteHolidayRequestCommand request, CancellationToken cancellationToken)
+        {
+            var domainEntity = request.ToDomainEntity();
+            var existingHolidayRequest = await _holidayrequestRepository.GetHolidayRequestByIdAsync(domainEntity.Id);
+            if (existingHolidayRequest is null)
+            {
+                throw new NotFoundException("Holiday request with that ID doesn't exist!");
+            }
+
+            IEnumerable<Core.Entities.HolidayRequestApprover> holidayRequestApprovers = await _holidayrequestApproversRepository.GetHolidayRequestApproversByRequestIdAsync(existingHolidayRequest.Id, cancellationToken);
+            foreach(var holidayRequest in holidayRequestApprovers)
+            {
+                await _holidayrequestApproversRepository.DeleteHolidayRequestApproverAsync(holidayRequest.Id, cancellationToken);
+            }
+
+            var persistedHolidayRequest = await _holidayrequestRepository.DeleteHolidayRequestAsync(domainEntity.Id, cancellationToken);
+            return persistedHolidayRequest;
+        }
+
+    }
+
+    public record DeleteHolidayRequestCommand(Guid Id) : IRequest<bool>;
+}

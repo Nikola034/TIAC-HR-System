@@ -1,0 +1,16 @@
+/* custom-theme.scss */
+@use '@angular/material' as mat;
+
+$my-primary-color: mat.define-palette(mat.$red-palette, 800); 
+$my-accent-color: mat.define-palette(mat.$blue-palette, 200); 
+$my-warn-color: mat.define-palette(mat.$pink-palette);
+
+$my-theme: mat.define-light-theme((
+  color: (
+    primary: $my-primary-color,
+    accent: $my-accent-color,
+    warn: $my-warn-color
+      )
+));
+
+@include mat.all-component-themes($my-theme);

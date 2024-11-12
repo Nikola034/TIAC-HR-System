@@ -1,0 +1,78 @@
+version: '3.9'
+
+
+services:
+  hrsystem-db:
+    image: postgres:latest
+    restart: always
+    ports:
+      - 5432:5432
+    volumes:
+      - ~/apps/postgres:/var/lib/postgresql/data
+
+    environment:
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_USER=postgres-hr
+      - POSTGRES_DB=HR System
+    networks:
+      - microservice-network
+
+  api-gateway:
+    depends_on:
+      - hrsystem-db
+    build: 
+      context: backend/HR System
+      dockerfile: APIGateway/Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8080
+    networks:
+      - microservice-network
+
+  identity-service:
+    depends_on:
+      - hrsystem-db
+    build: 
+      context: backend/HR System
+      dockerfile: IdentityService.Presentation/Dockerfile
+    ports:
+      - "8081:8081"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8081
+    networks:
+      - microservice-network
+  
+  employee-service:
+    depends_on:
+      - hrsystem-db
+    build: 
+      context: backend/HR System
+      dockerfile: EmployeeService.Presentation/Dockerfile
+    ports:
+      - "8082:8082"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8082
+    networks:
+      - microservice-network
+  
+  project-service:
+    depends_on:
+      - hrsystem-db
+    build: 
+      context: backend/HR System
+      dockerfile: ProjectService.Presentation/Dockerfile
+    ports:
+      - "8083:8083"
+    environment: 
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8083
+    networks:
+      - microservice-network
+
+networks:
+  microservice-network:
+    driver: bridge
