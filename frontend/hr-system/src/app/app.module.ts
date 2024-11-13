@@ -23,6 +23,7 @@ import {MatTableModule} from '@angular/material/table';
 import { EditEmployeeComponentComponent } from './components/employees/edit-employee-component/edit-employee-component.component'; 
 import { MatSelectModule } from '@angular/material/select';
 import { CreateEmployeeComponentComponent } from './components/employees/create-employee-component/create-employee-component.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 @NgModule({
@@ -40,6 +41,7 @@ import { CreateEmployeeComponentComponent } from './components/employees/create-
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     ReactiveFormsModule,
     MatCardModule,
