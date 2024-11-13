@@ -6,7 +6,7 @@
       <ng-container matColumnDef="status">
         <th mat-header-cell *matHeaderCellDef> Status </th>
         <td mat-cell *matCellDef="let request">
-          <mat-icon style="margin-left: 0.5rem;" [ngStyle]="{color: getStatusColor(request.status) }" aria-hidden="false" aria-label="Status icon">{{ getStatusIcon(request.status) }}</mat-icon>
+          <mat-icon style="margin-left: 0.8rem;" [ngStyle]="{color: getStatusColor(request.status) }" aria-hidden="false" aria-label="Status icon">{{ getStatusIcon(request.status) }}</mat-icon>
         </td>
       </ng-container>
       <ng-container matColumnDef="sender">

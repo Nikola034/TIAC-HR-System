@@ -13,3 +13,12 @@
     justify-content: flex-start;
     width: 100%;
 }
+h1{
+    color: #5c5b5b;
+}
+th{
+    font-size: 1.2rem;
+}
+td{
+    font-size: 1rem;
+}
