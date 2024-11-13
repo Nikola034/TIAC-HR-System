@@ -38,4 +38,17 @@ public class EmployeeProjectRepository(ProjectDbContext dbContext) : IEmployeePr
             .Where(x => x.ProjectId == projectId).Select(x=> x.EmployeeId).ToListAsync(ct);
         return employees;
     }
+
+    public async Task RemoveProjectAsync(Guid projectId, CancellationToken ct = default(CancellationToken))
+    {
+        var existingEmployeeProjects = await dbContext.EmployeeProjects.
+            Where(x => x.ProjectId == projectId).ToListAsync(ct);
+        if (existingEmployeeProjects.Count == 0)
+        {
+            return;
+        }
+        dbContext.EmployeeProjects.RemoveRange(existingEmployeeProjects);
+        await dbContext.SaveChangesAsync(ct);
+        return;
+    }
 }
