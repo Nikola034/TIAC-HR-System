@@ -2,16 +2,16 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
-  selector: 'app-edit-employee-component',
-  templateUrl: './edit-employee-component.component.html',
-  styleUrl: './edit-employee-component.component.css',
+  selector: 'app-create-employee-component',
+  templateUrl: './create-employee-component.component.html',
+  styleUrl: './create-employee-component.component.css'
 })
-export class EditEmployeeComponentComponent {
-  editEmployeeForm: FormGroup;
+export class CreateEmployeeComponentComponent {
+  createEmployeeForm: FormGroup;
   selectedRole = 'developer';
 
   constructor(private fb: FormBuilder) {
-    this.editEmployeeForm = new FormGroup({
+    this.createEmployeeForm = new FormGroup({
       name: new FormControl('', Validators.required),
       surname: new FormControl('', Validators.required),
       email: new FormControl('', [Validators.required, Validators.email]),
@@ -22,8 +22,8 @@ export class EditEmployeeComponentComponent {
   }
 
   onSubmit() {
-    if (this.editEmployeeForm.valid) {
-      console.log('Form Submitted', this.editEmployeeForm.value);
+    if (this.createEmployeeForm.valid) {
+      console.log('Form Submitted', this.createEmployeeForm.value);
     }
   }
 }

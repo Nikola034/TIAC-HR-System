@@ -22,6 +22,7 @@ import { EditProfileComponentComponent } from './components/employees/edit-profi
 import {MatTableModule} from '@angular/material/table';
 import { EditEmployeeComponentComponent } from './components/employees/edit-employee-component/edit-employee-component.component'; 
 import { MatSelectModule } from '@angular/material/select';
+import { CreateEmployeeComponentComponent } from './components/employees/create-employee-component/create-employee-component.component';
 
 
 @NgModule({
@@ -34,7 +35,8 @@ import { MatSelectModule } from '@angular/material/select';
     ResetPasswordFormComponent,
     SendHolidayRequestFormComponent,
     EditProfileComponentComponent,
-    EditEmployeeComponentComponent
+    EditEmployeeComponentComponent,
+    CreateEmployeeComponentComponent
   ],
   imports: [
     BrowserModule,
