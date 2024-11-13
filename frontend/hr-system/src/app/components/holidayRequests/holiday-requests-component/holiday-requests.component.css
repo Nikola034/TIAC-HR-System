@@ -1,0 +1,15 @@
+.all-holidayRequests-container{
+    display: flex;
+    flex-direction: column;
+    padding-left: 10%;
+    padding-right: 10%;
+    justify-content: flex-start;
+    align-items: center;
+    margin-top: 1rem;
+}
+
+.header-div{
+    display: flex;
+    justify-content: flex-start;
+    width: 100%;
+}

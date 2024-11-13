@@ -5,7 +5,7 @@ import { AppComponent } from './app.component';
 import { AllProjectsComponent } from './components/projects/all-projects/all-projects.component';
 import { ProjectCardComponent } from './components/projects/project-card/project-card.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import {MatCardModule} from '@angular/material/card';
+import {MatCardActions, MatCardModule} from '@angular/material/card';
 import {MatButtonModule} from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { NavbarComponent } from './components/navbar/navbar.component';
@@ -20,7 +20,7 @@ import {provideNativeDateAdapter} from '@angular/material/core';
 import { MatDialogModule } from '@angular/material/dialog';
 import {MatTableModule} from '@angular/material/table'; 
 import { HttpClientModule } from '@angular/common/http';
-import { HolidayRequestsComponentComponent } from './components/holidayRequests/holiday-requests-component/holiday-requests-component.component';
+import { HolidayRequestsComponent } from './components/holidayRequests/holiday-requests-component/holiday-requests.component';
 import { EditProfileComponent } from './components/employees/edit-profile-component/edit-profile.component';
 
 
@@ -34,7 +34,7 @@ import { EditProfileComponent } from './components/employees/edit-profile-compon
     ResetPasswordFormComponent,
     SendHolidayRequestFormComponent,
     EditProfileComponent,
-    HolidayRequestsComponentComponent
+    HolidayRequestsComponent
   ],
   imports: [
     BrowserModule,
@@ -50,7 +50,8 @@ import { EditProfileComponent } from './components/employees/edit-profile-compon
     MatDialogModule,
     MatTableModule,
     HttpClientModule,
-    MatError
+    MatError,
+    MatCardActions
   ],
   providers: [provideNativeDateAdapter()],
   bootstrap: [AppComponent]
