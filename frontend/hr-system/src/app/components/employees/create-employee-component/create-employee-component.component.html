@@ -1,0 +1,85 @@
+<div class="create-employee-container">
+    <div class="header .full-width">
+        <h3>Create New Employee</h3>
+    </div>
+    <form [formGroup]="createEmployeeForm" (ngSubmit)="onSubmit()">
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Name</mat-label>
+        <input
+          matInput
+          formControlName="name"
+          type="text"
+          placeholder="Enter employee's name"
+        />
+        <mat-error *ngIf="createEmployeeForm.get('name')?.hasError('required')"
+        >Name is required</mat-error
+      >
+      </mat-form-field>
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Surname</mat-label>
+        <input
+          matInput
+          formControlName="surname"
+          type="text"
+          placeholder="Enter employee's surname"
+        />
+        <mat-error *ngIf="createEmployeeForm.get('surname')?.hasError('required')"
+          >Surname is required</mat-error
+        >
+      </mat-form-field>
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Email</mat-label>
+        <input
+          matInput
+          formControlName="email"
+          type="email"
+          placeholder="Enter employee's email"
+        />
+        <mat-error *ngIf="createEmployeeForm.get('email')?.hasError('required')"
+          >Email is required</mat-error
+        >
+        <mat-error *ngIf="createEmployeeForm.get('email')?.hasError('email')"
+          >Enter a valid email</mat-error
+        >
+      </mat-form-field> 
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Password</mat-label>
+        <input
+          matInput
+          formControlName="password"
+          type="password"
+          placeholder="Enter employee's password"
+        />
+        <mat-error *ngIf="createEmployeeForm.get('password')?.hasError('required')"
+        >Pasword is required</mat-error
+      >
+      </mat-form-field>
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Select employee's role</mat-label>
+        <mat-select formControlName="role">
+          <mat-option value="developer">Developer</mat-option>
+          <mat-option value="manager">Manager</mat-option>
+        </mat-select>
+        <mat-error *ngIf="createEmployeeForm.get('role')?.hasError('required')"
+        >Role is required</mat-error
+      >
+      </mat-form-field>
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Days off</mat-label>
+        <input
+          matInput
+          formControlName="daysOff"
+          type="number"
+          min="0"
+          max="30"
+          placeholder="Enter employee's days off"
+        />
+        <mat-error *ngIf="createEmployeeForm.get('daysOff')?.hasError('required')"
+        >Days off field is required</mat-error
+      >
+      </mat-form-field> 
+      <button mat-raised-button color="primary" type="submit">
+        Submit
+      </button>
+    </form>
+  </div>
