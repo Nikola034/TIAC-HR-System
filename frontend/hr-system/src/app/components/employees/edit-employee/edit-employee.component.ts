@@ -2,11 +2,11 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
-  selector: 'app-edit-employee-component',
-  templateUrl: './edit-employee-component.component.html',
-  styleUrl: './edit-employee-component.component.css',
+  selector: 'app-edit-employee',
+  templateUrl: './edit-employee.component.html',
+  styleUrl: './edit-employee.component.css',
 })
-export class EditEmployeeComponentComponent {
+export class EditEmployeeComponent {
   editEmployeeForm: FormGroup;
   selectedRole = 'developer';
 

@@ -1,5 +1,6 @@
 using Application.Commands;
 using Application.Commands.Client;
+using Application.Queries.Client;
 using Core.Entities;
 using ProjectServiceApplication.Commands.Client;
 using ProjectServicePresentation.Contracts;
@@ -39,6 +40,17 @@ namespace ProjectServicePresentation.Mapper
                 Id = client.Id,
                 Name = client.Name,
                 Country = client.Country
+            };
+        }
+        
+        public static GetAllClientsResponse ToApiResponse(this GetAllClientsQueryResponse response)
+        {
+            return new GetAllClientsResponse()
+            {
+                Clients = response.Clients,
+                Page = response.PageNumber,
+                ItemsPerPage = response.ItemNumber,
+                TotalPages = response.TotalPages
             };
         }
     }

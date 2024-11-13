@@ -42,12 +42,19 @@ public class ClientRepository(ProjectDbContext dbContext) : IClientRepository
         return true;
     }
 
-    public async Task<IEnumerable<Core.Entities.Client>> GetAllClientsAsync(int page, CancellationToken cancellationToken = default)
+    public async Task<IEnumerable<Core.Entities.Client>> GetAllClientsAsync(int pageNumber,int itemNumber, CancellationToken cancellationToken = default)
     {
         var clients = await dbContext.Clients.OrderBy(x => x.Id)
-            .Skip((page - 1) * 10)
-            .Take(10)
+            .Skip((pageNumber - 1) * itemNumber)
+            .Take(itemNumber)
             .ToListAsync(cancellationToken);
         return clients;
+    }
+    
+    public async Task<int> GetTotalPageNumber(int itemNumber, CancellationToken ct = default(CancellationToken))
+    {
+        var count = await dbContext.Clients.CountAsync(ct);
+        return (int)Math.Ceiling((double)count / itemNumber);
+
     }
 }

@@ -21,7 +21,7 @@ namespace Infrastructure.Services
             _configuration = configuration;
         }
 
-        public Task<TokenResponse> GenerateTokensAsync(string username, string role)
+        public Task<TokenResponse> GenerateTokensAsync(string username, string role, string employeeId)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var tokenKey = Encoding.UTF8.GetBytes(_configuration["JWT:Key"]);
@@ -32,6 +32,7 @@ namespace Infrastructure.Services
                     {
                         new Claim(ClaimTypes.Name, username),
                         new Claim(ClaimTypes.Role, role),
+                        new Claim("id",employeeId),
                     }
                 ),
                 Expires = DateTime.Now.AddMinutes(15),
