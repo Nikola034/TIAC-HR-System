@@ -9,13 +9,14 @@ namespace ProjectServicePresentation.Mapper
 {
     public static class ClientMapper
     {
-        public static ClientByIdResponse ToApiResponse(this Client client)
+        public static ClientByIdResponse ToApiResponse(this GetClientByIdQueryResponse response)
         {
             return new ClientByIdResponse
             {
-                Id = client.Id,
-                Name = client.Name,
-                Country = client.Country
+                Id = response.Client.Id,
+                Name = response.Client.Name,
+                Country = response.Client.Country,
+                Projects = response.Projects
             };
         }
         

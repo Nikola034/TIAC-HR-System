@@ -40,32 +40,6 @@
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
     
-  <div class="pagination">
-      <button mat-button
-        (click)="loadNewPage(pageNumber - 1)"
-        [disabled]="pageNumber === 1"
-        class="pagination-button"
-      >
-        Previous
-      </button>
-    
-      <!-- Page number buttons -->
-      <button mat-button
-        *ngFor="let page of generatePagination(pageNumber, totalPages)"
-        (click)="loadNewPage(page)"
-        [class.active]="page === pageNumber"
-        class="pagination-button"
-      >
-        {{ page }}
-      </button>
-    
-      <button mat-button
-        (click)="loadNewPage(pageNumber + 1)"
-        [disabled]="pageNumber === totalPages"
-        class="pagination-button"
-      >
-        Next
-      </button>
-    </div>
+  <app-paginator [pageNumber]="pageNumber" [totalPages]="totalPages" (loadNewPageEmmiter)="loadNewPage($event)"/>
 </div>
   

@@ -75,4 +75,15 @@ public class ProjectRepository(ProjectDbContext dbContext) : IProjectRepository
             .ToListAsync(ct);
         return projects;
     }
+
+    public async Task<IEnumerable<Core.Entities.Project>> GetAllProjectsByClientIdAsync(Guid clientId, CancellationToken ct = default(CancellationToken))
+    {
+        var projects = await dbContext.Projects.AsNoTracking().Where(x => x.ClientId == clientId).ToListAsync(ct);
+        return projects;
+    }
+
+    public int GetNumberOfProjectsByClient(Guid clientId)
+    {
+        return dbContext.Projects.Count(x => x.ClientId == clientId);
+    }
 }

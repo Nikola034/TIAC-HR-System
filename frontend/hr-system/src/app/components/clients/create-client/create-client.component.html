@@ -1,0 +1,40 @@
+<div class="create-client-container">
+    <div class="header .full-width">
+      <mat-icon class="header-icon">factory</mat-icon>
+    </div>
+    <form [formGroup]="createClientForm" (ngSubmit)="onSubmit()">
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Name</mat-label>
+        <input
+          matInput
+          formControlName="name"
+          type="text"
+          placeholder="Enter client name"
+        />
+        <mat-error *ngIf="createClientForm.get('name')?.hasError('required')"
+          >Name is required</mat-error
+        >
+        <mat-error *ngIf="createClientForm.get('name')?.hasError('name')"
+          >Enter a valid name</mat-error
+        >
+      </mat-form-field>
+  
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Country</mat-label>
+        <input
+          matInput
+          formControlName="country"
+          type="text"
+          placeholder="Enter client country"
+        />
+        <mat-error *ngIf="createClientForm.get('country')?.hasError('required')"
+          >Country is required</mat-error
+        >
+      </mat-form-field>
+  
+      <button mat-raised-button color="primary" type="submit" [disabled]="!createClientForm.valid">
+        Create client
+      </button>
+    </form>
+  </div>
+  

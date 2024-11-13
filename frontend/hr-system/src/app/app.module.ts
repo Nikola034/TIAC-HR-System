@@ -21,6 +21,9 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { EditProfileComponentComponent } from './components/employees/edit-profile-component/edit-profile-component.component';
 import {MatTableModule} from '@angular/material/table'; 
 import { HttpClientModule } from '@angular/common/http';
+import { AllClientsComponent } from './components/clients/all-clients/all-clients.component';
+import { PaginatorComponent } from './components/shared/paginator/paginator.component';
+import { CreateClientComponent } from './components/clients/create-client/create-client.component';
 
 
 @NgModule({
@@ -32,7 +35,10 @@ import { HttpClientModule } from '@angular/common/http';
     LoginFormComponent,
     ResetPasswordFormComponent,
     SendHolidayRequestFormComponent,
-    EditProfileComponentComponent
+    EditProfileComponentComponent,
+    AllClientsComponent,
+    PaginatorComponent,
+    CreateClientComponent
   ],
   imports: [
     BrowserModule,
