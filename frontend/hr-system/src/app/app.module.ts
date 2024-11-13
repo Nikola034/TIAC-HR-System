@@ -20,6 +20,7 @@ import {provideNativeDateAdapter} from '@angular/material/core';
 import { MatDialogModule } from '@angular/material/dialog';
 import { EditProfileComponentComponent } from './components/employees/edit-profile-component/edit-profile-component.component';
 import {MatTableModule} from '@angular/material/table'; 
+import { HttpClientModule } from '@angular/common/http';
 
 
 @NgModule({
@@ -45,7 +46,8 @@ import {MatTableModule} from '@angular/material/table';
     MatInputModule,
     MatDatepickerModule,
     MatDialogModule,
-    MatTableModule
+    MatTableModule,
+    HttpClientModule,
   ],
   providers: [provideNativeDateAdapter()],
   bootstrap: [AppComponent]

@@ -10,11 +10,18 @@ import { Subject, takeUntil, tap } from 'rxjs';
   styleUrl: './all-projects.component.css'
 })
 export class AllProjectsComponent implements OnInit, OnDestroy {
-  projects : Project[] = [];
+  projects : Project[] = [{id:"id",title:"some title",description:"some description",teamLeadId:"teamlid",client:{id:"id",name:"Clients name",country:"cnt"}}
+    ,{id:"id",title:"some title",description:"some description",teamLeadId:"teamlid",client:{id:"id",name:"Clients name",country:"cnt"}}
+    ,{id:"id",title:"some title",description:"some description",teamLeadId:"teamlid",client:{id:"id",name:"Clients name",country:"cnt"}}
+    ,{id:"id",title:"some title",description:"some description",teamLeadId:"teamlid",client:{id:"id",name:"Clients name",country:"cnt"}}
+    ,{id:"id",title:"some title",description:"some description",teamLeadId:"teamlid",client:{id:"id",name:"Clients name",country:"cnt"}}
+    ,{id:"id",title:"some title",description:"some description",teamLeadId:"teamlid",client:{id:"id",name:"Clients name",country:"cnt"}}
+    ,{id:"id",title:"some title",description:"some description",teamLeadId:"teamlid",client:{id:"id",name:"Clients name",country:"cnt"}}
+  ];
   pageNumber : number = 1;
   totalPages : number = 1;
   itemsPerPage : number = 10;
-  displayedColumns : string[] = ['title', 'description' , 'client']
+  displayedColumns : string[] = ['title', 'description' , 'client', 'details', 'delete']
 
   private destroy$ = new Subject<void>();
 
@@ -64,6 +71,11 @@ export class AllProjectsComponent implements OnInit, OnDestroy {
            this.projects = response.projects
          this.totalPages = response.totalPages
           })).subscribe()
+  }
+
+  delete(id : string) : void {
+    console.log("deleted")
+    //this.projectService.delete(id).subscribe
   }
 
   ngOnDestroy(): void {

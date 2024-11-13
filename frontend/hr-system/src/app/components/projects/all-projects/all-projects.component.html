@@ -1,25 +1,47 @@
-<table mat-table [dataSource]="projects" class="mat-elevation-z8">
-    <ng-container matColumnDef="title">
-      <th mat-header-cell *matHeaderCellDef> Title </th>
-      <td mat-cell *matCellDef="let project"> {{project.title}} </td>
-    </ng-container>
-  
-    <ng-container matColumnDef="description">
-      <th mat-header-cell *matHeaderCellDef> Description </th>
-      <td mat-cell *matCellDef="let project"> {{project.description}} </td>
-    </ng-container>
-  
-    <ng-container matColumnDef="client">
-      <th mat-header-cell *matHeaderCellDef> Weight </th>
-      <td mat-cell *matCellDef="let project"> {{project.client.name}} </td>
-    </ng-container>
-  
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row (click)="viewProject(row)" *matRowDef="let row; columns: displayedColumns;"></tr>
+<div class="all-projects-container">
+  <div class="header-div">
+    <h1>All projects</h1>
+  </div>
+  <table mat-table [dataSource]="projects" class="mat-elevation-z6">
+      <ng-container matColumnDef="title">
+        <th mat-header-cell *matHeaderCellDef> Title </th>
+        <td mat-cell *matCellDef="let project"> {{project.title}} </td>
+      </ng-container>
+    
+      <ng-container matColumnDef="description">
+        <th mat-header-cell *matHeaderCellDef> Description </th>
+        <td mat-cell *matCellDef="let project"> {{project.description}} </td>
+      </ng-container>
+    
+      <ng-container matColumnDef="client">
+        <th mat-header-cell *matHeaderCellDef> Client </th>
+        <td mat-cell *matCellDef="let project"> {{project.client.name}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="details">
+        <th mat-header-cell *matHeaderCellDef> Details </th>
+        <td mat-cell *matCellDef="let project">
+           <button mat-icon-button matTooltip="Click to view details" class="iconbutton" (click)="viewProject(project.id)" color="warn">
+              <mat-icon>info_outline</mat-icon>
+          </button> 
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="delete">
+        <th mat-header-cell *matHeaderCellDef> Delete </th>
+        <td mat-cell *matCellDef="let project">
+           <button mat-icon-button matTooltip="Click to delete" class="iconbutton" (click)="delete(project.id)" color="warn">
+              <mat-icon>delete</mat-icon>
+          </button> 
+        </td>
+      </ng-container>
+    
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
-  
+    
   <div class="pagination">
-      <button
+      <button mat-button
         (click)="loadNewPage(pageNumber - 1)"
         [disabled]="pageNumber === 1"
         class="pagination-button"
@@ -28,7 +50,7 @@
       </button>
     
       <!-- Page number buttons -->
-      <button
+      <button mat-button
         *ngFor="let page of generatePagination(pageNumber, totalPages)"
         (click)="loadNewPage(page)"
         [class.active]="page === pageNumber"
@@ -37,7 +59,7 @@
         {{ page }}
       </button>
     
-      <button
+      <button mat-button
         (click)="loadNewPage(pageNumber + 1)"
         [disabled]="pageNumber === totalPages"
         class="pagination-button"
@@ -45,5 +67,5 @@
         Next
       </button>
     </div>
-  
+</div>
   

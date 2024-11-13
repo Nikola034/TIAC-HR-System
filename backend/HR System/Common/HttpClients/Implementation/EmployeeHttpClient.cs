@@ -27,7 +27,7 @@ public class EmployeeHttpClient : IEmployeeHttpClient
         return await response.Content.ReadAsStringAsync();
     }
 
-    public async Task<string> GetEmployeeRole(Guid employeeAccountId, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task<string> GetEmployeeByAccountId(Guid employeeAccountId, CancellationToken cancellationToken = default(CancellationToken))
     {
         var httpClient = _httpClientFactory.CreateClient("EmployeeServiceClient");
         var request = new HttpRequestMessage
@@ -37,8 +37,6 @@ public class EmployeeHttpClient : IEmployeeHttpClient
         };
         var response = await httpClient.SendAsync(request);
         response.EnsureSuccessStatusCode();
-        var responseString = await response.Content.ReadAsStringAsync(cancellationToken);
-        var jsonObj = JObject.Parse(responseString);
-        return jsonObj["role"].ToString();
+        return await response.Content.ReadAsStringAsync(cancellationToken);
     }
 }

@@ -7,6 +7,7 @@ using Application.Common.Services;
 using Common.HttpCLients;
 using Core.Exceptions;
 using MediatR;
+using Newtonsoft.Json.Linq;
 
 namespace Application.Commands
 {
@@ -32,8 +33,11 @@ namespace Application.Commands
                 throw new InvalidRefreshTokenException();
             }
             
-            var userRole = await _employeeHttpClient.GetEmployeeRole(user.Id);
-            var tokens = await _jwtService.GenerateTokensAsync(user.Email,userRole);
+            var responseString = await _employeeHttpClient.GetEmployeeByAccountId(user.Id,cancellationToken);
+            var jsonObj = JObject.Parse(responseString);
+            var userRole = jsonObj["role"].ToString();
+            var employeeId = jsonObj["id"].ToString();
+            var tokens = await _jwtService.GenerateTokensAsync(user.Email,userRole,employeeId);
             await _accountRepository.UpdateRefreshTokenAsync(user.Email, tokens.RefreshToken, cancellationToken);
             return tokens;
         }

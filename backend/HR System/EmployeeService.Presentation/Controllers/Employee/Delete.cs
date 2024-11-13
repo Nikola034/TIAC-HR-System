@@ -26,7 +26,7 @@ namespace EmployeeService.Presentation.Controllers.Employee
         public override async Task HandleAsync(CancellationToken ct)
         {
             var result = await _mediator.Send(new DeleteEmployeeCommand(Route<Guid>("id")), ct);
-            if (result == Result.Failure<Core.Entities.Employee>(DomainErrors.Employee.NotFound))
+            if (!result)
                 await SendNotFoundAsync(ct);
             await SendOkAsync(ct);
         }

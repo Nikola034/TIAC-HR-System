@@ -3,7 +3,7 @@ using MediatR;
 
 namespace Application.Queries.Client
 {
-    public class GetAllClientsHandler : IRequestHandler<GetAllClientsQuery, IEnumerable<Core.Entities.Client>>
+    public class GetAllClientsHandler : IRequestHandler<GetAllClientsQuery, GetAllClientsQueryResponse>
     {
         private readonly IClientRepository _clientRepository;
 
@@ -12,14 +12,16 @@ namespace Application.Queries.Client
             _clientRepository = clientRepository;
         }
 
-        public async Task<IEnumerable<Core.Entities.Client>> Handle(GetAllClientsQuery req, CancellationToken ct)
+        public async Task<GetAllClientsQueryResponse> Handle(GetAllClientsQuery req, CancellationToken ct)
         {
-            var clients = await _clientRepository.GetAllClientsAsync(req.Page, ct);
-            return clients;
+            var clients = await _clientRepository.GetAllClientsAsync(req.PageNumber,req.ItemNumber, ct);
+            var totalPages = await _clientRepository.GetTotalPageNumber(req.ItemNumber,ct);
+            return new GetAllClientsQueryResponse(clients,req.PageNumber,req.ItemNumber,totalPages);
         }
         
     }
 
-    public record GetAllClientsQuery(int Page) : IRequest<IEnumerable<Core.Entities.Client>>;
+    public record GetAllClientsQuery(int PageNumber, int ItemNumber) : IRequest<GetAllClientsQueryResponse>;
+    public record GetAllClientsQueryResponse(IEnumerable<Core.Entities.Client> Clients, int PageNumber, int ItemNumber, int TotalPages);
 
 }
