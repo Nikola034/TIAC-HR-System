@@ -1,4 +1,4 @@
-.login-container {
+.create-client-container {
     max-width: 400px;
     margin: auto;
     display: flex;
@@ -40,10 +40,5 @@
     justify-content: center;
     color: rgb(255, 255, 255);
   }
-  .forgotPassword{
-    text-decoration: none;
-    color: #6a5e5e;
-    font-size: 0.9rem;
-    margin-left: 10px;
-  }
+
   

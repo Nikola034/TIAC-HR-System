@@ -19,6 +19,9 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import {provideNativeDateAdapter} from '@angular/material/core';
 import { MatDialogModule } from '@angular/material/dialog';
 import { HttpClientModule } from '@angular/common/http';
+import { AllClientsComponent } from './components/clients/all-clients/all-clients.component';
+import { PaginatorComponent } from './components/shared/paginator/paginator.component';
+import { CreateClientComponent } from './components/clients/create-client/create-client.component';
 import { HolidayRequestsComponent } from './components/holidayRequests/holiday-requests-component/holiday-requests.component';
 import { EditProfileComponent } from './components/employees/edit-profile/edit-profile.component';
 import {MatTableModule} from '@angular/material/table';
@@ -37,6 +40,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     LoginFormComponent,
     ResetPasswordFormComponent,
     SendHolidayRequestFormComponent,
+    AllClientsComponent,
+    PaginatorComponent,
+    CreateClientComponent,
     EditProfileComponent,
     HolidayRequestsComponent,
     EditEmployeeComponent,
