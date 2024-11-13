@@ -2,11 +2,11 @@ import { Component } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
-  selector: 'app-edit-profile-component',
-  templateUrl: './edit-profile-component.component.html',
-  styleUrl: './edit-profile-component.component.css'
+  selector: 'app-edit-profile',
+  templateUrl: './edit-profile.component.html',
+  styleUrl: './edit-profile.component.css'
 })
-export class EditProfileComponentComponent {
+export class EditProfileComponent {
   editProfileForm: FormGroup;
 
   constructor(private fb: FormBuilder) {
