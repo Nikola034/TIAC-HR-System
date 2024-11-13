@@ -23,7 +23,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { HolidayRequestsComponent } from './components/holidayRequests/holiday-requests-component/holiday-requests.component';
 import { EditProfileComponent } from './components/employees/edit-profile-component/edit-profile.component';
 
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -51,7 +50,7 @@ import { EditProfileComponent } from './components/employees/edit-profile-compon
     MatTableModule,
     HttpClientModule,
     MatError,
-    MatCardActions
+    MatCardActions,
   ],
   providers: [provideNativeDateAdapter()],
   bootstrap: [AppComponent]

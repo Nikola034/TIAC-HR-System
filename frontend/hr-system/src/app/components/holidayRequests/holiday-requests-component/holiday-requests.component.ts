@@ -1,10 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Subject, takeUntil, tap } from 'rxjs';
 import { Router } from '@angular/router';
 import { HolidayRequest, HolidayRequestStatus } from '../../../core/models/holiday-request.model';
 import { HolidayRequestService } from '../../../core/services/holiday-request.service';
 import { Employee, EmployeeRole } from '../../../core/models/employee.model';
 import { DatePipe } from '@angular/common';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { SendHolidayRequestFormComponent } from '../send-holiday-request-form/send-holiday-request-form.component';
 
 @Component({
   selector: 'app-holiday-requests-component',
@@ -13,6 +15,7 @@ import { DatePipe } from '@angular/common';
   providers: [DatePipe],
 })
 export class HolidayRequestsComponent {
+  readonly dialog = inject(MatDialog);
   // Sample Employees
  employees: Employee[] = [
   { id: '1', name: 'Alice', surname: 'Johnson', daysOff: 10, role: EmployeeRole.Developer, accountId: 'A001' },
@@ -43,7 +46,9 @@ export class HolidayRequestsComponent {
 
   private destroy$ = new Subject<void>();
 
-  constructor(private holidayRequestService: HolidayRequestService, private router: Router, private datePipe: DatePipe) {}
+  constructor(private holidayRequestService: HolidayRequestService, private router: Router, private datePipe: DatePipe) {
+    
+  }
 
   ngOnInit() {
     this.holidayRequestService.getAllHolidayRequests(this.getQueryString())
@@ -128,5 +133,12 @@ export class HolidayRequestsComponent {
       default:
         return 'gray';
     }
+  }
+
+  openRequestDialog(): void{
+    const dialogRef = this.dialog.open(SendHolidayRequestFormComponent, {
+      height: '260px',
+  width: '340px',
+    });
   }
 }
