@@ -1,0 +1,38 @@
+<div class="edit-employee-container">
+    <div class="header .full-width">
+        <h3>Edit Profile</h3>
+    </div>
+    <form [formGroup]="editEmployeeForm" (ngSubmit)="onSubmit()">
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Name</mat-label>
+        <input
+          matInput
+          formControlName="name"
+          type="text"
+          placeholder="Enter employee's name"
+        />
+      </mat-form-field>
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Surname</mat-label>
+        <input
+          matInput
+          formControlName="surname"
+          type="text"
+          placeholder="Enter employee's surname"
+        />
+        <mat-error *ngIf="editEmployeeForm.get('surname')?.hasError('required')"
+          >Surname is required</mat-error
+        >
+      </mat-form-field>  
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Select employee's role</mat-label>
+        <mat-select formControlName="role">
+          <mat-option value="developer">Developer</mat-option>
+          <mat-option value="manager">Manager</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <button mat-raised-button color="primary" type="submit">
+        Submit
+      </button>
+    </form>
+  </div>

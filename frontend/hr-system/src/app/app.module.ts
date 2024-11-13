@@ -4,7 +4,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AllProjectsComponent } from './components/projects/all-projects/all-projects.component';
 import { ProjectCardComponent } from './components/projects/project-card/project-card.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {MatCardModule} from '@angular/material/card';
 import {MatButtonModule} from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -19,7 +19,9 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import {provideNativeDateAdapter} from '@angular/material/core';
 import { MatDialogModule } from '@angular/material/dialog';
 import { EditProfileComponentComponent } from './components/employees/edit-profile-component/edit-profile-component.component';
-import {MatTableModule} from '@angular/material/table'; 
+import {MatTableModule} from '@angular/material/table';
+import { EditEmployeeComponentComponent } from './components/employees/edit-employee-component/edit-employee-component.component'; 
+import { MatSelectModule } from '@angular/material/select';
 
 
 @NgModule({
@@ -31,7 +33,8 @@ import {MatTableModule} from '@angular/material/table';
     LoginFormComponent,
     ResetPasswordFormComponent,
     SendHolidayRequestFormComponent,
-    EditProfileComponentComponent
+    EditProfileComponentComponent,
+    EditEmployeeComponentComponent
   ],
   imports: [
     BrowserModule,
@@ -45,7 +48,9 @@ import {MatTableModule} from '@angular/material/table';
     MatInputModule,
     MatDatepickerModule,
     MatDialogModule,
-    MatTableModule
+    MatTableModule,
+    MatSelectModule,
+    FormsModule,
   ],
   providers: [provideNativeDateAdapter()],
   bootstrap: [AppComponent]
