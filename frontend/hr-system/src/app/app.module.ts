@@ -10,7 +10,7 @@ import {MatButtonModule} from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { LoginFormComponent } from './components/login/login-form/login-form.component';
-import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatError, MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import {MatIconModule} from '@angular/material/icon';
 import { ResetPasswordFormComponent } from './components/login/reset-password-form/reset-password-form.component';
@@ -18,9 +18,10 @@ import { SendHolidayRequestFormComponent } from './components/holidayRequests/se
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {provideNativeDateAdapter} from '@angular/material/core';
 import { MatDialogModule } from '@angular/material/dialog';
-import { EditProfileComponentComponent } from './components/employees/edit-profile-component/edit-profile-component.component';
 import {MatTableModule} from '@angular/material/table'; 
 import { HttpClientModule } from '@angular/common/http';
+import { HolidayRequestsComponentComponent } from './components/holidayRequests/holiday-requests-component/holiday-requests-component.component';
+import { EditProfileComponent } from './components/employees/edit-profile-component/edit-profile.component';
 
 
 @NgModule({
@@ -32,7 +33,8 @@ import { HttpClientModule } from '@angular/common/http';
     LoginFormComponent,
     ResetPasswordFormComponent,
     SendHolidayRequestFormComponent,
-    EditProfileComponentComponent
+    EditProfileComponent,
+    HolidayRequestsComponentComponent
   ],
   imports: [
     BrowserModule,
@@ -48,6 +50,7 @@ import { HttpClientModule } from '@angular/common/http';
     MatDialogModule,
     MatTableModule,
     HttpClientModule,
+    MatError
   ],
   providers: [provideNativeDateAdapter()],
   bootstrap: [AppComponent]
