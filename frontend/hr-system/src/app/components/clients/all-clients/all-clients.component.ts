@@ -20,7 +20,7 @@ export class AllClientsComponent {
 
   pageNumber : number = 1;
   totalPages : number = 1;
-  itemsPerPage : number = 10;
+  itemsPerPage : number = 8;
   displayedColumns : string[] = ['name', 'country' , 'numberOfProjects', 'projects', 'delete']
 
   private destroy$ = new Subject<void>();

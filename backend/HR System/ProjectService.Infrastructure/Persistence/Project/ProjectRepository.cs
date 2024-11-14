@@ -86,4 +86,17 @@ public class ProjectRepository(ProjectDbContext dbContext) : IProjectRepository
     {
         return dbContext.Projects.Count(x => x.ClientId == clientId);
     }
+
+    public async Task DeleteAllProjectsForClientAsync(Guid clientId, CancellationToken ct = default(CancellationToken))
+    {
+        var existingProjects = await dbContext.Projects.
+            Where(x => x.ClientId == clientId).ToListAsync(ct);
+        if (existingProjects.Count == 0)
+        {
+            return;
+        }
+        dbContext.Projects.RemoveRange(existingProjects);
+        await dbContext.SaveChangesAsync(ct);
+        return;
+    }
 }

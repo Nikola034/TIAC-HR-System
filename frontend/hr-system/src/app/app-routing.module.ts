@@ -7,6 +7,7 @@ import { EditProfileComponent } from './components/employees/edit-profile/edit-p
 import { HolidayRequestsComponent } from './components/holidayRequests/holiday-requests-component/holiday-requests.component';
 import { MyProjectsComponent } from './components/projects/my-projects/my-projects.component';
 import { ProjectDetailsComponent } from './components/projects/project-details/project-details.component';
+import { CreateProjectComponent } from './components/projects/create-project/create-project.component';
 
 const routes: Routes = [
   { path:'projects', component: AllProjectsComponent},
@@ -17,6 +18,8 @@ const routes: Routes = [
   { path:'holiday-requests', component: HolidayRequestsComponent},
   { path:'my-projects', component: MyProjectsComponent},
   { path:'my-projects/:id', component: ProjectDetailsComponent},
+  { path:'profile', component: EditProfileComponent},
+  { path: 'create-project', component: CreateProjectComponent}
 ];
 
 @NgModule({

@@ -33,6 +33,7 @@ import { MyProjectsComponent } from './components/projects/my-projects/my-projec
 import { ProjectDetailsComponent } from './components/projects/project-details/project-details.component';
 import {MatDividerModule} from '@angular/material/divider';
 import {MatTooltipModule} from '@angular/material/tooltip';
+import { CreateProjectComponent } from './components/projects/create-project/create-project.component';
 
 @NgModule({
   declarations: [
@@ -51,7 +52,8 @@ import {MatTooltipModule} from '@angular/material/tooltip';
     EditEmployeeComponent,
     CreateEmployeeComponent,
     MyProjectsComponent,
-    ProjectDetailsComponent
+    ProjectDetailsComponent,
+    CreateProjectComponent
   ],
   imports: [
     BrowserModule,
