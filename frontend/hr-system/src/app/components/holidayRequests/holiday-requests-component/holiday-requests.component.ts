@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { Subject, takeUntil, tap } from 'rxjs';
+import { Subject, switchMap, takeUntil, tap } from 'rxjs';
 import { Router } from '@angular/router';
 import { HolidayRequest, HolidayRequestStatus } from '../../../core/models/holiday-request.model';
 import { HolidayRequestService } from '../../../core/services/holiday-request.service';
@@ -33,7 +33,7 @@ holidayRequestApprovers: HolidayRequestApprover[] = []
 
   pageNumber : number = 1;
   totalPages : number = 1;
-  itemsPerPage : number = 10;
+  itemsPerPage : number = 5;
 
   displayedColumns : string[] = ['status', 'sender', 'start', 'end', 'delete']
   approverColumns: string[] = ['sender', 'start', 'end', 'actions'];
@@ -47,7 +47,8 @@ holidayRequestApprovers: HolidayRequestApprover[] = []
   ngOnInit() {
     this.holidayRequestService.getAllHolidayRequests(this.getQueryString())
       .pipe(takeUntil(this.destroy$), tap((response) =>{
-        this.holidayRequests = response.holidayRequests
+        this.holidayRequests = response.holidayRequests,
+        this.totalPages = response.totalPages
       })).subscribe();
 
     this.holidayRequestApproverService.getAllHolidayRequestApproversByApproverId("0d2a2715-84f8-4b66-a710-6fcf2a62cbbb")
@@ -71,19 +72,17 @@ holidayRequestApprovers: HolidayRequestApprover[] = []
                         tap((response) =>{
            this.holidayRequests = response.holidayRequests
          this.totalPages = response.totalPages
-         this.itemsPerPage = response.itemsPerPage,
-         this.pageNumber = response.page
           })).subscribe()
   }
 
   deleteHolidayRequest(id : string) : void {
     console.log("deleted")
-    //this.holidayRequestService.delete(id).subscribe
-  }
-
-  deleteHolidayRequestApprover(id : string) : void {
-    console.log("deleted")
-    //this
+    this.holidayRequestService.deleteHolidayRequest(id).pipe(takeUntil(this.destroy$),
+     switchMap( () => this.holidayRequestService.getAllHolidayRequests(this.getQueryString()).pipe(
+       tap(response => {
+         this.holidayRequests = response.holidayRequests;
+         this.totalPages = response.totalPages;
+       })))).subscribe()
   }
 
   ngOnDestroy(): void {

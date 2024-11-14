@@ -22,4 +22,8 @@ export class HolidayRequestService {
   createHolidayRequest(dto : CreateHolidayRequestDto): Observable<HolidayRequest> {
     return this.http.post<HolidayRequest>(`${this.baseUrl}`,dto)
   }
+
+  deleteHolidayRequest(id : string): Observable<any> {
+    return this.http.delete<any>(`${this.baseUrl}` + `/` + `${id}`);
+  }
 }

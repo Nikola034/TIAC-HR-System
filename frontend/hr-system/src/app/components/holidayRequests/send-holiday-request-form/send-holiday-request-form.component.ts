@@ -29,11 +29,11 @@ export class SendHolidayRequestFormComponent {
     const dto: CreateHolidayRequestDto = {
       start: this.range.value.start,
       end: this.range.value.end,
-      senderId: '387e3434-d303-4ebe-8109-f35b848b6f0f',
+      senderId: 'fa9e4343-771e-4d96-abbb-ac13c925d51c',
       status: HolidayRequestStatus.Pending
     }    
     console.log(dto)
-    this.holidayRequestService.createHolidayRequest(dto);
+    this.holidayRequestService.createHolidayRequest(dto).subscribe()
     this.onCancel();
   }
 
