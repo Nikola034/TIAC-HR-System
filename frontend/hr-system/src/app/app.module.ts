@@ -32,6 +32,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MyProjectsComponent } from './components/projects/my-projects/my-projects.component';
 import { ProjectDetailsComponent } from './components/projects/project-details/project-details.component';
 import {MatDividerModule} from '@angular/material/divider';
+import {MatTooltipModule} from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [
@@ -71,7 +72,8 @@ import {MatDividerModule} from '@angular/material/divider';
     MatCardActions,
     MatSelectModule,
     FormsModule,
-    MatDividerModule
+    MatDividerModule,
+    MatTooltipModule
   ],
   providers: [provideNativeDateAdapter()],
   bootstrap: [AppComponent]
