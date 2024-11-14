@@ -1,6 +1,17 @@
 .project-card{
     width: 22rem;
+    gap: 0.7rem;
     -webkit-box-shadow: 11px 10px 7px -3px rgba(191,191,191,1);
     -moz-box-shadow: 11px 10px 7px -3px rgba(191,191,191,1);
     box-shadow: 11px 10px 7px -3px rgba(191,191,191,1);
+}
+.title{
+    font-size: 1.6rem;
+    font-weight: 600;
+}
+.content{
+    font-size: 1.2rem;
+}
+button{
+    font-size: 1rem;
 }

@@ -29,6 +29,7 @@ import { EditEmployeeComponent } from './components/employees/edit-employee/edit
 import { MatSelectModule } from '@angular/material/select';
 import { CreateEmployeeComponent } from './components/employees/create-employee/create-employee.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MyProjectsComponent } from './components/projects/my-projects/my-projects.component';
 
 
 @NgModule({
@@ -46,7 +47,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     EditProfileComponent,
     HolidayRequestsComponent,
     EditEmployeeComponent,
-    CreateEmployeeComponent
+    CreateEmployeeComponent,
+    MyProjectsComponent
   ],
   imports: [
     BrowserModule,
