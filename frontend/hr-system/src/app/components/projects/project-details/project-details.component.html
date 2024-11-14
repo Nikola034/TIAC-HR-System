@@ -1,0 +1,39 @@
+<mat-card class="project-details-card">
+    <mat-card-header>
+      <mat-card-title class="title">{{ project.title }}</mat-card-title>
+      <mat-card-subtitle>Client: {{ project.client.name }} ({{ project.client.country }})</mat-card-subtitle>
+    </mat-card-header>
+  
+    <mat-card-content class="description">
+      <p><strong>Description:</strong> {{ project.description }}</p>
+      <p><strong>Team Lead:</strong> {{ teamLead.name + ' ' + teamLead.surname }}</p>
+    </mat-card-content>
+  
+    <mat-divider style="margin-top: 1rem;"></mat-divider>
+  
+    <mat-card-content>
+       <!-- Employees Display -->
+    <h3>Employees on Project</h3>
+    <table mat-table [dataSource]="employees" class="mat-elevation-z2 small-table" *ngIf="employees && employees.length > 0">
+      <!-- Name Column -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef> Name </th>
+        <td mat-cell *matCellDef="let employee"> {{ employee.name }} </td>
+      </ng-container>
+
+      <!-- Surname Column -->
+      <ng-container matColumnDef="surname">
+        <th mat-header-cell *matHeaderCellDef> Surname </th>
+        <td mat-cell *matCellDef="let employee"> {{ employee.surname }} </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="['name', 'surname']"></tr>
+      <tr mat-row *matRowDef="let row; columns: ['name', 'surname'];"></tr>
+    </table>
+    <p *ngIf="!employees || employees.length === 0">No other employees assigned to this project.</p>
+  </mat-card-content>
+  
+    <mat-card-actions>
+      <button mat-flat-button color="primary" (click)="goBack()">Back to My Projects</button>
+    </mat-card-actions>
+  </mat-card>

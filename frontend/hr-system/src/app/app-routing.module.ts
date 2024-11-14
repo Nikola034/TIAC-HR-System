@@ -6,6 +6,7 @@ import { CreateClientComponent } from './components/clients/create-client/create
 import { EditProfileComponent } from './components/employees/edit-profile/edit-profile.component';
 import { HolidayRequestsComponent } from './components/holidayRequests/holiday-requests-component/holiday-requests.component';
 import { MyProjectsComponent } from './components/projects/my-projects/my-projects.component';
+import { ProjectDetailsComponent } from './components/projects/project-details/project-details.component';
 
 const routes: Routes = [
   { path:'projects', component: AllProjectsComponent},
@@ -15,7 +16,7 @@ const routes: Routes = [
   { path:'create-client', component:CreateClientComponent},
   { path:'holiday-requests', component: HolidayRequestsComponent},
   { path:'my-projects', component: MyProjectsComponent},
-  { path:'project-details/:id', component: MyProjectsComponent},
+  { path:'my-projects/:id', component: ProjectDetailsComponent},
 ];
 
 @NgModule({

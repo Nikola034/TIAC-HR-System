@@ -30,7 +30,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { CreateEmployeeComponent } from './components/employees/create-employee/create-employee.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MyProjectsComponent } from './components/projects/my-projects/my-projects.component';
-
+import { ProjectDetailsComponent } from './components/projects/project-details/project-details.component';
+import {MatDividerModule} from '@angular/material/divider';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,8 @@ import { MyProjectsComponent } from './components/projects/my-projects/my-projec
     HolidayRequestsComponent,
     EditEmployeeComponent,
     CreateEmployeeComponent,
-    MyProjectsComponent
+    MyProjectsComponent,
+    ProjectDetailsComponent
   ],
   imports: [
     BrowserModule,
@@ -69,6 +71,7 @@ import { MyProjectsComponent } from './components/projects/my-projects/my-projec
     MatCardActions,
     MatSelectModule,
     FormsModule,
+    MatDividerModule
   ],
   providers: [provideNativeDateAdapter()],
   bootstrap: [AppComponent]
