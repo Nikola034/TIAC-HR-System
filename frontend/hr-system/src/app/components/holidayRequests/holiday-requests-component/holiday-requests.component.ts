@@ -9,6 +9,7 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { SendHolidayRequestFormComponent } from '../send-holiday-request-form/send-holiday-request-form.component';
 import { HolidayRequestApproverService } from '../../../core/services/holiday-request-approver.service';
 import { HolidayRequestApprover } from '../../../core/models/holiday-request-approver.model.ts';
+import { UpdateHolidayRequestApproverDto } from '../../../core/dtos/holiday-request-approver/update-holiday-request-approver.dto'
 
 @Component({
   selector: 'app-holiday-requests-component',
@@ -83,6 +84,19 @@ holidayRequestApprovers: HolidayRequestApprover[] = []
          this.holidayRequests = response.holidayRequests;
          this.totalPages = response.totalPages;
        })))).subscribe()
+  }
+
+  approveHolidayRequestApprover(id: string) : void{
+  //   dto: UpdateHolidayRequestApproverDto
+  //   this.holidayRequestApproverService.updateHolidayRequestApprover(dto)
+  //   .pipe(takeUntil(this.destroy$), tap((response) => {
+  //   if(response)
+  //       this.router.navigate(['holiday-requests'])
+  // })).subscribe();
+  }
+
+  denyHolidayRequestApprover(id: string) : void{
+    
   }
 
   ngOnDestroy(): void {
