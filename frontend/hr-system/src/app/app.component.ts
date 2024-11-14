@@ -16,7 +16,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.router.events.pipe(takeUntil(this.destroy$),tap((event) =>{
       if (event instanceof NavigationEnd) {
         // List of routes that should not show the navbar
-        const excludedRoutes = ['/login', '/register'];
+        const excludedRoutes = ['/', '/register'];
 
         // Check if the current route is in the list of excluded routes
         this.showNavbar = !excludedRoutes.includes(event.urlAfterRedirects);

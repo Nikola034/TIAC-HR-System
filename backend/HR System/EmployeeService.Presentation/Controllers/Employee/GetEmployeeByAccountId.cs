@@ -7,7 +7,7 @@ using MediatR;
 
 namespace EmployeeService.Presentation.Controllers.Employee
 {
-    public class GetEmployeeByAccountId : EndpointWithoutRequest<EmployeeByIdResponse>
+    public class GetEmployeeByAccountId : EndpointWithoutRequest<EmployeeByAccountIdResponse>
     {
         IMediator _mediator;
 
@@ -26,7 +26,7 @@ namespace EmployeeService.Presentation.Controllers.Employee
         {
             var employeeAccountId = Route<Guid>("employeeAccountId");
             var employee = await _mediator.Send(new GetRoleByAccountIdQuery(employeeAccountId),ct);
-            await SendOkAsync(employee.ToApiResponse(), ct);
+            await SendOkAsync(employee.ToApiResponseFromGetByAccountId(), ct);
         }
     }
 }

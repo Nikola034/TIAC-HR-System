@@ -51,4 +51,17 @@ public class EmployeeProjectRepository(ProjectDbContext dbContext) : IEmployeePr
         await dbContext.SaveChangesAsync(ct);
         return;
     }
+
+    public async Task RemoveProjectsAsync(IEnumerable<Guid> projectIds, CancellationToken ct = default(CancellationToken))
+    {
+        var existingEmployeeProjects = await dbContext.EmployeeProjects.
+            Where(x => projectIds.Contains(x.ProjectId)).ToListAsync(ct);
+        if (existingEmployeeProjects.Count == 0)
+        {
+            return;
+        }
+        dbContext.EmployeeProjects.RemoveRange(existingEmployeeProjects);
+        await dbContext.SaveChangesAsync(ct);
+        return;
+    }
 }

@@ -22,9 +22,9 @@ public class EmployeeHttpClient : IEmployeeHttpClient
             Method = HttpMethod.Get,
             RequestUri = new Uri("employees/" + employeeId, UriKind.Relative)
         };
-        var response = await httpClient.SendAsync(request);
+        var response = await httpClient.SendAsync(request,cancellationToken);
         response.EnsureSuccessStatusCode();
-        return await response.Content.ReadAsStringAsync();
+        return await response.Content.ReadAsStringAsync(cancellationToken);
     }
 
     public async Task<string> GetEmployeeByAccountId(Guid employeeAccountId, CancellationToken cancellationToken = default(CancellationToken))
@@ -33,9 +33,9 @@ public class EmployeeHttpClient : IEmployeeHttpClient
         var request = new HttpRequestMessage
         {
             Method = HttpMethod.Get,
-            RequestUri = new Uri("employees/getRole/" + employeeAccountId, UriKind.Relative)
+            RequestUri = new Uri("employees/getByAccountId/" + employeeAccountId, UriKind.Relative)
         };
-        var response = await httpClient.SendAsync(request);
+        var response = await httpClient.SendAsync(request,cancellationToken);
         response.EnsureSuccessStatusCode();
         return await response.Content.ReadAsStringAsync(cancellationToken);
     }

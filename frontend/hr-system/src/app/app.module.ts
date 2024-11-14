@@ -18,7 +18,7 @@ import { SendHolidayRequestFormComponent } from './components/holidayRequests/se
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {provideNativeDateAdapter} from '@angular/material/core';
 import { MatDialogModule } from '@angular/material/dialog';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AllClientsComponent } from './components/clients/all-clients/all-clients.component';
 import { PaginatorComponent } from './components/shared/paginator/paginator.component';
 import { CreateClientComponent } from './components/clients/create-client/create-client.component';
@@ -29,6 +29,8 @@ import { EditEmployeeComponent } from './components/employees/edit-employee/edit
 import { MatSelectModule } from '@angular/material/select';
 import { CreateEmployeeComponent } from './components/employees/create-employee/create-employee.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { CreateProjectComponent } from './components/projects/create-project/create-project.component';
+import { HttpInterceptorService } from './core/services/http-interceptor.service';
 
 
 @NgModule({
@@ -46,7 +48,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     EditProfileComponent,
     HolidayRequestsComponent,
     EditEmployeeComponent,
-    CreateEmployeeComponent
+    CreateEmployeeComponent,
+    CreateProjectComponent
   ],
   imports: [
     BrowserModule,
@@ -68,7 +71,14 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     MatSelectModule,
     FormsModule,
   ],
-  providers: [provideNativeDateAdapter()],
+  providers: [provideNativeDateAdapter(),
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HttpInterceptorService,
+      multi: true,
+    },
+    // Other providers...
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

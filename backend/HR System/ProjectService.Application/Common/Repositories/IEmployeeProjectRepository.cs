@@ -9,4 +9,5 @@ public interface IEmployeeProjectRepository
     public Task<IEnumerable<Guid>> GetAllProjectsForEmployeeAsync(Guid employeeId, CancellationToken ct = default(CancellationToken));
     public Task<IEnumerable<Guid>> GetAllEmployeesOnProjectAsync(Guid projectId, CancellationToken ct = default(CancellationToken));
     public Task RemoveProjectAsync(Guid projectId, CancellationToken ct = default(CancellationToken));
+    public Task RemoveProjectsAsync(IEnumerable<Guid> projectIds, CancellationToken ct = default(CancellationToken));
 }

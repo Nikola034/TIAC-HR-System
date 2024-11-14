@@ -22,4 +22,8 @@ export class ClientService {
   createClient(dto : CreateClientDto): Observable<Client> {
     return this.http.post<Client>(`${this.baseUrl}`,dto);
   }
+
+  deleteClient(id : string): Observable<any> {
+    return this.http.delete<any>(`${this.baseUrl}${id}`);
+  }
 }

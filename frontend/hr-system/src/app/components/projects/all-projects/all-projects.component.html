@@ -1,6 +1,10 @@
 <div class="all-projects-container">
   <div class="header-div">
     <h1>All projects</h1>
+    <button mat-flat-button class="add-button" color="primary" routerLink="/create-project">
+      <mat-icon>add</mat-icon>
+      <mat-label>New Project</mat-label>
+    </button> 
   </div>
   <table mat-table [dataSource]="projects" class="mat-elevation-z6">
       <ng-container matColumnDef="title">
