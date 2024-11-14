@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Subject, takeUntil, tap } from 'rxjs';
+import { catchError, Subject, takeUntil, tap, throwError } from 'rxjs';
 import { ProjectService } from '../../../core/services/project.service';
 import { CreateProjectDto } from '../../../core/dtos/project/create-project.dto';
 import { Client } from '../../../core/models/client.model';
@@ -9,6 +9,7 @@ import { ClientService } from '../../../core/services/client.service';
 import { EmployeeService } from '../../../core/services/employee.service';
 import { ClientWithNumberOfProjects } from '../../../core/dtos/client/client-with-number-of-projects.dto';
 import { Router } from '@angular/router';
+import { AlertService } from '../../../core/services/alert.service';
 
 @Component({
   selector: 'app-create-project',
@@ -21,7 +22,8 @@ export class CreateProjectComponent {
   createProjectForm: FormGroup;
 
   constructor(private fb: FormBuilder, private projectService : ProjectService,
-              private clientService : ClientService, private employeeService : EmployeeService, private router: Router) {
+              private clientService : ClientService, private employeeService : EmployeeService,
+               private router: Router, private swal : AlertService) {
     this.createProjectForm = this.fb.group({
       title: ['', Validators.required],
       description: ['', Validators.required],
@@ -57,10 +59,13 @@ export class CreateProjectComponent {
         };
       this.projectService.createProject(dto)
         .pipe(takeUntil(this.destroy$), tap((response) => {
-        if(response)
-            this.router.navigate(['projects'])
-      })).subscribe();
-      console.log('Form Submitted', this.createProjectForm.value);
+          this.swal.fireSwalSuccess("Project created successfully")
+          this.router.navigate(['projects'])
+          }),
+          catchError( error => {
+            this.swal.fireSwalError("Something went wrong")
+            return throwError(() => error);
+          })).subscribe();
     }
   }
 
