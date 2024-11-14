@@ -1,0 +1,58 @@
+<div class="create-project-container">
+    <div class="header .full-width">
+      <mat-icon class="header-icon">queue_play_next</mat-icon>
+    </div>
+    <form [formGroup]="createProjectForm" (ngSubmit)="onSubmit()">
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Title</mat-label>
+        <input
+          matInput
+          formControlName="title"
+          type="text"
+          placeholder="Enter project title"
+        />
+        <mat-error *ngIf="createProjectForm.get('title')?.hasError('required')"
+          >Title is required</mat-error
+        >
+        <mat-error *ngIf="createProjectForm.get('title')?.hasError('title')"
+          >Enter a valid title</mat-error
+        >
+      </mat-form-field>
+  
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Description</mat-label>
+        <input
+          matInput
+          formControlName="description"
+          type="text"
+          placeholder="Enter project description"
+        />
+        <mat-error *ngIf="createProjectForm.get('description')?.hasError('required')"
+          >Description is required</mat-error
+        >
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Select client</mat-label>
+        <mat-select formControlName="client">
+          <mat-option *ngFor="let client of clients" mat-option [value]="client.client.id">{{client.client.name}}</mat-option>
+        </mat-select>
+        <mat-error *ngIf="createProjectForm.get('client')?.hasError('required')"
+        >Client is required</mat-error
+      >
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Select team lead</mat-label>
+        <mat-select formControlName="teamLead">
+          <mat-option *ngFor="let developer of developers" mat-option [value]="developer.id">{{developer.name}}&nbsp;{{developer.surname}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+  
+      <button mat-raised-button color="primary" type="submit" [disabled]="!createProjectForm.valid">
+        Create project
+      </button>
+    </form>
+  </div>
+  
+

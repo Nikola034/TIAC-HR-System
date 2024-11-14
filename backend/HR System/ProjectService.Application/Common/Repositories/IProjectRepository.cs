@@ -14,5 +14,6 @@ public interface IProjectRepository
     public Task<int> GetTotalPageNumber(int itemNumber, CancellationToken ct = default(CancellationToken));
     public Task<IEnumerable<Project>> GetAllProjectsByClientIdAsync(Guid clientId, CancellationToken ct = default(CancellationToken));
     public int GetNumberOfProjectsByClient(Guid clientId);
+    public Task DeleteAllProjectsForClientAsync(Guid clientId, CancellationToken ct = default(CancellationToken));
 
 }

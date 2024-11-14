@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Project } from '../../../core/models/project.model';
 import { ProjectService } from '../../../core/services/project.service';
 import { Router } from '@angular/router';
-import { Subject, takeUntil, tap } from 'rxjs';
+import { Subject, switchMap, takeUntil, tap } from 'rxjs';
 
 @Component({
   selector: 'app-all-projects',
@@ -10,17 +10,10 @@ import { Subject, takeUntil, tap } from 'rxjs';
   styleUrl: './all-projects.component.css'
 })
 export class AllProjectsComponent implements OnInit, OnDestroy {
-  projects : Project[] = [{id:"id",title:"some title",description:"some description",teamLeadId:"teamlid",client:{id:"id",name:"Clients name",country:"cnt"}}
-    ,{id:"id",title:"some title",description:"some description",teamLeadId:"teamlid",client:{id:"id",name:"Clients name",country:"cnt"}}
-    ,{id:"id",title:"some title",description:"some description",teamLeadId:"teamlid",client:{id:"id",name:"Clients name",country:"cnt"}}
-    ,{id:"id",title:"some title",description:"some description",teamLeadId:"teamlid",client:{id:"id",name:"Clients name",country:"cnt"}}
-    ,{id:"id",title:"some title",description:"some description",teamLeadId:"teamlid",client:{id:"id",name:"Clients name",country:"cnt"}}
-    ,{id:"id",title:"some title",description:"some description",teamLeadId:"teamlid",client:{id:"id",name:"Clients name",country:"cnt"}}
-    ,{id:"id",title:"some title",description:"some description",teamLeadId:"teamlid",client:{id:"id",name:"Clients name",country:"cnt"}}
-  ];
+  projects : Project[] = [  ];
   pageNumber : number = 1;
   totalPages : number = 1;
-  itemsPerPage : number = 10;
+  itemsPerPage : number = 8;
   displayedColumns : string[] = ['title', 'description' , 'client', 'details', 'delete']
 
   private destroy$ = new Subject<void>();
@@ -56,7 +49,12 @@ export class AllProjectsComponent implements OnInit, OnDestroy {
 
   delete(id : string) : void {
     console.log("deleted")
-    //this.projectService.delete(id).subscribe
+    this.projectService.deleteProject(id).pipe(takeUntil(this.destroy$),
+     switchMap( () => this.projectService.getAllProjects(this.getQueryString()).pipe(
+       tap(response => {
+         this.projects = response.projects;
+         this.totalPages = response.totalPages;
+       })))).subscribe()
   }
 
   ngOnDestroy(): void {

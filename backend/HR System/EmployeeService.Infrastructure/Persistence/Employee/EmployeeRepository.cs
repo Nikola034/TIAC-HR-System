@@ -80,5 +80,13 @@ namespace EmployeeService.Infrastructure.Persistance.Employee
             .ToListAsync(cancellationToken);
             return employees;
         }
+
+        public async Task<IEnumerable<Core.Entities.Employee>> GetAllDevelopersAsync(CancellationToken cancellationToken = default)
+        {
+            var employees = await _context.Employees.OrderBy(x => x.Id)
+                .Where(x => x.Role == Core.Enums.EmployeeRole.Developer)
+                .ToListAsync(cancellationToken);
+            return employees;
+        }
     }
 }
