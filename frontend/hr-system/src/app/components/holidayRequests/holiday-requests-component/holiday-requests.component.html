@@ -37,4 +37,6 @@
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
+
+    <app-paginator [pageNumber]="pageNumber" [totalPages]="totalPages" (loadNewPageEmmiter)="loadNewPage($event)"/>
   </div>

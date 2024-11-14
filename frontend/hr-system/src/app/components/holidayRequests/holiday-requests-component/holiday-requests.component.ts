@@ -36,7 +36,22 @@ export class HolidayRequestsComponent {
   { id: 'HR7', start: new Date('2024-07-01'), end: new Date('2024-07-07'), sender: this.employees[1], status: HolidayRequestStatus.Denied },
   { id: 'HR8', start: new Date('2024-08-12'), end: new Date('2024-08-20'), sender: this.employees[2], status: HolidayRequestStatus.Pending },
   { id: 'HR9', start: new Date('2024-09-10'), end: new Date('2024-09-15'), sender: this.employees[3], status: HolidayRequestStatus.Approved },
-  { id: 'HR10', start: new Date('2024-10-05'), end: new Date('2024-10-12'), sender: this.employees[4], status: HolidayRequestStatus.Denied }
+  { id: 'HR10', start: new Date('2024-10-05'), end: new Date('2024-10-12'), sender: this.employees[4], status: HolidayRequestStatus.Denied },
+  { id: 'HR5', start: new Date('2024-05-20'), end: new Date('2024-05-30'), sender: this.employees[4], status: HolidayRequestStatus.Pending },
+  { id: 'HR6', start: new Date('2024-06-10'), end: new Date('2024-06-17'), sender: this.employees[0], status: HolidayRequestStatus.Approved },
+  { id: 'HR7', start: new Date('2024-07-01'), end: new Date('2024-07-07'), sender: this.employees[1], status: HolidayRequestStatus.Denied },
+  { id: 'HR8', start: new Date('2024-08-12'), end: new Date('2024-08-20'), sender: this.employees[2], status: HolidayRequestStatus.Pending },
+  { id: 'HR9', start: new Date('2024-09-10'), end: new Date('2024-09-15'), sender: this.employees[3], status: HolidayRequestStatus.Approved },
+  { id: 'HR5', start: new Date('2024-05-20'), end: new Date('2024-05-30'), sender: this.employees[4], status: HolidayRequestStatus.Pending },
+  { id: 'HR6', start: new Date('2024-06-10'), end: new Date('2024-06-17'), sender: this.employees[0], status: HolidayRequestStatus.Approved },
+  { id: 'HR7', start: new Date('2024-07-01'), end: new Date('2024-07-07'), sender: this.employees[1], status: HolidayRequestStatus.Denied },
+  { id: 'HR8', start: new Date('2024-08-12'), end: new Date('2024-08-20'), sender: this.employees[2], status: HolidayRequestStatus.Pending },
+  { id: 'HR9', start: new Date('2024-09-10'), end: new Date('2024-09-15'), sender: this.employees[3], status: HolidayRequestStatus.Approved },
+  { id: 'HR5', start: new Date('2024-05-20'), end: new Date('2024-05-30'), sender: this.employees[4], status: HolidayRequestStatus.Pending },
+  { id: 'HR6', start: new Date('2024-06-10'), end: new Date('2024-06-17'), sender: this.employees[0], status: HolidayRequestStatus.Approved },
+  { id: 'HR7', start: new Date('2024-07-01'), end: new Date('2024-07-07'), sender: this.employees[1], status: HolidayRequestStatus.Denied },
+  { id: 'HR8', start: new Date('2024-08-12'), end: new Date('2024-08-20'), sender: this.employees[2], status: HolidayRequestStatus.Pending },
+  { id: 'HR9', start: new Date('2024-09-10'), end: new Date('2024-09-15'), sender: this.employees[3], status: HolidayRequestStatus.Approved }
 ];
 
   pageNumber : number = 1;
@@ -64,29 +79,6 @@ export class HolidayRequestsComponent {
 
   getQueryString() : string {
     return '?page=' + this.pageNumber + "&items-per-page=" + this.itemsPerPage;
-  }
-
-  viewProject(HolidayRequest: HolidayRequest) : void {
-    this.router.navigate(['holidayRequest/' + HolidayRequest.id])
-  }
-
-  generatePagination(currentPage: number, totalPages: number): number[] {
-    const maxVisiblePages = 5; // Number of page links to display at a time
-    const paginationNumbers: number[] = [];
-  
-    let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
-    let endPage = startPage + maxVisiblePages - 1;
-  
-    if (endPage > totalPages) {
-      endPage = totalPages;
-      startPage = Math.max(1, endPage - maxVisiblePages + 1);
-    }
-  
-    for (let i = startPage; i <= endPage; i++) {
-      paginationNumbers.push(i);
-    }
-  
-    return paginationNumbers;
   }
 
   loadNewPage(selectedPage : number) : void {
