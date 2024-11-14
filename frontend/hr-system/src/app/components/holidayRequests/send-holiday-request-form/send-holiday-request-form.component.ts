@@ -1,7 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, ɵprovideZonelessChangeDetection } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatDialogRef } from '@angular/material/dialog';
+import { HolidayRequestService } from '../../../core/services/holiday-request.service';
+import { CreateHolidayRequestDto } from '../../../core/dtos/holiday-request/create-holiday-request.dto';
+import { HolidayRequestStatus } from '../../../core/models/holiday-request.model';
 
 @Component({
   selector: 'app-send-holiday-request-form',
@@ -11,17 +14,27 @@ import { MatDialogRef } from '@angular/material/dialog';
 })
 export class SendHolidayRequestFormComponent {
 
-  constructor(private readonly dialogRef: MatDialogRef<SendHolidayRequestFormComponent>){}
+  constructor(private readonly dialogRef: MatDialogRef<SendHolidayRequestFormComponent>, private holidayRequestService: HolidayRequestService){}
   readonly range = new FormGroup({
-    start: new FormControl<Date | null>(null),
-    end: new FormControl<Date | null>(null),
+    start: new FormControl<Date | null | undefined>(null),
+    end: new FormControl<Date | null | undefined>(null),
   });
 
   onCancel(): void {
     this.dialogRef.close();
   }
+
+
   sendRequest(): void{
-    
+    const dto: CreateHolidayRequestDto = {
+      start: this.range.value.start,
+      end: this.range.value.end,
+      senderId: '387e3434-d303-4ebe-8109-f35b848b6f0f',
+      status: HolidayRequestStatus.Pending
+    }    
+    console.log(dto)
+    this.holidayRequestService.createHolidayRequest(dto);
+    this.onCancel();
   }
 
 }

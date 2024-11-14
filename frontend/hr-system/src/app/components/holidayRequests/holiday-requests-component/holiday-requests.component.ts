@@ -28,21 +28,8 @@ export class HolidayRequestsComponent {
 ];
 
 // Generate holiday requests
- holidayRequests: HolidayRequest[] = [
-  { id: 'HR1', start: new Date('2024-01-01'), end: new Date('2024-01-07'), sender: this.employees[0], status: HolidayRequestStatus.Approved },
-  { id: 'HR2', start: new Date('2024-02-10'), end: new Date('2024-02-20'), sender: this.employees[1], status: HolidayRequestStatus.Pending },
-  { id: 'HR3', start: new Date('2024-03-15'), end: new Date('2024-03-22'), sender: this.employees[2], status: HolidayRequestStatus.Denied },
-  { id: 'HR4', start: new Date('2024-04-05'), end: new Date('2024-04-10'), sender: this.employees[3], status: HolidayRequestStatus.Approved },
-  { id: 'HR5', start: new Date('2024-05-20'), end: new Date('2024-05-30'), sender: this.employees[4], status: HolidayRequestStatus.Pending },
-  { id: 'HR6', start: new Date('2024-06-10'), end: new Date('2024-06-17'), sender: this.employees[0], status: HolidayRequestStatus.Approved },
-  { id: 'HR7', start: new Date('2024-07-01'), end: new Date('2024-07-07'), sender: this.employees[1], status: HolidayRequestStatus.Denied },
-];
-holidayRequestApprovers: HolidayRequestApprover[] = [
-  { id: 'A1', requestId: 'HR1', approverId: '2', status: HolidayRequestStatus.Approved },
-  { id: 'A2', requestId: 'HR2', approverId: '3', status: HolidayRequestStatus.Pending },
-  { id: 'A3', requestId: 'HR3', approverId: '4', status: HolidayRequestStatus.Denied },
-  // Add more approvers as needed
-];
+ holidayRequests: HolidayRequest[] = []
+holidayRequestApprovers: HolidayRequestApprover[] = []
 
   pageNumber : number = 1;
   totalPages : number = 1;
@@ -63,7 +50,7 @@ holidayRequestApprovers: HolidayRequestApprover[] = [
         this.holidayRequests = response.holidayRequests
       })).subscribe();
 
-    this.holidayRequestApproverService.getAllHolidayRequestApproversByApproverId(this.getQueryString())
+    this.holidayRequestApproverService.getAllHolidayRequestApproversByApproverId("0d2a2715-84f8-4b66-a710-6fcf2a62cbbb")
       .pipe(takeUntil(this.destroy$), tap((response) =>{
         this.holidayRequestApprovers = response.holidayRequestApprovers
       })).subscribe();
@@ -84,6 +71,8 @@ holidayRequestApprovers: HolidayRequestApprover[] = [
                         tap((response) =>{
            this.holidayRequests = response.holidayRequests
          this.totalPages = response.totalPages
+         this.itemsPerPage = response.itemsPerPage,
+         this.pageNumber = response.page
           })).subscribe()
   }
 

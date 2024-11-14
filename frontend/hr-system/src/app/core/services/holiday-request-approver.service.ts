@@ -11,10 +11,10 @@ export class HolidayRequestApproverService {
 
   constructor(private http: HttpClient) { }
 
-  baseUrl = `${environment.apiUrl}/holidayRequestApprovers/`
+  baseUrl = `${environment.apiUrl}/employees/holidayRequestApprovers`
   
-  getAllHolidayRequestApproversByApproverId(query : string): Observable<GetAllHolidayRequestApproversByApproverIdDto> {
-    return this.http.get<GetAllHolidayRequestApproversByApproverIdDto>(`${this.baseUrl}${query}`);
+  getAllHolidayRequestApproversByApproverId(approverId : string): Observable<GetAllHolidayRequestApproversByApproverIdDto> {
+    return this.http.get<GetAllHolidayRequestApproversByApproverIdDto>(`${this.baseUrl}` + '/byApprover/' + approverId);
   }
 
 }
