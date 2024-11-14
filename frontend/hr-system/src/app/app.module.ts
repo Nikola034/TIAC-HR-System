@@ -29,9 +29,12 @@ import { EditEmployeeComponent } from './components/employees/edit-employee/edit
 import { MatSelectModule } from '@angular/material/select';
 import { CreateEmployeeComponent } from './components/employees/create-employee/create-employee.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MyProjectsComponent } from './components/projects/my-projects/my-projects.component';
+import { ProjectDetailsComponent } from './components/projects/project-details/project-details.component';
+import {MatDividerModule} from '@angular/material/divider';
+import {MatTooltipModule} from '@angular/material/tooltip';
 import { CreateProjectComponent } from './components/projects/create-project/create-project.component';
 import { HttpInterceptorService } from './core/services/http-interceptor.service';
-
 
 @NgModule({
   declarations: [
@@ -49,6 +52,8 @@ import { HttpInterceptorService } from './core/services/http-interceptor.service
     HolidayRequestsComponent,
     EditEmployeeComponent,
     CreateEmployeeComponent,
+    MyProjectsComponent,
+    ProjectDetailsComponent,
     CreateProjectComponent
   ],
   imports: [
@@ -70,6 +75,8 @@ import { HttpInterceptorService } from './core/services/http-interceptor.service
     MatCardActions,
     MatSelectModule,
     FormsModule,
+    MatDividerModule,
+    MatTooltipModule
   ],
   providers: [provideNativeDateAdapter(),
     {

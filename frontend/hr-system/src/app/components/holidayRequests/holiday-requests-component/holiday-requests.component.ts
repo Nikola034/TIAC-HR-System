@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { Subject, takeUntil, tap } from 'rxjs';
+import { Subject, switchMap, takeUntil, tap } from 'rxjs';
 import { Router } from '@angular/router';
 import { HolidayRequest, HolidayRequestStatus } from '../../../core/models/holiday-request.model';
 import { HolidayRequestService } from '../../../core/services/holiday-request.service';
@@ -7,6 +7,9 @@ import { Employee, EmployeeRole } from '../../../core/models/employee.model';
 import { DatePipe } from '@angular/common';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { SendHolidayRequestFormComponent } from '../send-holiday-request-form/send-holiday-request-form.component';
+import { HolidayRequestApproverService } from '../../../core/services/holiday-request-approver.service';
+import { HolidayRequestApprover } from '../../../core/models/holiday-request-approver.model.ts';
+import { UpdateHolidayRequestApproverDto } from '../../../core/dtos/holiday-request-approver/update-holiday-request-approver.dto'
 
 @Component({
   selector: 'app-holiday-requests-component',
@@ -26,36 +29,33 @@ export class HolidayRequestsComponent {
 ];
 
 // Generate holiday requests
- holidayRequests: HolidayRequest[] = [
-  { id: 'HR1', start: new Date('2024-01-01'), end: new Date('2024-01-07'), sender: this.employees[0], status: HolidayRequestStatus.Approved },
-  { id: 'HR2', start: new Date('2024-02-10'), end: new Date('2024-02-20'), sender: this.employees[1], status: HolidayRequestStatus.Pending },
-  { id: 'HR3', start: new Date('2024-03-15'), end: new Date('2024-03-22'), sender: this.employees[2], status: HolidayRequestStatus.Denied },
-  { id: 'HR4', start: new Date('2024-04-05'), end: new Date('2024-04-10'), sender: this.employees[3], status: HolidayRequestStatus.Approved },
-  { id: 'HR5', start: new Date('2024-05-20'), end: new Date('2024-05-30'), sender: this.employees[4], status: HolidayRequestStatus.Pending },
-  { id: 'HR6', start: new Date('2024-06-10'), end: new Date('2024-06-17'), sender: this.employees[0], status: HolidayRequestStatus.Approved },
-  { id: 'HR7', start: new Date('2024-07-01'), end: new Date('2024-07-07'), sender: this.employees[1], status: HolidayRequestStatus.Denied },
-  { id: 'HR8', start: new Date('2024-08-12'), end: new Date('2024-08-20'), sender: this.employees[2], status: HolidayRequestStatus.Pending },
-  { id: 'HR9', start: new Date('2024-09-10'), end: new Date('2024-09-15'), sender: this.employees[3], status: HolidayRequestStatus.Approved },
-  { id: 'HR10', start: new Date('2024-10-05'), end: new Date('2024-10-12'), sender: this.employees[4], status: HolidayRequestStatus.Denied }
-];
+ holidayRequests: HolidayRequest[] = []
+holidayRequestApprovers: HolidayRequestApprover[] = []
 
   pageNumber : number = 1;
   totalPages : number = 1;
-  itemsPerPage : number = 10;
+  itemsPerPage : number = 5;
+
   displayedColumns : string[] = ['status', 'sender', 'start', 'end', 'delete']
+  approverColumns: string[] = ['sender', 'start', 'end', 'actions'];
 
   private destroy$ = new Subject<void>();
 
-  constructor(private holidayRequestService: HolidayRequestService, private router: Router, private datePipe: DatePipe) {
+  constructor(private holidayRequestService: HolidayRequestService, private holidayRequestApproverService: HolidayRequestApproverService, private router: Router, private datePipe: DatePipe) {
     
   }
 
   ngOnInit() {
     this.holidayRequestService.getAllHolidayRequests(this.getQueryString())
       .pipe(takeUntil(this.destroy$), tap((response) =>{
-        this.holidayRequests = response.holidayRequests
+        this.holidayRequests = response.holidayRequests,
+        this.totalPages = response.totalPages
       })).subscribe();
-    
+
+    this.holidayRequestApproverService.getAllHolidayRequestApproversByApproverId("0d2a2715-84f8-4b66-a710-6fcf2a62cbbb")
+      .pipe(takeUntil(this.destroy$), tap((response) =>{
+        this.holidayRequestApprovers = response.holidayRequestApprovers
+      })).subscribe();
   }
 
   formatDate(date: Date): string {
@@ -64,29 +64,6 @@ export class HolidayRequestsComponent {
 
   getQueryString() : string {
     return '?page=' + this.pageNumber + "&items-per-page=" + this.itemsPerPage;
-  }
-
-  viewProject(HolidayRequest: HolidayRequest) : void {
-    this.router.navigate(['holidayRequest/' + HolidayRequest.id])
-  }
-
-  generatePagination(currentPage: number, totalPages: number): number[] {
-    const maxVisiblePages = 5; // Number of page links to display at a time
-    const paginationNumbers: number[] = [];
-  
-    let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
-    let endPage = startPage + maxVisiblePages - 1;
-  
-    if (endPage > totalPages) {
-      endPage = totalPages;
-      startPage = Math.max(1, endPage - maxVisiblePages + 1);
-    }
-  
-    for (let i = startPage; i <= endPage; i++) {
-      paginationNumbers.push(i);
-    }
-  
-    return paginationNumbers;
   }
 
   loadNewPage(selectedPage : number) : void {
@@ -99,9 +76,27 @@ export class HolidayRequestsComponent {
           })).subscribe()
   }
 
-  delete(id : string) : void {
+  deleteHolidayRequest(id : string) : void {
     console.log("deleted")
-    //this.holidayRequestService.delete(id).subscribe
+    this.holidayRequestService.deleteHolidayRequest(id).pipe(takeUntil(this.destroy$),
+     switchMap( () => this.holidayRequestService.getAllHolidayRequests(this.getQueryString()).pipe(
+       tap(response => {
+         this.holidayRequests = response.holidayRequests;
+         this.totalPages = response.totalPages;
+       })))).subscribe()
+  }
+
+  approveHolidayRequestApprover(id: string) : void{
+  //   dto: UpdateHolidayRequestApproverDto
+  //   this.holidayRequestApproverService.updateHolidayRequestApprover(dto)
+  //   .pipe(takeUntil(this.destroy$), tap((response) => {
+  //   if(response)
+  //       this.router.navigate(['holiday-requests'])
+  // })).subscribe();
+  }
+
+  denyHolidayRequestApprover(id: string) : void{
+    
   }
 
   ngOnDestroy(): void {
@@ -114,31 +109,76 @@ export class HolidayRequestsComponent {
       case HolidayRequestStatus.Approved:
         return 'check_circle';
       case HolidayRequestStatus.Pending:
-        return 'hourglass_empty';
+        return 'pending';
       case HolidayRequestStatus.Denied:
         return 'cancel';
       default:
         return 'help_outline';
     }
   }
-
+  getStatusString(status: HolidayRequestStatus): string {
+    switch (status) {
+      case HolidayRequestStatus.Approved:
+        return 'Approved';
+      case HolidayRequestStatus.Pending:
+        return 'Pending';
+      case HolidayRequestStatus.Denied:
+        return 'Denied';
+      default:
+        return '-';
+    }
+  }
   getStatusColor(status: HolidayRequestStatus): string {
     switch (status) {
       case HolidayRequestStatus.Approved:
         return 'green';
       case HolidayRequestStatus.Pending:
-        return 'gray';
+        return '#eac60c';
       case HolidayRequestStatus.Denied:
-        return 'red';
+        return '#c62828';
       default:
         return 'gray';
     }
   }
 
+  getSenderName(requestId: string): string {
+    const approver = this.employees.find(emp => emp.id === 'id');
+    return approver ? `${approver.name} ${approver.surname}` : 'Unknown';
+  }
+
+  getHolidayRequestStartDate(requestId: string): Date{
+    return new Date();
+  }
+  getHolidayRequestEndDate(requestId: string): Date{
+    return new Date();
+  }
+
+  // Approve Request
+approveRequest(approverId: string): void {
+  const approver = this.holidayRequestApprovers.find(a => a.id === approverId);
+  if (approver) {
+    approver.status = HolidayRequestStatus.Approved;
+    console.log(`Holiday request approved for ${approverId}`);
+    // Call the service to update the approval status
+    // this.holidayRequestService.updateApproverStatus(approverId, HolidayRequestStatus.Approved).subscribe();
+  }
+}
+
+// Deny Request
+denyRequest(approverId: string): void {
+  const approver = this.holidayRequestApprovers.find(a => a.id === approverId);
+  if (approver) {
+    approver.status = HolidayRequestStatus.Denied;
+    console.log(`Holiday request denied for ${approverId}`);
+    // Call the service to update the denial status
+    // this.holidayRequestService.updateApproverStatus(approverId, HolidayRequestStatus.Denied).subscribe();
+  }
+}
+
   openRequestDialog(): void{
     const dialogRef = this.dialog.open(SendHolidayRequestFormComponent, {
       height: '260px',
-  width: '340px',
+      width: '340px',
     });
   }
 }

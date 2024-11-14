@@ -55,7 +55,7 @@ namespace EmployeeService.Infrastructure.Persistence.HolidayRequest
         public async Task<int> GetTotalPagesAsync(int page, int items, CancellationToken cancellationToken = default)
         {
             var count = await _context.HolidayRequests.CountAsync(cancellationToken);
-            return (int)Math.Ceiling((double)(count / items));
+            return (int)Math.Ceiling((double)count / items);
         }
 
         public async Task<Core.Entities.HolidayRequest?> GetHolidayRequestByIdAsync(Guid id, CancellationToken cancellationToken = default)

@@ -55,7 +55,7 @@ namespace Common.HttpCLients.Implementation
             var request = new HttpRequestMessage
             {
                 Method = HttpMethod.Get,
-                RequestUri = new Uri("projects/all/1", UriKind.Relative)
+                RequestUri = new Uri("projects/without-paging", UriKind.Relative)
             };
             var response = await httpClient.SendAsync(request);
             response.EnsureSuccessStatusCode();

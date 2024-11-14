@@ -1,0 +1,10 @@
+.project-cards-container{
+    display: flex;
+    margin-top: 2.5rem;
+    gap: 2rem;
+    flex-wrap: wrap;
+    width: 70%;
+    margin-inline: auto;
+    justify-content: space-between;
+    padding-bottom: 3rem;
+}
