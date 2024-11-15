@@ -72,8 +72,8 @@
       <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef> Actions </th>
         <td mat-cell *matCellDef="let approver">
-          <button mat-raised-button class="approve button-w" (click)="approveRequest(approver.id)">Approve</button>
-          <button mat-raised-button class="deny button-w" (click)="denyRequest(approver.id)">Deny</button>
+          <button mat-raised-button class="approve button-w" (click)="approveHolidayRequestApprover(approver.requestId, approver.approverId)">Approve</button>
+          <button mat-raised-button class="deny button-w" (click)="denyHolidayRequestApprover(approver.requestId, approver.approverId)">Deny</button>
         </td>
       </ng-container>
   

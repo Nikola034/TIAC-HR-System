@@ -9,6 +9,7 @@ import { MyProjectsComponent } from './components/projects/my-projects/my-projec
 import { ProjectDetailsComponent } from './components/projects/project-details/project-details.component';
 import { CreateProjectComponent } from './components/projects/create-project/create-project.component';
 import { LoginFormComponent } from './components/login/login-form/login-form.component';
+import { ResetPasswordFormComponent } from './components/login/reset-password-form/reset-password-form.component';
 
 const routes: Routes = [
   { path:'projects', component: AllProjectsComponent},
@@ -22,6 +23,7 @@ const routes: Routes = [
   { path:'profile', component: EditProfileComponent},
   { path: 'create-project', component: CreateProjectComponent},
   { path: '', component: LoginFormComponent},
+  { path: 'reset-password', component: ResetPasswordFormComponent},
 ];
 
 @NgModule({

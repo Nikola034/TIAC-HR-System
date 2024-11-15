@@ -10,6 +10,9 @@ import { SendHolidayRequestFormComponent } from '../send-holiday-request-form/se
 import { HolidayRequestApproverService } from '../../../core/services/holiday-request-approver.service';
 import { HolidayRequestApprover } from '../../../core/models/holiday-request-approver.model.ts';
 import { UpdateHolidayRequestApproverDto } from '../../../core/dtos/holiday-request-approver/update-holiday-request-approver.dto'
+import { JwtService } from '../../../core/services/jwt.service';
+import Swal from 'sweetalert2';
+import { AlertService } from '../../../core/services/alert.service';
 
 @Component({
   selector: 'app-holiday-requests-component',
@@ -41,18 +44,25 @@ holidayRequestApprovers: HolidayRequestApprover[] = []
 
   private destroy$ = new Subject<void>();
 
-  constructor(private holidayRequestService: HolidayRequestService, private holidayRequestApproverService: HolidayRequestApproverService, private router: Router, private datePipe: DatePipe) {
+  constructor(private holidayRequestService: HolidayRequestService, private jwtService: JwtService, private swal: AlertService, private holidayRequestApproverService: HolidayRequestApproverService, private router: Router, private datePipe: DatePipe) {
     
   }
 
   ngOnInit() {
+    this.refreshHolidayRequests()
+    this.refreshHolidayRequestApprovers()
+  }
+
+  refreshHolidayRequests(): void{
     this.holidayRequestService.getAllHolidayRequests(this.getQueryString())
       .pipe(takeUntil(this.destroy$), tap((response) =>{
         this.holidayRequests = response.holidayRequests,
         this.totalPages = response.totalPages
       })).subscribe();
+  }
 
-    this.holidayRequestApproverService.getAllHolidayRequestApproversByApproverId("0d2a2715-84f8-4b66-a710-6fcf2a62cbbb")
+  refreshHolidayRequestApprovers(): void{
+    this.holidayRequestApproverService.getAllHolidayRequestApproversByApproverId(this.jwtService.getIdFromToken())
       .pipe(takeUntil(this.destroy$), tap((response) =>{
         this.holidayRequestApprovers = response.holidayRequestApprovers
       })).subscribe();
@@ -77,26 +87,79 @@ holidayRequestApprovers: HolidayRequestApprover[] = []
   }
 
   deleteHolidayRequest(id : string) : void {
-    console.log("deleted")
-    this.holidayRequestService.deleteHolidayRequest(id).pipe(takeUntil(this.destroy$),
-     switchMap( () => this.holidayRequestService.getAllHolidayRequests(this.getQueryString()).pipe(
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.holidayRequestService.deleteHolidayRequest(id).pipe(takeUntil(this.destroy$),
+      switchMap( () => this.holidayRequestService.getAllHolidayRequests(this.getQueryString()).pipe(
        tap(response => {
          this.holidayRequests = response.holidayRequests;
          this.totalPages = response.totalPages;
        })))).subscribe()
+        this.swal.fireSwalSuccess("Holday request deleted successfully")
+      }
+    });
   }
 
-  approveHolidayRequestApprover(id: string) : void{
-  //   dto: UpdateHolidayRequestApproverDto
-  //   this.holidayRequestApproverService.updateHolidayRequestApprover(dto)
-  //   .pipe(takeUntil(this.destroy$), tap((response) => {
-  //   if(response)
-  //       this.router.navigate(['holiday-requests'])
-  // })).subscribe();
+  approveHolidayRequestApprover(requestId: string, approverId: string) : void{
+    Swal.fire({
+      title: "Are you sure?",
+      text: "Request will be approved!",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, approve it!"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const dto: UpdateHolidayRequestApproverDto = {
+          requestId: requestId,
+          approverId: approverId,
+          status: HolidayRequestStatus.Approved
+        }
+
+        this.holidayRequestApproverService.updateHolidayRequestApprover(dto).pipe(takeUntil(this.destroy$),
+      switchMap( () => this.holidayRequestApproverService.getAllHolidayRequestApproversByApproverId(approverId).pipe(
+       tap(response => {
+         this.holidayRequestApprovers = response.holidayRequestApprovers;
+       })))).subscribe()
+        this.swal.fireSwalSuccess("Holiday request approved successfully")
+      }
+    });
   }
 
-  denyHolidayRequestApprover(id: string) : void{
-    
+  denyHolidayRequestApprover(requestId: string, approverId: string) : void{
+    Swal.fire({
+      title: "Are you sure?",
+      text: "Request will be denied! You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, deny it!"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const dto: UpdateHolidayRequestApproverDto = {
+          requestId: requestId,
+          approverId: approverId,
+          status: HolidayRequestStatus.Denied
+        }
+
+        this.holidayRequestApproverService.updateHolidayRequestApprover(dto).pipe(takeUntil(this.destroy$),
+      switchMap( () => this.holidayRequestApproverService.getAllHolidayRequestApproversByApproverId(approverId).pipe(
+       tap(response => {
+         this.holidayRequestApprovers = response.holidayRequestApprovers;
+       })))).subscribe()
+        this.swal.fireSwalSuccess("Holiday request denied successfully")
+      }
+    });
   }
 
   ngOnDestroy(): void {
@@ -153,32 +216,15 @@ holidayRequestApprovers: HolidayRequestApprover[] = []
     return new Date();
   }
 
-  // Approve Request
-approveRequest(approverId: string): void {
-  const approver = this.holidayRequestApprovers.find(a => a.id === approverId);
-  if (approver) {
-    approver.status = HolidayRequestStatus.Approved;
-    console.log(`Holiday request approved for ${approverId}`);
-    // Call the service to update the approval status
-    // this.holidayRequestService.updateApproverStatus(approverId, HolidayRequestStatus.Approved).subscribe();
-  }
-}
-
-// Deny Request
-denyRequest(approverId: string): void {
-  const approver = this.holidayRequestApprovers.find(a => a.id === approverId);
-  if (approver) {
-    approver.status = HolidayRequestStatus.Denied;
-    console.log(`Holiday request denied for ${approverId}`);
-    // Call the service to update the denial status
-    // this.holidayRequestService.updateApproverStatus(approverId, HolidayRequestStatus.Denied).subscribe();
-  }
-}
-
   openRequestDialog(): void{
     const dialogRef = this.dialog.open(SendHolidayRequestFormComponent, {
       height: '260px',
       width: '340px',
     });
+
+    dialogRef.afterClosed().subscribe(() => {
+      this.refreshHolidayRequests();
+      this.refreshHolidayRequestApprovers();
+    })
   }
 }

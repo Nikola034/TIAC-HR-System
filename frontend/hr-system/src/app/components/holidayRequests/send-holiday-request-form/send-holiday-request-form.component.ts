@@ -1,10 +1,11 @@
-import { Component, ɵprovideZonelessChangeDetection } from '@angular/core';
+import { Component, EventEmitter, Output, ɵprovideZonelessChangeDetection } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { HolidayRequestService } from '../../../core/services/holiday-request.service';
 import { CreateHolidayRequestDto } from '../../../core/dtos/holiday-request/create-holiday-request.dto';
 import { HolidayRequestStatus } from '../../../core/models/holiday-request.model';
+import { JwtService } from '../../../core/services/jwt.service';
 
 @Component({
   selector: 'app-send-holiday-request-form',
@@ -13,8 +14,7 @@ import { HolidayRequestStatus } from '../../../core/models/holiday-request.model
   styleUrl: './send-holiday-request-form.component.css'
 })
 export class SendHolidayRequestFormComponent {
-
-  constructor(private readonly dialogRef: MatDialogRef<SendHolidayRequestFormComponent>, private holidayRequestService: HolidayRequestService){}
+  constructor(private jwtService: JwtService, private readonly dialogRef: MatDialogRef<SendHolidayRequestFormComponent>, private holidayRequestService: HolidayRequestService){}
   readonly range = new FormGroup({
     start: new FormControl<Date | null | undefined>(null),
     end: new FormControl<Date | null | undefined>(null),
@@ -29,12 +29,11 @@ export class SendHolidayRequestFormComponent {
     const dto: CreateHolidayRequestDto = {
       start: this.range.value.start,
       end: this.range.value.end,
-      senderId: 'fa9e4343-771e-4d96-abbb-ac13c925d51c',
+      senderId: this.jwtService.getIdFromToken(),
       status: HolidayRequestStatus.Pending
     }    
     console.log(dto)
     this.holidayRequestService.createHolidayRequest(dto).subscribe()
     this.onCancel();
   }
-
 }
