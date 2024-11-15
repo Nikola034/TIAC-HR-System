@@ -10,10 +10,11 @@ import { ProjectDetailsComponent } from './components/projects/project-details/p
 import { CreateProjectComponent } from './components/projects/create-project/create-project.component';
 import { LoginFormComponent } from './components/login/login-form/login-form.component';
 import { ResetPasswordFormComponent } from './components/login/reset-password-form/reset-password-form.component';
+import { EmployeesComponent } from './components/employees/employees/employees.component';
 
 const routes: Routes = [
   { path:'projects', component: AllProjectsComponent},
-  //{ path:'employees', component: AllEmployeesComponent},
+  { path:'employees', component: EmployeesComponent},
   { path:'clients', component: AllClientsComponent},
   { path:'profile', component: EditProfileComponent},
   { path:'create-client', component:CreateClientComponent},
