@@ -23,6 +23,10 @@ export class ClientService {
     return this.http.post<Client>(`${this.baseUrl}`,dto);
   }
 
+  updateClient(client : Client): Observable<Client> {
+    return this.http.put<Client>(`${this.baseUrl}`,client);
+  }
+
   deleteClient(id : string): Observable<any> {
     return this.http.delete<any>(`${this.baseUrl}${id}`);
   }

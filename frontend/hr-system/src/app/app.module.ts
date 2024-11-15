@@ -36,6 +36,7 @@ import {MatTooltipModule} from '@angular/material/tooltip';
 import { CreateProjectComponent } from './components/projects/create-project/create-project.component';
 import { HttpInterceptorService } from './core/services/http-interceptor.service';
 import { EmployeesComponent } from './components/employees/employees/employees.component';
+import { ClientProjectsComponent } from './components/clients/client-projects/client-projects.component';
 
 @NgModule({
   declarations: [
@@ -56,7 +57,8 @@ import { EmployeesComponent } from './components/employees/employees/employees.c
     MyProjectsComponent,
     ProjectDetailsComponent,
     CreateProjectComponent,
-    EmployeesComponent
+    EmployeesComponent,
+    ClientProjectsComponent,
   ],
   imports: [
     BrowserModule,

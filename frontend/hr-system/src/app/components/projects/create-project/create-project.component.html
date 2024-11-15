@@ -35,7 +35,7 @@
       <mat-form-field appearance="fill" class="full-width">
         <mat-label>Select client</mat-label>
         <mat-select formControlName="client">
-          <mat-option *ngFor="let client of clients" mat-option [value]="client.client.id">{{client.client.name}}</mat-option>
+          <mat-option *ngFor="let client of clients" mat-option [value]="client.id">{{client.name}}</mat-option>
         </mat-select>
         <mat-error *ngIf="createProjectForm.get('client')?.hasError('required')"
         >Client is required</mat-error
