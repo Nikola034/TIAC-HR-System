@@ -6,6 +6,9 @@ import { HolidayRequestService } from '../../../core/services/holiday-request.se
 import { CreateHolidayRequestDto } from '../../../core/dtos/holiday-request/create-holiday-request.dto';
 import { HolidayRequestStatus } from '../../../core/models/holiday-request.model';
 import { JwtService } from '../../../core/services/jwt.service';
+import { catchError, Subject, takeUntil, tap, throwError } from 'rxjs';
+import { Router } from '@angular/router';
+import { AlertService } from '../../../core/services/alert.service';
 
 @Component({
   selector: 'app-send-holiday-request-form',
@@ -14,7 +17,7 @@ import { JwtService } from '../../../core/services/jwt.service';
   styleUrl: './send-holiday-request-form.component.css'
 })
 export class SendHolidayRequestFormComponent {
-  constructor(private jwtService: JwtService, private readonly dialogRef: MatDialogRef<SendHolidayRequestFormComponent>, private holidayRequestService: HolidayRequestService){}
+  constructor(private jwtService: JwtService, private router: Router, private swal : AlertService, private readonly dialogRef: MatDialogRef<SendHolidayRequestFormComponent>, private holidayRequestService: HolidayRequestService){}
   readonly range = new FormGroup({
     start: new FormControl<Date | null | undefined>(null),
     end: new FormControl<Date | null | undefined>(null),
@@ -24,7 +27,7 @@ export class SendHolidayRequestFormComponent {
     this.dialogRef.close();
   }
 
-
+  private destroy$ = new Subject<void>();
   sendRequest(): void{
     const dto: CreateHolidayRequestDto = {
       start: this.range.value.start,
@@ -32,8 +35,15 @@ export class SendHolidayRequestFormComponent {
       senderId: this.jwtService.getIdFromToken(),
       status: HolidayRequestStatus.Pending
     }    
-    console.log(dto)
-    this.holidayRequestService.createHolidayRequest(dto).subscribe()
+    this.holidayRequestService.createHolidayRequest(dto)
+    .pipe(takeUntil(this.destroy$), tap((response) => {
+      this.swal.fireSwalSuccess("Holiday request created successfully")
+      this.router.navigate(['holiday-requests'])
+      }),
+      catchError( error => {
+        this.swal.fireSwalError("Something went wrong")
+        return throwError(() => error);
+      })).subscribe();
     this.onCancel();
   }
 }

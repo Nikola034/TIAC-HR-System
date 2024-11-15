@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { Subject, switchMap, takeUntil, tap } from 'rxjs';
+import { catchError, Subject, switchMap, takeUntil, tap, throwError } from 'rxjs';
 import { Router } from '@angular/router';
 import { HolidayRequest, HolidayRequestStatus } from '../../../core/models/holiday-request.model';
 import { HolidayRequestService } from '../../../core/services/holiday-request.service';
@@ -102,7 +102,11 @@ holidayRequestApprovers: HolidayRequestApprover[] = []
        tap(response => {
          this.holidayRequests = response.holidayRequests;
          this.totalPages = response.totalPages;
-       })))).subscribe()
+       }),
+       catchError( error => {
+        this.swal.fireSwalError("Something went wrong")
+        return throwError(() => error);
+        })))).subscribe()
         this.swal.fireSwalSuccess("Holday request deleted successfully")
       }
     });
@@ -129,7 +133,11 @@ holidayRequestApprovers: HolidayRequestApprover[] = []
       switchMap( () => this.holidayRequestApproverService.getAllHolidayRequestApproversByApproverId(approverId).pipe(
        tap(response => {
          this.holidayRequestApprovers = response.holidayRequestApprovers;
-       })))).subscribe()
+       }),
+       catchError( error => {
+        this.swal.fireSwalError("Something went wrong")
+        return throwError(() => error);
+        })))).subscribe()
         this.swal.fireSwalSuccess("Holiday request approved successfully")
       }
     });
@@ -156,7 +164,12 @@ holidayRequestApprovers: HolidayRequestApprover[] = []
       switchMap( () => this.holidayRequestApproverService.getAllHolidayRequestApproversByApproverId(approverId).pipe(
        tap(response => {
          this.holidayRequestApprovers = response.holidayRequestApprovers;
-       })))).subscribe()
+       }),
+       catchError( error => {
+        this.swal.fireSwalError("Something went wrong")
+        return throwError(() => error);
+        })
+      ))).subscribe()
         this.swal.fireSwalSuccess("Holiday request denied successfully")
       }
     });

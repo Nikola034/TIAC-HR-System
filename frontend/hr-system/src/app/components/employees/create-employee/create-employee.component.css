@@ -8,7 +8,7 @@
     background-color: #eee7e7;
     border-top-left-radius: 0.3rem;
     border-top-right-radius: 0.3rem;
-    margin-top: 120px;
+    margin-top: 30px;
   }
   .full-width {
     width: 100%;
@@ -29,7 +29,17 @@
   .header{
     border-top-left-radius: 0.3rem;
     border-top-right-radius: 0.3rem;
-    padding-left: 1rem;
+    display: flex;
+    justify-content: center;
+    background-color: #c62828;
+  }
+  .header-icon{
+    font-size: 8rem;
+    width: 200px;
+    height: 140px;
+    display: flex;
+    justify-content: center;
+    color: rgb(255, 255, 255);
   }
   form{
     padding: 1rem;

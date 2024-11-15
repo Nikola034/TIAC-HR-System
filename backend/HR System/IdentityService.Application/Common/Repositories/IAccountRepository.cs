@@ -17,6 +17,7 @@ namespace Application.Common.Repositories
         public Task<Account?> FindUserByRefreshTokenAsync(string refreshToken, CancellationToken cancellationToken = default(CancellationToken));
         public Task<Account?> FindUserByPasswordResetTokenAsync(string passwordResetToken, CancellationToken cancellationToken = default(CancellationToken));
         public Task ChangePasswordAsync(string email, string password, CancellationToken cancellationToken = default(CancellationToken));
+        public Task<IEnumerable<Account>?> GetAccountsByIdsAsync(IEnumerable<Guid> ids, CancellationToken cancellationToken = default(CancellationToken));
 
     }
 }
