@@ -18,23 +18,24 @@ public static class EmployeeProjectMapper
 
     public static AddOrRemoveEmployeeFromProjectCommandResponse MapJsonStringToResponse(string jsonString, IEnumerable<Guid> workingIds)
     {
-        var employeesArray = JArray.Parse(jsonString);
+        var jsonObject = JObject.Parse(jsonString);
+        var employeesArray  = (JArray)jsonObject["developers"];
         IEnumerable<EmployeeDto> working = employeesArray
-            .Where(emp => workingIds.Contains(Guid.Parse(emp["Id"].ToString())))
+            .Where(emp => emp != null && emp["id"] != null && workingIds.Contains(Guid.Parse(emp["id"].ToString())))
             .Select(emp => new EmployeeDto
             {
-                Id = Guid.Parse(emp["Id"].ToString()),
-                Name = emp["Name"].ToString(),
-                Surname = emp["Surname"].ToString()
+                Id = Guid.Parse(emp["id"].ToString()),
+                Name = emp["name"]?.ToString(), // Use null-conditional operator for safety
+                Surname = emp["surname"]?.ToString() // Use null-conditional operator for safety
             });
 
         IEnumerable<EmployeeDto> notWorking = employeesArray
-            .Where(emp => !workingIds.Contains(Guid.Parse(emp["Id"].ToString())))
+            .Where(emp => emp != null && emp["id"] != null && !workingIds.Contains(Guid.Parse(emp["id"].ToString())))
             .Select(emp => new EmployeeDto
             {
-                Id = Guid.Parse(emp["Id"].ToString()),
-                Name = emp["Name"].ToString(),
-                Surname = emp["Surname"].ToString()
+                Id = Guid.Parse(emp["id"].ToString()),
+                Name = emp["name"]?.ToString(),
+                Surname = emp["surname"]?.ToString()
             });
         return new AddOrRemoveEmployeeFromProjectCommandResponse(working, notWorking );
     }

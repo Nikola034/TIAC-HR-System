@@ -24,10 +24,10 @@ public class GetById : EndpointWithoutRequest<ProjectByIdResponse>
     public override async Task HandleAsync(CancellationToken ct)
     {
         var projectId = Route<Guid>("projectId");
-        var project = await _mediator.Send(new GetProjectByIdQuery(projectId));
+        var project = await _mediator.Send(new GetProjectByIdQuery(projectId),ct);
         if (project is null)
         {
-            await SendNotFoundAsync();
+            await SendNotFoundAsync(ct);
         }
 
         await SendOkAsync(project.ToApiResponse(), ct);

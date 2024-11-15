@@ -11,6 +11,7 @@ import { GetAllProjectsForClientDto } from '../dtos/project/get-all-projects-for
 import { UpdateProjectDto } from '../dtos/project/update-project.dto';
 import { AddOrRemoveEmployeeProjectDto } from '../dtos/employee/add-or-remove-employee-project.dto';
 import { DevelopersByProject } from '../dtos/employee/developers-by-project.dto';
+import { GetProjectByIdDto } from '../dtos/project/get-project-by-id.dto';
 @Injectable({
   providedIn: 'root'
 })
@@ -23,8 +24,8 @@ export class ProjectService {
     return this.http.get<GetAllProjectsDto>(`${this.baseUrl}${query}`);
   }
 
-  getProjectById(id : string): Observable<Project> {
-    return this.http.get<Project>(`${this.baseUrl}${id}`);
+  getProjectById(id : string): Observable<GetProjectByIdDto> {
+    return this.http.get<GetProjectByIdDto>(`${this.baseUrl}${id}`);
   }
 
   getProjectsByClientId(clientId : string): Observable<GetAllProjectsForClientDto> {
@@ -48,10 +49,10 @@ export class ProjectService {
   }
 
   addEmployeeToProject(dto : AddOrRemoveEmployeeProjectDto): Observable<DevelopersByProject>{
-    return this.http.post<DevelopersByProject>(`${this.baseUrl}addToProject`,dto)
+    return this.http.put<DevelopersByProject>(`${this.baseUrl}addToProject`,dto)
   }
 
   removeEmployeeFromProject(dto : AddOrRemoveEmployeeProjectDto): Observable<DevelopersByProject>{
-    return this.http.post<DevelopersByProject>(`${this.baseUrl}removeFromProject`,dto)
+    return this.http.put<DevelopersByProject>(`${this.baseUrl}removeFromProject`,dto)
   }
 }

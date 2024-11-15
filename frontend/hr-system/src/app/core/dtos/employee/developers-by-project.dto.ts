@@ -1,6 +1,6 @@
-import { Employee } from "../../models/employee.model";
+import { EmployeeForProjectDto } from "./employee-for-project.dto";
 
 export interface DevelopersByProject{
-    working : Employee[],
-    notWorking : Employee[]
+    working : EmployeeForProjectDto[],
+    notWorking : EmployeeForProjectDto[]
 }

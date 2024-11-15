@@ -11,6 +11,9 @@ import { Router } from '@angular/router';
 import { AlertService } from '../../../core/services/alert.service';
 import { Project } from '../../../core/models/project.model';
 import { Client } from '../../../core/models/client.model';
+import { EmployeeForProjectDto } from '../../../core/dtos/employee/employee-for-project.dto';
+import { UpdateProjectDto } from '../../../core/dtos/project/update-project.dto';
+import { AddOrRemoveEmployeeProjectDto } from '../../../core/dtos/employee/add-or-remove-employee-project.dto';
 
 @Component({
   selector: 'app-create-project',
@@ -23,6 +26,7 @@ export class CreateProjectComponent {
   createProjectForm: FormGroup;
   isEditMode : boolean = false;
   buttonContent : string = 'Create Project';
+  displayedColumns : string[] = ['index', 'name', 'surname' , 'remove']
 
   constructor(private fb: FormBuilder, private projectService : ProjectService,
               private clientService : ClientService, private employeeService : EmployeeService,
@@ -35,9 +39,11 @@ export class CreateProjectComponent {
     });
   }
 
-  existingProject !: Project
+  existingProjectId !: string
   clients : Client[] = []
   developers : Employee[] = []
+  workingDevelopers : EmployeeForProjectDto[] = []
+  availableDevelopers : EmployeeForProjectDto[] = []
 
   ngOnInit(){
     this.clientService.getAllClients("?page=1&items-per-page=100")
@@ -50,16 +56,27 @@ export class CreateProjectComponent {
         this.developers = response.developers;
       })).subscribe()
 
-    this.existingProject = history.state.projectData
-    if(this.existingProject){
+    this.existingProjectId = history.state.projectData
+    if(this.existingProjectId){
       this.isEditMode = true;
       this.buttonContent = 'Update Project'
-      this.createProjectForm.patchValue({
-        title: this.existingProject.title,
-        description: this.existingProject.description,
-        client: this.existingProject.client.id,
-        teamLead : this.existingProject.teamLeadId
-      });
+      this.projectService.getProjectById(this.existingProjectId).pipe(takeUntil(this.destroy$),
+        tap( response => {
+          this.workingDevelopers = response.working
+          this.availableDevelopers = response.notWorking
+          
+          this.createProjectForm.patchValue({
+            title: response.title,
+            description: response.description,
+            client: response.client.id,
+            teamLead : response.teamLeadId
+          });
+        }),
+        catchError( error => {
+          this.swal.fireSwalError(error.error.detail)
+          return throwError( () => error)
+        })
+      ).subscribe()  
     }
   }
 
@@ -84,9 +101,58 @@ export class CreateProjectComponent {
       }
       else
       {
-        
+        const dto: UpdateProjectDto = {
+          id: this.existingProjectId,
+          title: this.createProjectForm.get('title')?.value,
+          description: this.createProjectForm.get('description')?.value,
+          clientId: this.createProjectForm.get('client')?.value,
+          teamLeadId: this.createProjectForm.get('teamLead')?.value,
+        };
+      this.projectService.updateProject(dto)
+        .pipe(takeUntil(this.destroy$), tap((response) => {
+          this.swal.fireSwalSuccess("Project updated successfully")
+          this.router.navigate(['projects'])
+          }),
+          catchError( error => {
+            this.swal.fireSwalError("Something went wrong while updating project")
+            return throwError(() => error);
+          })).subscribe();
       }
     }
+  }
+
+  removeEmployeeFromProject(employeeId : string){
+    const dto : AddOrRemoveEmployeeProjectDto = {
+      employeeId : employeeId,
+      projectId : this.existingProjectId
+    }
+    this.projectService.removeEmployeeFromProject(dto).pipe(takeUntil(this.destroy$),
+      tap( (response) => {
+        this.workingDevelopers = response.working;
+        this.availableDevelopers = response.notWorking;
+      }),
+      catchError( error => {
+        this.swal.fireSwalError("Something went wrong while removing employee")
+        return throwError(() => error);
+      })
+    ).subscribe()
+  }
+
+  addEmployeeToProject(employeeId : string){
+    const dto : AddOrRemoveEmployeeProjectDto = {
+      employeeId : employeeId,
+      projectId : this.existingProjectId
+    }
+    this.projectService.addEmployeeToProject(dto).pipe(takeUntil(this.destroy$),
+      tap( (response) => {
+        this.workingDevelopers = response.working;
+        this.availableDevelopers = response.notWorking;
+      }),
+      catchError( error => {
+        this.swal.fireSwalError("Something went wrong while removing employee")
+        return throwError(() => error);
+      })
+    ).subscribe()
   }
 
   ngOnDestroy(): void {
