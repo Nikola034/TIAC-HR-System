@@ -35,6 +35,7 @@ import {MatDividerModule} from '@angular/material/divider';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import { CreateProjectComponent } from './components/projects/create-project/create-project.component';
 import { HttpInterceptorService } from './core/services/http-interceptor.service';
+import { ClientProjectsComponent } from './components/clients/client-projects/client-projects.component';
 
 @NgModule({
   declarations: [
@@ -54,7 +55,8 @@ import { HttpInterceptorService } from './core/services/http-interceptor.service
     CreateEmployeeComponent,
     MyProjectsComponent,
     ProjectDetailsComponent,
-    CreateProjectComponent
+    CreateProjectComponent,
+    ClientProjectsComponent,
   ],
   imports: [
     BrowserModule,

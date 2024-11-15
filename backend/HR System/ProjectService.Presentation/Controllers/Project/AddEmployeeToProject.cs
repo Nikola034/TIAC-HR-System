@@ -5,7 +5,7 @@ using ProjectServicePresentation.Mapper;
 
 namespace ProjectServicePresentation.Controllers.Project;
 
-public class AddEmployeeToProject : Endpoint<AddEmployeeToProjectRequest, AddEmployeeToProjectResponse>
+public class AddEmployeeToProject : Endpoint<AddOrRemoveEmployeeFromProjectRequest, AddOrRemoveEmployeeFromProjectResponse>
 {
     IMediator _mediator;
 
@@ -16,14 +16,14 @@ public class AddEmployeeToProject : Endpoint<AddEmployeeToProjectRequest, AddEmp
 
     public override void Configure()
     {
-        Post("/projects/addToProject");
+        Put("/projects/addToProject");
         AllowAnonymous();
     }
 
-    public override async Task HandleAsync(AddEmployeeToProjectRequest req, CancellationToken ct)
+    public override async Task HandleAsync(AddOrRemoveEmployeeFromProjectRequest req, CancellationToken ct)
     {
-        var project = await _mediator.Send(req.ToCommand(), ct);
-        await SendOkAsync(project.ToApiResponseFromAdd(), ct);
+        var project = await _mediator.Send(req.ToAddCommand(), ct);
+        await SendOkAsync(project.ToApiResponse(), ct);
     }
 }
 

@@ -49,9 +49,7 @@ export class LoginFormComponent {
         }
       ), catchError(
         (error: HttpErrorResponse): Observable<any> => {
-            if (error.status === 400) {
-                this.swal.fireSwalError(error.error.detail)
-            }
+            this.swal.fireSwalError(error.error.detail)
             return throwError(() => error);
         },
       )).subscribe()

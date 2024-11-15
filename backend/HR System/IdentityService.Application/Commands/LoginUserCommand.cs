@@ -41,7 +41,7 @@ namespace Application.Commands
                 throw new WrongCredentialsException();
             }
 
-            var responseString = await _employeeHttpClient.GetEmployeeByAccountId(user.Id,cancellationToken);
+            var responseString = await _employeeHttpClient.GetEmployeeByAccountIdAsync(user.Id,cancellationToken);
             var jsonObj = JObject.Parse(responseString);
             var userRole = jsonObj["role"].ToString();
             var employeeId = jsonObj["id"].ToString();

@@ -3,13 +3,14 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { catchError, Subject, takeUntil, tap, throwError } from 'rxjs';
 import { ProjectService } from '../../../core/services/project.service';
 import { CreateProjectDto } from '../../../core/dtos/project/create-project.dto';
-import { Client } from '../../../core/models/client.model';
 import { Employee } from '../../../core/models/employee.model';
 import { ClientService } from '../../../core/services/client.service';
 import { EmployeeService } from '../../../core/services/employee.service';
 import { ClientWithNumberOfProjects } from '../../../core/dtos/client/client-with-number-of-projects.dto';
 import { Router } from '@angular/router';
 import { AlertService } from '../../../core/services/alert.service';
+import { Project } from '../../../core/models/project.model';
+import { Client } from '../../../core/models/client.model';
 
 @Component({
   selector: 'app-create-project',
@@ -20,6 +21,8 @@ export class CreateProjectComponent {
 
   private destroy$ = new Subject<void>();
   createProjectForm: FormGroup;
+  isEditMode : boolean = false;
+  buttonContent : string = 'Create Project';
 
   constructor(private fb: FormBuilder, private projectService : ProjectService,
               private clientService : ClientService, private employeeService : EmployeeService,
@@ -32,40 +35,57 @@ export class CreateProjectComponent {
     });
   }
 
-  
-
-  clients : ClientWithNumberOfProjects[] = []
+  existingProject !: Project
+  clients : Client[] = []
   developers : Employee[] = []
 
   ngOnInit(){
     this.clientService.getAllClients("?page=1&items-per-page=100")
       .pipe(takeUntil(this.destroy$),tap( response => {
-        this.clients = response.clients;
+        this.clients = response.clients.map( (clientWithProjects: ClientWithNumberOfProjects) => clientWithProjects.client);
       })).subscribe()
 
       this.employeeService.getAllDevelopers()
       .pipe(takeUntil(this.destroy$),tap( response => {
         this.developers = response.developers;
       })).subscribe()
+
+    this.existingProject = history.state.projectData
+    if(this.existingProject){
+      this.isEditMode = true;
+      this.buttonContent = 'Update Project'
+      this.createProjectForm.patchValue({
+        title: this.existingProject.title,
+        description: this.existingProject.description,
+        client: this.existingProject.client.id,
+        teamLead : this.existingProject.teamLeadId
+      });
+    }
   }
 
   onSubmit() {
     if (this.createProjectForm.valid) {
-      const dto: CreateProjectDto = {
-          title: this.createProjectForm.get('title')?.value,
-          description: this.createProjectForm.get('description')?.value,
-          clientId: this.createProjectForm.get('client')?.value,
-          teamLeadId: this.createProjectForm.get('teamLead')?.value,
-        };
-      this.projectService.createProject(dto)
-        .pipe(takeUntil(this.destroy$), tap((response) => {
-          this.swal.fireSwalSuccess("Project created successfully")
-          this.router.navigate(['projects'])
-          }),
-          catchError( error => {
-            this.swal.fireSwalError("Something went wrong")
-            return throwError(() => error);
-          })).subscribe();
+      if(!this.isEditMode){
+        const dto: CreateProjectDto = {
+            title: this.createProjectForm.get('title')?.value,
+            description: this.createProjectForm.get('description')?.value,
+            clientId: this.createProjectForm.get('client')?.value,
+            teamLeadId: this.createProjectForm.get('teamLead')?.value,
+          };
+        this.projectService.createProject(dto)
+          .pipe(takeUntil(this.destroy$), tap((response) => {
+            this.swal.fireSwalSuccess("Project created successfully")
+            this.router.navigate(['projects'])
+            }),
+            catchError( error => {
+              this.swal.fireSwalError("Something went wrong")
+              return throwError(() => error);
+            })).subscribe();
+      }
+      else
+      {
+        
+      }
     }
   }
 

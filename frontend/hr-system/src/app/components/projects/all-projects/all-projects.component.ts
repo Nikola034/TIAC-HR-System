@@ -35,8 +35,8 @@ export class AllProjectsComponent implements OnInit, OnDestroy {
     return '?page=' + this.pageNumber + "&items-per-page=" + this.itemsPerPage;
   }
 
-  viewProject(project:Project) : void {
-    this.router.navigate(['project/' + project.id])
+  editProject(project: Project) : void {
+    this.router.navigate(['edit-project'], { state: { projectData: project } })
   }
 
   loadNewPage(selectedPage : number) : void {

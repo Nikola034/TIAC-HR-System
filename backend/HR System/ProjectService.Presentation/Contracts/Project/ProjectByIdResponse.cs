@@ -1,4 +1,5 @@
 using Core.Entities;
+using ProjectServiceApplication.Commands.Project;
 
 namespace ProjectServicePresentation.Contracts;
 
@@ -9,4 +10,6 @@ public class ProjectByIdResponse
     public string Description { get; set; }
     public Client Client { get; set; }
     public Guid? TeamLeadId { get; set; }
+    public IEnumerable<EmployeeDto> Working { get; set; }
+    public IEnumerable<EmployeeDto> NotWorking { get; set; }
 }
