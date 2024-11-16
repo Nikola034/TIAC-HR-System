@@ -7,14 +7,14 @@ namespace ProjectServicePresentation.Mapper;
 
 public static class EmployeeProjectMapper
 {
-    public static AddEmployeeToProjectCommand ToCommand(this AddEmployeeToProjectRequest request) => new AddEmployeeToProjectCommand(request.EmployeeId, request.ProjectId);
-    public static AddEmployeeToProjectResponse ToApiResponseFromAdd(this EmployeeProject employeeProject)
+    public static AddEmployeeToProjectCommand ToAddCommand(this AddOrRemoveEmployeeFromProjectRequest request) => new AddEmployeeToProjectCommand(request.EmployeeId, request.ProjectId);
+    public static RemoveEmployeeFromProjectCommand ToRemoveCommand(this AddOrRemoveEmployeeFromProjectRequest request) => new RemoveEmployeeFromProjectCommand(request.EmployeeId, request.ProjectId);
+    public static AddOrRemoveEmployeeFromProjectResponse ToApiResponse(this AddOrRemoveEmployeeFromProjectCommandResponse response)
     {
-        return new AddEmployeeToProjectResponse()
+        return new AddOrRemoveEmployeeFromProjectResponse()
         {
-            Id = employeeProject.Id,
-            EmployeeId = employeeProject.EmployeeId,
-            ProjectId = employeeProject.ProjectId
+            Working = response.Working,
+            NotWorking = response.NotWorking
         };
     }
 }

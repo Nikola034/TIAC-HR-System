@@ -11,15 +11,17 @@ namespace ProjectServicePresentation.Mapper
 {
     public static class ProjectMapper
     {
-        public static ProjectByIdResponse ToApiResponse(this Project project)
+        public static ProjectByIdResponse ToApiResponse(this GetProjectByIdQueryResponse response)
         {
             return new ProjectByIdResponse
             {
-                Id = project.Id,
-                Title = project.Title,
-                Description = project.Description,
-                Client = project.Client,
-                TeamLeadId = project.TeamLeadId
+                Id = response.Project.Id,
+                Title = response.Project.Title,
+                Description = response.Project.Description,
+                Client = response.Project.Client,
+                TeamLeadId = response.Project.TeamLeadId,
+                Working = response.Working,
+                NotWorking = response.NotWorking
             };
         }
         

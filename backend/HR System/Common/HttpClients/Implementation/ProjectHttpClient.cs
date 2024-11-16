@@ -9,6 +9,7 @@ using System.Net.Http.Json;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Common.HttpCLients.Dtos;
 
 namespace Common.HttpCLients.Implementation
 {
@@ -110,13 +111,13 @@ namespace Common.HttpCLients.Implementation
             return projectIds;
         }
 
-        public async Task<bool> RemoveEmployeeFromProjectAsync(Guid employeeId, Guid projectId, CancellationToken cancellationToken = default)
+        public async Task<bool> RemoveEmployeeFromProjectAsync(RemoveEmployeeFromProjectDto dto, CancellationToken cancellationToken = default)
         {
             var httpClient = _httpClientFactory.CreateClient("ProjectServiceClient");
             var request = new HttpRequestMessage
             {
-                Method = HttpMethod.Delete,
-                RequestUri = new Uri("projects/remove/" + employeeId + "/" + projectId, UriKind.Relative)
+                Method = HttpMethod.Put,
+                RequestUri = new Uri("projects/removeFromProject", UriKind.Relative)
             };
             var response = await httpClient.SendAsync(request, cancellationToken);
 

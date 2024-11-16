@@ -7,9 +7,9 @@ using ProjectServicePresentation.Mapper;
 
 namespace ProjectServicePresentation.Controllers.Project;
 
-public class RemoveEmployeeFromProject: EndpointWithoutRequest<bool>
+public class RemoveEmployeeFromProject : Endpoint<AddOrRemoveEmployeeFromProjectRequest, AddOrRemoveEmployeeFromProjectResponse>
 {
-    private readonly IMediator _mediator;
+    IMediator _mediator;
 
     public RemoveEmployeeFromProject(IMediator mediator)
     {
@@ -18,17 +18,13 @@ public class RemoveEmployeeFromProject: EndpointWithoutRequest<bool>
 
     public override void Configure()
     {
-        Delete("projects/remove/{employeeId}/{projectId}");
+        Put("/projects/removeFromProject");
         AllowAnonymous();
     }
 
-    public override async Task HandleAsync(CancellationToken ct)
+    public override async Task HandleAsync(AddOrRemoveEmployeeFromProjectRequest req, CancellationToken ct)
     {
-        var employeeId = Route<Guid>("employeeId");
-        var projectId = Route<Guid>("projectId");
-        var result = await _mediator.Send(new RemoveEmployeeFromProjectCommand(employeeId, projectId),ct);
-        if (!result)
-            await SendNotFoundAsync(ct);
-        await SendOkAsync(ct);
+        var project = await _mediator.Send(req.ToRemoveCommand(), ct);
+        await SendOkAsync(project.ToApiResponse(), ct);
     }
 }

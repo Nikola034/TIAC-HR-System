@@ -15,12 +15,14 @@ const routes: Routes = [
   //{ path:'employees', component: AllEmployeesComponent},
   { path:'clients', component: AllClientsComponent},
   { path:'profile', component: EditProfileComponent},
-  { path:'create-client', component:CreateClientComponent},
+  { path:'create-client', component: CreateClientComponent},
+  { path:'edit-client', component: CreateClientComponent},
   { path:'holiday-requests', component: HolidayRequestsComponent},
   { path:'my-projects', component: MyProjectsComponent},
   { path:'my-projects/:id', component: ProjectDetailsComponent},
   { path:'profile', component: EditProfileComponent},
   { path: 'create-project', component: CreateProjectComponent},
+  { path: 'edit-project', component: CreateProjectComponent},
   { path: '', component: LoginFormComponent},
 ];
 

@@ -1,0 +1,25 @@
+.project-container {
+    width: 90%;
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: flex-start;
+    margin-bottom: 10px;
+}
+
+.index {
+    width: 10%;
+}
+
+.title {
+    width: 30%;
+}
+
+.description {
+    width: 60%;
+}
+
+.button{
+    display: flex;
+    justify-content: center;
+}

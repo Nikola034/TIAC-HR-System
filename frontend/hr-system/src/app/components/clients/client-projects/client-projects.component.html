@@ -1,0 +1,11 @@
+<h2 mat-dialog-title>Projects</h2>
+<mat-dialog-content>
+  <div *ngFor="let project of projects; index as i" class="project-container">
+        <div class="index">{{i+1}}</div>
+        <div class="title">{{project.title}}</div>
+        <div class="description">{{project.description}}</div>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions class="button">
+  <button mat-button mat-dialog-close color="primary">Close</button>
+</mat-dialog-actions>
