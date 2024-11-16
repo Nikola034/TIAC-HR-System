@@ -8,5 +8,6 @@ public interface IClientRepository
     public Task<Client?> CreateClientAsync(Client client, CancellationToken cancellationToken = default(CancellationToken));
     public Task<Client?> UpdateClientAsync(Client client, CancellationToken cancellationToken = default(CancellationToken));
     public Task<bool> DeleteClientAsync(Guid id, CancellationToken cancellationToken = default(CancellationToken));
-    public Task<IEnumerable<Client>> GetAllClientsAsync(int page, CancellationToken cancellationToken = default(CancellationToken));
+    public Task<IEnumerable<Client>> GetAllClientsAsync(int pageNumber,int itemNumber, CancellationToken cancellationToken = default(CancellationToken));
+    public Task<int> GetTotalPageNumber(int itemNumber, CancellationToken ct = default(CancellationToken));
 }

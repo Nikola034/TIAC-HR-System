@@ -7,26 +7,26 @@ using MediatR;
 
 namespace EmployeeService.Presentation.Controllers.Employee
 {
-    public class GetRoleByAccountId : EndpointWithoutRequest<GetRoleByAccountIdResponse>
+    public class GetEmployeeByAccountId : EndpointWithoutRequest<EmployeeByAccountIdResponse>
     {
         IMediator _mediator;
 
-        public GetRoleByAccountId(IMediator mediator)
+        public GetEmployeeByAccountId(IMediator mediator)
         {
             _mediator = mediator;
         }
 
         public override void Configure()
         {
-            Get("employees/getRole/{employeeAccountId}");
+            Get("employees/getByAccountId/{employeeAccountId}");
             AllowAnonymous();
         }
 
         public override async Task HandleAsync(CancellationToken ct)
         {
             var employeeAccountId = Route<Guid>("employeeAccountId");
-            var role = await _mediator.Send(new GetRoleByAccountIdQuery(employeeAccountId),ct);
-            await SendOkAsync(new GetRoleByAccountIdResponse{Role = role}, ct);
+            var employee = await _mediator.Send(new GetRoleByAccountIdQuery(employeeAccountId),ct);
+            await SendOkAsync(employee.ToApiResponseFromGetByAccountId(), ct);
         }
     }
 }

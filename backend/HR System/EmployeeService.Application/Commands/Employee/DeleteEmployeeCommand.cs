@@ -14,6 +14,7 @@ using System.Linq;
 using System.Runtime.InteropServices.Marshalling;
 using System.Text;
 using System.Threading.Tasks;
+using Common.HttpCLients.Dtos;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace EmployeeService.Application.Commands.Employee
@@ -68,7 +69,8 @@ namespace EmployeeService.Application.Commands.Employee
             {
                 foreach(var projectId in employeeProjectsIds)
                 {
-                    await _projectHttpClient.RemoveEmployeeFromProjectAsync(existingEmployee.Id, projectId, cancellationToken);
+                    var dto = new RemoveEmployeeFromProjectDto {EmployeeId = existingEmployee.Id, ProjectId = projectId};
+                    await _projectHttpClient.RemoveEmployeeFromProjectAsync(dto, cancellationToken);
                 }
             }
 

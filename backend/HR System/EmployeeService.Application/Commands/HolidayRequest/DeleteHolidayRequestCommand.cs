@@ -13,10 +13,12 @@ namespace EmployeeService.Application.Commands.HolidayRequest
 {
     public class DeleteHolidayRequestCommandHandler : IRequestHandler<DeleteHolidayRequestCommand, bool>
     {
+        private readonly IEmployeeRepository _employeeRepository;
         private readonly IHolidayRequestRepository _holidayrequestRepository;
         private readonly IHolidayRequestApproverRepository _holidayrequestApproversRepository;
-        public DeleteHolidayRequestCommandHandler(IHolidayRequestRepository holidayrequestRepository, IHolidayRequestApproverRepository holidayRequestApproverRepository)
+        public DeleteHolidayRequestCommandHandler(IEmployeeRepository employeeRepository, IHolidayRequestRepository holidayrequestRepository, IHolidayRequestApproverRepository holidayRequestApproverRepository)
         {
+            _employeeRepository = employeeRepository;
             _holidayrequestRepository = holidayrequestRepository;
             _holidayrequestApproversRepository = holidayRequestApproverRepository;
         }
@@ -34,6 +36,10 @@ namespace EmployeeService.Application.Commands.HolidayRequest
             {
                 await _holidayrequestApproversRepository.DeleteHolidayRequestApproverAsync(holidayRequest.Id, cancellationToken);
             }
+
+            int wantedDays = (existingHolidayRequest.End - existingHolidayRequest.Start).Days;
+            existingHolidayRequest.Sender.DaysOff += wantedDays;
+            await _employeeRepository.UpdateEmployeeAsync(existingHolidayRequest.Sender, cancellationToken);
 
             var persistedHolidayRequest = await _holidayrequestRepository.DeleteHolidayRequestAsync(domainEntity.Id, cancellationToken);
             return persistedHolidayRequest;

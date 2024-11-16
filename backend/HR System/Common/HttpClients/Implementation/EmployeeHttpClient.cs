@@ -22,23 +22,34 @@ public class EmployeeHttpClient : IEmployeeHttpClient
             Method = HttpMethod.Get,
             RequestUri = new Uri("employees/" + employeeId, UriKind.Relative)
         };
-        var response = await httpClient.SendAsync(request);
+        var response = await httpClient.SendAsync(request,cancellationToken);
         response.EnsureSuccessStatusCode();
-        return await response.Content.ReadAsStringAsync();
+        return await response.Content.ReadAsStringAsync(cancellationToken);
     }
 
-    public async Task<string> GetEmployeeRole(Guid employeeAccountId, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task<string> GetEmployeeByAccountIdAsync(Guid employeeAccountId, CancellationToken cancellationToken = default(CancellationToken))
     {
         var httpClient = _httpClientFactory.CreateClient("EmployeeServiceClient");
         var request = new HttpRequestMessage
         {
             Method = HttpMethod.Get,
-            RequestUri = new Uri("employees/getRole/" + employeeAccountId, UriKind.Relative)
+            RequestUri = new Uri("employees/getByAccountId/" + employeeAccountId, UriKind.Relative)
         };
-        var response = await httpClient.SendAsync(request);
+        var response = await httpClient.SendAsync(request,cancellationToken);
         response.EnsureSuccessStatusCode();
-        var responseString = await response.Content.ReadAsStringAsync(cancellationToken);
-        var jsonObj = JObject.Parse(responseString);
-        return jsonObj["role"].ToString();
+        return await response.Content.ReadAsStringAsync(cancellationToken);
+    }
+
+    public async Task<string> GetAllDevelopersAsync(CancellationToken cancellationToken = default(CancellationToken))
+    {
+        var httpClient = _httpClientFactory.CreateClient("EmployeeServiceClient");
+        var request = new HttpRequestMessage
+        {
+            Method = HttpMethod.Get,
+            RequestUri = new Uri("employees/developers", UriKind.Relative)
+        };
+        var response = await httpClient.SendAsync(request,cancellationToken);
+        response.EnsureSuccessStatusCode();
+        return await response.Content.ReadAsStringAsync(cancellationToken);
     }
 }

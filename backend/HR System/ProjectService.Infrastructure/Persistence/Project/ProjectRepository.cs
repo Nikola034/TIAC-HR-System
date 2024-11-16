@@ -75,4 +75,28 @@ public class ProjectRepository(ProjectDbContext dbContext) : IProjectRepository
             .ToListAsync(ct);
         return projects;
     }
+
+    public async Task<IEnumerable<Core.Entities.Project>> GetAllProjectsByClientIdAsync(Guid clientId, CancellationToken ct = default(CancellationToken))
+    {
+        var projects = await dbContext.Projects.AsNoTracking().Where(x => x.ClientId == clientId).ToListAsync(ct);
+        return projects;
+    }
+
+    public int GetNumberOfProjectsByClient(Guid clientId)
+    {
+        return dbContext.Projects.Count(x => x.ClientId == clientId);
+    }
+
+    public async Task DeleteAllProjectsForClientAsync(Guid clientId, CancellationToken ct = default(CancellationToken))
+    {
+        var existingProjects = await dbContext.Projects.
+            Where(x => x.ClientId == clientId).ToListAsync(ct);
+        if (existingProjects.Count == 0)
+        {
+            return;
+        }
+        dbContext.Projects.RemoveRange(existingProjects);
+        await dbContext.SaveChangesAsync(ct);
+        return;
+    }
 }

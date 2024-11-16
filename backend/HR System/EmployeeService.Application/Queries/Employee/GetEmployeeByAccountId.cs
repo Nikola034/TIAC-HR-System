@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace EmployeeService.Application.Queries.Employee
 {
-    public class GetRoleByAccountIdHandler : IRequestHandler<GetRoleByAccountIdQuery, string>
+    public class GetRoleByAccountIdHandler : IRequestHandler<GetRoleByAccountIdQuery, Core.Entities.Employee>
     {
         private readonly IEmployeeRepository _employeeRepository;
         
@@ -19,17 +19,17 @@ namespace EmployeeService.Application.Queries.Employee
         {
             _employeeRepository = productRepository;
         }
-        public async Task<string> Handle(GetRoleByAccountIdQuery request, CancellationToken cancellationToken)
+        public async Task<Core.Entities.Employee> Handle(GetRoleByAccountIdQuery request, CancellationToken cancellationToken)
         {
             var employee = await _employeeRepository.GetEmployeeByAccountIdAsync(request.Id, cancellationToken);
             if(employee is null)
             {
                 throw new NotFoundException("Employee with provided Account ID doesn't exist!");
             }
-            return employee.Role.ToString();
+            return employee;
         }
     }
 
 
-    public record GetRoleByAccountIdQuery(Guid Id) : IRequest<string>;
+    public record GetRoleByAccountIdQuery(Guid Id) : IRequest<Core.Entities.Employee>;
 }

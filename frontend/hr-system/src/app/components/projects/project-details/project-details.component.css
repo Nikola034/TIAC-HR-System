@@ -1,0 +1,28 @@
+.project-details-card {
+    margin: 20px;
+    padding: 20px;
+}
+.project-details-card {
+  margin: 20px;
+  padding: 20px;
+}
+.title{
+  font-size: 2rem;
+  font-weight: 600;
+}
+.description{
+  font-size: 1.3rem;
+}
+h3{
+  font-size: 1.3rem;
+}
+th{
+  font-size: 1rem;
+}
+td{
+  font-size: 1.2rem;
+}
+button{
+  margin-top: 1rem;
+  margin-left: 0.5rem;
+}

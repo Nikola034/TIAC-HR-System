@@ -72,5 +72,11 @@ namespace Infrastructure.Persistance.User
             existingAccount.Password = password;
             await _context.SaveChangesAsync(cancellationToken);
         }
+        public async Task<IEnumerable<Core.Entities.Account>?> GetAccountsByIdsAsync(IEnumerable<Guid> ids, CancellationToken cancellationToken)
+        {
+            var accounts = await _context.Accounts.
+            Where(x => ids.Contains(x.Id)).ToListAsync(cancellationToken);
+            return accounts;
+        }
     }
 }

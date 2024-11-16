@@ -6,7 +6,7 @@ using Presentation.Mapper;
 
 namespace Presentation.Controllers.User
 {
-    public class RefreshToken : EndpointWithoutRequest<LoginUserResponse>
+    public class RefreshToken : Endpoint<RefreshTokenRequest,LoginUserResponse>
     {
         IMediator _mediator;
         public RefreshToken(IMediator mediator)
@@ -16,14 +16,13 @@ namespace Presentation.Controllers.User
 
         public override void Configure()
         {
-            Post("auth/refreshToken/{refreshToken}");
+            Post("auth/refreshToken");
             AllowAnonymous();
         }
 
-        public override async Task HandleAsync(CancellationToken ct)
+        public override async Task HandleAsync(RefreshTokenRequest request, CancellationToken ct)
         {
-            var refreshToken = Route<string>("refreshToken");
-            var tokens = await _mediator.Send(new RefreshTokenCommand(refreshToken), ct);
+            var tokens = await _mediator.Send(new RefreshTokenCommand(request.RefreshToken), ct);
             await SendOkAsync(tokens.ToApiResponse(), ct);
         }
     }

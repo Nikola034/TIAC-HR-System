@@ -1,19 +1,26 @@
-<mat-toolbar class="toolbar">
+<mat-toolbar class="toolbar" color="primary">
     <div class="button-row">
-        <button mat-button routerLink="projects"  aria-label="Go to Projects page">
+        <button mat-button routerLink="projects" *ngIf="userRole === 'Manager'">
             Projects
         </button>   
-        <button mat-button routerLink="/employees" *ngIf="userRole === 'Manager'">
+        <button mat-button routerLink="holiday-requests">
+            Holiday Requests
+        </button>
+        <button mat-button routerLink="employees" *ngIf="userRole === 'Manager'">
             Employees
         </button>
-        <button mat-button routerLink="/holiday-requests" *ngIf="userRole === 'Manager'">
-            Holiday requests
+        <button mat-button routerLink="clients" *ngIf="userRole === 'Manager'">
+            Clients
         </button>
-        <button mat-button routerLink="/my-holiday-requests" *ngIf="userRole === 'Developer'">
-            My holiday requests
+
+        <button mat-button routerLink="my-projects" *ngIf="userRole === 'Developer'">
+            My Projects
         </button>
     </div>
     <div class="logout">
+        <button mat-button routerLink="profile">
+            Profile
+        </button>
         <button mat-button routerLink="/" (click)="logOut()">
             Logout
         </button>

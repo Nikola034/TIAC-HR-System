@@ -56,10 +56,10 @@ namespace EmployeeService.Infrastructure.Persistance.Employee
             return await _context.Employees.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
         }
 
-        public async Task<decimal> GetTotalPagesAsync(int page, int items, CancellationToken cancellationToken = default)
+        public async Task<int> GetTotalPagesAsync(int page, int items, CancellationToken cancellationToken = default)
         {
             var count = await _context.Employees.CountAsync(cancellationToken);
-            return Math.Floor((decimal)((decimal)count / (decimal)items));
+            return (int)Math.Floor((double)count / items);
         }
 
         public async Task<Core.Entities.Employee?> UpdateEmployeeAsync(Core.Entities.Employee user, CancellationToken cancellationToken = default)
@@ -78,6 +78,14 @@ namespace EmployeeService.Infrastructure.Persistance.Employee
         {
             var employees = await _context.Employees.OrderBy(x => x.Id)
             .ToListAsync(cancellationToken);
+            return employees;
+        }
+
+        public async Task<IEnumerable<Core.Entities.Employee>> GetAllDevelopersAsync(CancellationToken cancellationToken = default)
+        {
+            var employees = await _context.Employees.OrderBy(x => x.Id)
+                .Where(x => x.Role == Core.Enums.EmployeeRole.Developer)
+                .ToListAsync(cancellationToken);
             return employees;
         }
     }

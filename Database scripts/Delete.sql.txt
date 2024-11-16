@@ -1,0 +1,7 @@
+delete from holidayRequestApprovers;
+delete from holidayRequests;
+delete from employeeProjects;
+delete from projects;
+delete from clients;
+delete from employees;
+delete from accounts;

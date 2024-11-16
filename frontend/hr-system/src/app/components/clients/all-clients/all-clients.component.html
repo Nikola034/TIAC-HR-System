@@ -1,0 +1,59 @@
+<div class="all-clients-container" *ngIf="clients.length > 0">
+    <div class="header-div">
+      <h1>All clients</h1>
+      <button mat-flat-button class="add-button" color="primary" routerLink="/create-client">
+        <mat-icon>add</mat-icon>
+        <mat-label>New Client</mat-label>
+      </button> 
+    </div>
+    <table mat-table [dataSource]="clients" class="mat-elevation-z6">
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef> Name </th>
+          <td mat-cell *matCellDef="let client"> {{client.client.name}} </td>
+        </ng-container>
+      
+        <ng-container matColumnDef="country">
+          <th mat-header-cell *matHeaderCellDef> Country </th>
+          <td mat-cell *matCellDef="let client"> {{client.client.country}} </td>
+        </ng-container>
+      
+        <ng-container matColumnDef="numberOfProjects">
+          <th mat-header-cell *matHeaderCellDef> Number of projects </th>
+          <td mat-cell *matCellDef="let client"> {{client.numberOfProjects}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="edit">
+          <th mat-header-cell *matHeaderCellDef> Edit </th>
+          <td mat-cell *matCellDef="let client">
+             <button mat-icon-button matTooltip="Click to edit client" class="iconbutton" (click)="editClient(client.client)">
+                <mat-icon>edit</mat-icon>
+            </button> 
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="projects">
+          <th mat-header-cell *matHeaderCellDef> View projects </th>
+          <td mat-cell *matCellDef="let client">
+             <button mat-icon-button matTooltip="Click to view projects" class="iconbutton"
+               (click)="viewProjects(client.client.id)" [disabled]="client.numberOfProjects==0">
+                <mat-icon>info_outline</mat-icon>
+            </button> 
+          </td>
+        </ng-container>
+  
+        <ng-container matColumnDef="delete">
+          <th mat-header-cell *matHeaderCellDef> Delete </th>
+          <td mat-cell *matCellDef="let client">
+             <button mat-icon-button matTooltip="Click to delete" class="iconbutton" (click)="delete(client.client.id)" color="warn">
+                <mat-icon>delete</mat-icon>
+            </button> 
+          </td>
+        </ng-container>
+      
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+      
+    <app-paginator [pageNumber]="pageNumber" [totalPages]="totalPages" (loadNewPageEmmiter)="loadNewPage($event)"/>
+  </div>
+    

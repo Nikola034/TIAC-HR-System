@@ -7,6 +7,6 @@ namespace EmployeeService.Presentation.Contracts.Employee
         public IEnumerable<Core.Entities.Employee> Employees { get; set; }
         public int Page {  get; set; }
         public int ItemsPerPage {  get; set; }
-        public decimal TotalPages { get; set; }
+        public int TotalPages { get; set; }
     }
 }

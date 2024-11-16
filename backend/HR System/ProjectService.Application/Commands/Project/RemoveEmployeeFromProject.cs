@@ -1,24 +1,29 @@
 using Application.Common.Repositories;
+using Application.Mappers;
+using Common.HttpCLients;
 using Core.Entities;
 using MediatR;
 
 namespace ProjectServiceApplication.Commands.Project
 {
-    public class RemoveEmployeeFromProjectHandler : IRequestHandler<RemoveEmployeeFromProjectCommand, bool>
+    public class RemoveEmployeeFromProjectHandler : IRequestHandler<RemoveEmployeeFromProjectCommand, AddOrRemoveEmployeeFromProjectCommandResponse>
     {
         private readonly IEmployeeProjectRepository _employeeProjectRepository;
+        private readonly IEmployeeHttpClient _employeeHttpClient;
 
-        public RemoveEmployeeFromProjectHandler(IEmployeeProjectRepository employeeProjectRepository)
+        public RemoveEmployeeFromProjectHandler(IEmployeeProjectRepository employeeProjectRepository, IEmployeeHttpClient employeeHttpClient)
         {
             _employeeProjectRepository = employeeProjectRepository;
+            _employeeHttpClient = employeeHttpClient;
         }
 
-        public async Task<bool> Handle(RemoveEmployeeFromProjectCommand req, CancellationToken ct)
+        public async Task<AddOrRemoveEmployeeFromProjectCommandResponse> Handle(RemoveEmployeeFromProjectCommand req, CancellationToken ct)
         {
-            var result = await _employeeProjectRepository.RemoveEmployeeFromProjectAsync(req.EmployeeId,req.ProjectId, ct);
-            return result;
+            await _employeeProjectRepository.RemoveEmployeeFromProjectAsync(req.EmployeeId,req.ProjectId, ct);
+            var employeesOnProject = await _employeeProjectRepository.GetAllEmployeesOnProjectAsync(req.ProjectId, ct);
+            var jsonString = await _employeeHttpClient.GetAllDevelopersAsync(ct);
+            return EmployeeProjectMapper.MapJsonStringToResponse(jsonString,employeesOnProject);
         }
     }
-
-    public record RemoveEmployeeFromProjectCommand(Guid EmployeeId, Guid ProjectId) : IRequest<bool>;
+    public record RemoveEmployeeFromProjectCommand(Guid EmployeeId, Guid ProjectId) : IRequest<AddOrRemoveEmployeeFromProjectCommandResponse>;
 }

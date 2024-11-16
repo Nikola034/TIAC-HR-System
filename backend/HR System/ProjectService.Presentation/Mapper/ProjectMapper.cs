@@ -11,18 +11,20 @@ namespace ProjectServicePresentation.Mapper
 {
     public static class ProjectMapper
     {
-        public static ProjectByIdResponse ToApiResponse(this Project project)
+        public static ProjectByIdResponse ToApiResponse(this GetProjectByIdQueryResponse response)
         {
             return new ProjectByIdResponse
             {
-                Id = project.Id,
-                Title = project.Title,
-                Description = project.Description,
-                Client = project.Client,
-                TeamLeadId = project.TeamLeadId
+                Id = response.Project.Id,
+                Title = response.Project.Title,
+                Description = response.Project.Description,
+                Client = response.Project.Client,
+                TeamLeadId = response.Project.TeamLeadId,
+                Working = response.Working,
+                NotWorking = response.NotWorking
             };
         }
-        
+
         public static GetProjectsReportResponse ToApiResponse(this GetProjectsReportQueryResponse response)
         {
             return new GetProjectsReportResponse
@@ -40,8 +42,8 @@ namespace ProjectServicePresentation.Mapper
         }
 
         public static CreateProjectCommand ToCommand(this CreateProjectRequest request)
-            => new CreateProjectCommand(request.Title, request.Description,request.ClientId,request.TeamLeadId);
-        
+            => new CreateProjectCommand(request.Title, request.Description, request.ClientId, request.TeamLeadId);
+
         public static CreateProjectResponse ToApiResponseFromCreate(this Project project)
         {
             return new CreateProjectResponse()
@@ -53,10 +55,10 @@ namespace ProjectServicePresentation.Mapper
                 TeamLeadId = project.TeamLeadId
             };
         }
-        
+
         public static UpdateProjectCommand ToCommand(this UpdateProjectRequest request)
-            => new UpdateProjectCommand(request.Id,request.Title, request.Description,request.ClientId,request.TeamLeadId);
-        
+            => new UpdateProjectCommand(request.Id, request.Title, request.Description, request.ClientId, request.TeamLeadId);
+
         public static UpdateProjectResponse ToApiResponseFromUpdate(this Project project)
         {
             return new UpdateProjectResponse()
@@ -79,6 +81,14 @@ namespace ProjectServicePresentation.Mapper
                 TotalPages = response.TotalPages
             };
         }
+
+
+        public static GetAllProjectsWithoutPagingResponse ToApiResponse(this GetAllProjectsWithoutPagingQueryResponse response)
+        {
+            return new GetAllProjectsWithoutPagingResponse()
+            {
+                Projects = response.Projects
+            };
+        }
     }
-    
 }

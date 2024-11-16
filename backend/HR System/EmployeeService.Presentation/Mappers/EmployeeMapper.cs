@@ -66,5 +66,17 @@ namespace EmployeeService.Presentation.Mappers
                 DaysOff = employee.DaysOff
             };
         }
+        public static EmployeeByAccountIdResponse ToApiResponseFromGetByAccountId(this Core.Entities.Employee employee)
+        {
+            return new EmployeeByAccountIdResponse
+            {
+                Id = employee.Id,
+                Name = employee.Name,
+                Surname = employee.Surname,
+                Role = employee.Role.ToString(),
+                DaysOff = employee.DaysOff,
+                AccountId = employee.AccountId
+            };
+        }
     }
 }
