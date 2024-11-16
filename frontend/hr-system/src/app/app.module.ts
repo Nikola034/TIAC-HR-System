@@ -35,6 +35,7 @@ import {MatDividerModule} from '@angular/material/divider';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import { CreateProjectComponent } from './components/projects/create-project/create-project.component';
 import { HttpInterceptorService } from './core/services/http-interceptor.service';
+import { EmployeesComponent } from './components/employees/employees/employees.component';
 import { ClientProjectsComponent } from './components/clients/client-projects/client-projects.component';
 
 @NgModule({
@@ -56,6 +57,7 @@ import { ClientProjectsComponent } from './components/clients/client-projects/cl
     MyProjectsComponent,
     ProjectDetailsComponent,
     CreateProjectComponent,
+    EmployeesComponent,
     ClientProjectsComponent,
   ],
   imports: [

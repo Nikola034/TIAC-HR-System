@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Application.Commands;
 using Core.Entities;
+using IdentityService.Application.Queries;
+using IdentityService.Presentation.Contracts.User;
 using Presentation.Contracts.User;
 
 namespace Presentation.Mapper
@@ -22,6 +24,14 @@ namespace Presentation.Mapper
             {
                 Id = account.Id,
                 Email = account.Email,
+            };
+        }
+
+        public static GetAccountsByIdsResponse ToApiResponse(this GetAccountsByIdsQueryResponse response)
+        {
+            return new GetAccountsByIdsResponse
+            {
+                Accounts = response.Accounts,
             };
         }
 

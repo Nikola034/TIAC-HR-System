@@ -24,7 +24,7 @@ namespace ProjectServicePresentation.Mapper
                 NotWorking = response.NotWorking
             };
         }
-        
+
         public static GetProjectsReportResponse ToApiResponse(this GetProjectsReportQueryResponse response)
         {
             return new GetProjectsReportResponse
@@ -42,8 +42,8 @@ namespace ProjectServicePresentation.Mapper
         }
 
         public static CreateProjectCommand ToCommand(this CreateProjectRequest request)
-            => new CreateProjectCommand(request.Title, request.Description,request.ClientId,request.TeamLeadId);
-        
+            => new CreateProjectCommand(request.Title, request.Description, request.ClientId, request.TeamLeadId);
+
         public static CreateProjectResponse ToApiResponseFromCreate(this Project project)
         {
             return new CreateProjectResponse()
@@ -55,10 +55,10 @@ namespace ProjectServicePresentation.Mapper
                 TeamLeadId = project.TeamLeadId
             };
         }
-        
+
         public static UpdateProjectCommand ToCommand(this UpdateProjectRequest request)
-            => new UpdateProjectCommand(request.Id,request.Title, request.Description,request.ClientId,request.TeamLeadId);
-        
+            => new UpdateProjectCommand(request.Id, request.Title, request.Description, request.ClientId, request.TeamLeadId);
+
         public static UpdateProjectResponse ToApiResponseFromUpdate(this Project project)
         {
             return new UpdateProjectResponse()
@@ -81,6 +81,14 @@ namespace ProjectServicePresentation.Mapper
                 TotalPages = response.TotalPages
             };
         }
+
+
+        public static GetAllProjectsWithoutPagingResponse ToApiResponse(this GetAllProjectsWithoutPagingQueryResponse response)
+        {
+            return new GetAllProjectsWithoutPagingResponse()
+            {
+                Projects = response.Projects
+            };
+        }
     }
-    
 }
