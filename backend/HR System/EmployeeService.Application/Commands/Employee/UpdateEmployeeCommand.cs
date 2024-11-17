@@ -28,6 +28,7 @@ namespace EmployeeService.Application.Commands.Employee
             {
                 throw new NotFoundException("Employee with that ID doesn't exist!");
             }
+            domainEntity.AccountId = existingEmployee.AccountId;
             var persistedEmployee = await _employeeRepository.UpdateEmployeeAsync(domainEntity, cancellationToken);
             return persistedEmployee;
         }

@@ -62,14 +62,19 @@ export class EmployeesComponent {
         switchMap((employeesResponse) => {
           const accountIds = this.getAccountIds(employeesResponse.employees);
           this.employees = employeesResponse.employees;
-          this.totalPages = employeesResponse.totalPages
-          return combineLatest([
-            of(this.employees),
-            this.accountservice.getAccountsByIds(accountIds)
-          ]);
+          this.totalPages = employeesResponse.totalPages;
+
+          return this.accountservice.getAccountsByIds(accountIds)
+            .pipe(
+              map((accountsResponse) => ({
+                employees: employeesResponse.employees,
+                accounts: accountsResponse.accounts
+              }))
+            );
         }),
-        tap(([employees, accountsResponse]) => {
-          this.accounts = accountsResponse.accounts;
+        tap(({ employees, accounts }) => {
+          this.employees = employees;
+          this.accounts = accounts;
         }),
         catchError((error) => {
           this.swal.fireSwalError('Something went wrong');

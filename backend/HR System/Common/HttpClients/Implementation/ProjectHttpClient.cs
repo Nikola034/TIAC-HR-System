@@ -7,9 +7,11 @@ using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using Common.HttpCLients.Dtos;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace Common.HttpCLients.Implementation
 {
@@ -116,6 +118,7 @@ namespace Common.HttpCLients.Implementation
             var httpClient = _httpClientFactory.CreateClient("ProjectServiceClient");
             var request = new HttpRequestMessage
             {
+                Content = new StringContent(JsonSerializer.Serialize(dto), Encoding.UTF8, "application/json"),
                 Method = HttpMethod.Put,
                 RequestUri = new Uri("projects/removeFromProject", UriKind.Relative)
             };

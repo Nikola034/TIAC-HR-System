@@ -63,6 +63,17 @@ namespace EmployeeService.Application.Commands.Employee
                 }
             }
 
+            var holidayRequestsApproversToApprove = await _holidayRequestApproverRepository.GetHolidayRequestApproversByApproverIdAsync(existingEmployee.Id, cancellationToken);
+            foreach (var holidayRequestApprover in holidayRequestsApproversToApprove)
+            {
+                await _holidayRequestApproverRepository.DeleteHolidayRequestApproverAsync(holidayRequestApprover.Id, cancellationToken);
+                var requestForApprover = await _holidayRequestRepository.GetHolidayRequestByIdAsync(holidayRequestApprover.RequestId, cancellationToken);
+                if(!(await _holidayRequestApproverRepository.GetHolidayRequestApproversByRequestIdAsync(requestForApprover.Id)).Any())
+                {
+                    await _holidayRequestRepository.DeleteHolidayRequestAsync(requestForApprover.Id, cancellationToken);
+                }
+            }
+
             var employeeProjectsIds = await _projectHttpClient.GetProjectsForEmployeeAsync(existingEmployee.Id, cancellationToken);
 
             if (employeeProjectsIds.Any())
