@@ -37,6 +37,7 @@ import { CreateProjectComponent } from './components/projects/create-project/cre
 import { HttpInterceptorService } from './core/services/http-interceptor.service';
 import { EmployeesComponent } from './components/employees/employees/employees.component';
 import { ClientProjectsComponent } from './components/clients/client-projects/client-projects.component';
+import { ChangePasswordFormComponent } from './components/login/change-password-form/change-password-form.component';
 
 @NgModule({
   declarations: [
@@ -59,6 +60,7 @@ import { ClientProjectsComponent } from './components/clients/client-projects/cl
     CreateProjectComponent,
     EmployeesComponent,
     ClientProjectsComponent,
+    ChangePasswordFormComponent,
   ],
   imports: [
     BrowserModule,

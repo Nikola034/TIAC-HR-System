@@ -2,11 +2,12 @@
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
-  align-items: center;
+  align-items: flex-start;
 }
 
 .create-project-container {
     max-width: 400px;
+    width: 25%;
     display: flex;
     justify-content: center;
     flex-direction: column;
@@ -45,6 +46,57 @@
     display: flex;
     justify-content: center;
     color: rgb(255, 255, 255);
+  }
+
+  .edit-employees-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+    min-height: 250px;
+    height: 100%;
+    width: 50%;
+    margin-top: 30px;
+  }
+
+  .add-to-project-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    width : 100%
+  }
+
+  .developer-select {
+    max-width: 250px;
+  }
+
+  .add-to-project-button {
+    margin-top: 0;
+  }
+
+  .pdf-button {
+    margin-top: 0;
+    max-width: 80px;
+    padding: 0;
+    height: 48px;
+    margin-right: 0;
+  }
+
+  .report {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    margin: 20px;
+    width: 100%;
+  }
+
+  .report-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
   }
 
   
