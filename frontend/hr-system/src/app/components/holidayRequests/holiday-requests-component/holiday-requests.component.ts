@@ -28,6 +28,7 @@ import Swal from 'sweetalert2';
 import { AlertService } from '../../../core/services/alert.service';
 import { EmployeeService } from '../../../core/services/employee.service';
 import { GetSenderForApproverDto } from '../../../core/dtos/holiday-request/get-sender-for-approver.dto';
+import { GetAllHolidayRequestApproversByApproverIdDto } from '../../../core/dtos/holiday-request/get-all-holiday-request-approves-by-approverid.dto';
 
 @Component({
   selector: 'app-holiday-requests-component',
@@ -40,8 +41,7 @@ export class HolidayRequestsComponent {
 
   holidayRequests: HolidayRequest[] = [];
   filteredHolidayRequests: HolidayRequest[] = [];
-  holidayRequestApprovers: HolidayRequestApprover[] = [];
-  senderNames: GetSenderForApproverDto[] = []
+  holidayRequestApprovers: GetAllHolidayRequestApproversByApproverIdDto[] = [];
 
   pageNumber: number = 1;
   totalPages: number = 1;
@@ -78,7 +78,7 @@ export class HolidayRequestsComponent {
         return this.holidayRequestApproverService.getAllHolidayRequestApproversByApproverId(this.jwtService.getIdFromToken()).pipe(
           map((approversResponse) => ({
             holidays: holidayResponse.holidayRequests,
-            approvers: approversResponse.holidayRequestApprovers,
+            approvers: approversResponse
           }))
         );
       }),
@@ -99,11 +99,10 @@ export class HolidayRequestsComponent {
       switchMap((holidayResponse) => {
         this.holidayRequests = holidayResponse.holidayRequests;
         this.totalPages = holidayResponse.totalPages;
-        console.log(this.holidayRequests)
         return this.holidayRequestApproverService.getAllHolidayRequestApproversByApproverId(this.jwtService.getIdFromToken()).pipe(
           map((approversResponse) => ({
             holidays: holidayResponse.holidayRequests,
-            approvers: approversResponse.holidayRequestApprovers,
+            approvers: approversResponse,
           }))
         );
       }),
@@ -200,7 +199,7 @@ export class HolidayRequestsComponent {
                 .pipe(
                   tap((response) => {
                     this.holidayRequestApprovers =
-                      response.holidayRequestApprovers;
+                      response;
                   }),
                   catchError((error) => {
                     this.swal.fireSwalError('Something went wrong');
@@ -242,7 +241,7 @@ export class HolidayRequestsComponent {
                 .pipe(
                   tap((response) => {
                     this.holidayRequestApprovers =
-                      response.holidayRequestApprovers;
+                      response;
                   }),
                   catchError((error) => {
                     this.swal.fireSwalError('Something went wrong');
