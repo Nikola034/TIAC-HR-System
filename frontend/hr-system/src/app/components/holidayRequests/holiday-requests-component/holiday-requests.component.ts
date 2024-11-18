@@ -64,59 +64,25 @@ export class HolidayRequestsComponent {
 
   ngOnInit() {
     this.refreshHolidayRequests();
+    this.refreshHolidayRequestApprovers();
   }
 
   refreshHolidayRequests(): void {
-    if (this.jwtService.getRoleFromToken() == 'Manager') {
-      this.holidayRequestService.getAllHolidayRequestsBySenderId(this.jwtService.getIdFromToken(), this.getQueryString())
-    .pipe(
-      takeUntil(this.destroy$),
-      switchMap((holidayResponse) => {
-        this.holidayRequests = holidayResponse.holidayRequests;
-        this.totalPages = holidayResponse.totalPages;
+    this.holidayRequestService.getAllHolidayRequestsBySenderId(this.jwtService.getIdFromToken(), this.getQueryString())
+      .pipe(takeUntil(this.destroy$), tap((response) =>{
+        this.holidayRequests = response.holidayRequests
+        this.totalPages = response.totalPages
+      })).subscribe();
+  }
 
-        return this.holidayRequestApproverService.getAllHolidayRequestApproversByApproverId(this.jwtService.getIdFromToken()).pipe(
-          map((approversResponse) => ({
-            holidays: holidayResponse.holidayRequests,
-            approvers: approversResponse
-          }))
-        );
-      }),
-      tap(({ holidays, approvers }) => {
-        this.holidayRequests = holidays;
-        this.holidayRequestApprovers = approvers;  
-      }),
-      catchError((error) => {
-        this.swal.fireSwalError('Something went wrong');
-        return throwError(() => error);
-      })
-    )
-    .subscribe();
-    } else {
-      this.holidayRequestService.getAllHolidayRequestsBySenderId(this.jwtService.getIdFromToken(), this.getQueryString())
-    .pipe(
+  refreshHolidayRequestApprovers(): void{
+    this.holidayRequestApproverService.getAllHolidayRequestApproversByApproverId(this.jwtService.getIdFromToken()).
+    pipe(
       takeUntil(this.destroy$),
-      switchMap((holidayResponse) => {
-        this.holidayRequests = holidayResponse.holidayRequests;
-        this.totalPages = holidayResponse.totalPages;
-        return this.holidayRequestApproverService.getAllHolidayRequestApproversByApproverId(this.jwtService.getIdFromToken()).pipe(
-          map((approversResponse) => ({
-            holidays: holidayResponse.holidayRequests,
-            approvers: approversResponse,
-          }))
-        );
-      }),
-      tap(({ holidays, approvers }) => {
-        this.holidayRequests = holidays;
-        this.holidayRequestApprovers = approvers;  
-      }),
-      catchError((error) => {
-        this.swal.fireSwalError('Something went wrong');
-        return throwError(() => error);
+      tap((response) => {
+        this.holidayRequestApprovers = response
       })
-    )
-    .subscribe();
-    }
+    ).subscribe();
   }
 
   getSenderForApprover(id: string) : string{
@@ -315,6 +281,7 @@ export class HolidayRequestsComponent {
     dialogRef.afterClosed().subscribe((newRequest: HolidayRequest) => {
       this.holidayRequests.push(newRequest);
       this.refreshHolidayRequests();
+      this.refreshHolidayRequestApprovers();
     });
   }
 }
