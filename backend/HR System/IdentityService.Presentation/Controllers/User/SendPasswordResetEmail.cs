@@ -14,7 +14,7 @@ namespace Presentation.Controllers.User
 
         public override void Configure()
         {
-            Post("auth/resetPassword/{email}");
+            Get("auth/resetPassword/{email}");
             AllowAnonymous();
         }
 

@@ -26,7 +26,7 @@ namespace Application.Commands
                 throw new UserDoesNotExistException();
             }
             var token = _jwtService.GenerateByteToken();
-            _emailService.SendPasswordResetEmail(request.Email, token, cancellationToken);
+            await _emailService.SendPasswordResetEmail(request.Email, token);
             await _accountRepository.UpdatePasswordResetTokenAsync(request.Email, token, cancellationToken);
         }
     }
