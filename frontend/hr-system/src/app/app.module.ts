@@ -37,6 +37,13 @@ import { CreateProjectComponent } from './components/projects/create-project/cre
 import { HttpInterceptorService } from './core/services/http-interceptor.service';
 import { EmployeesComponent } from './components/employees/employees/employees.component';
 import { ClientProjectsComponent } from './components/clients/client-projects/client-projects.component';
+import { JWT_OPTIONS, JwtInterceptor, JwtModule } from '@auth0/angular-jwt';
+import { environment } from '../environments/environment';
+
+// Function to retrieve the token
+export function tokenGetter() {
+  return localStorage.getItem('access_token');
+}
 
 @NgModule({
   declarations: [
@@ -80,12 +87,22 @@ import { ClientProjectsComponent } from './components/clients/client-projects/cl
     MatSelectModule,
     FormsModule,
     MatDividerModule,
-    MatTooltipModule
+    MatTooltipModule,
+    JwtModule.forRoot({
+      jwtOptionsProvider: {
+        provide: JWT_OPTIONS,
+        useValue: {
+          tokenGetter: tokenGetter,
+          allowedDomains: [environment.apiUrl], // Your API domain
+          disallowedRoutes: [environment.apiUrl + '/auth/login'], // Routes to exclude
+        },
+      },
+    })
   ],
   providers: [provideNativeDateAdapter(),
     {
       provide: HTTP_INTERCEPTORS,
-      useClass: HttpInterceptorService,
+      useClass: JwtInterceptor,
       multi: true,
     },
     // Other providers...

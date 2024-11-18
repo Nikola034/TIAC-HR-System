@@ -1,14 +1,32 @@
 import { Injectable } from "@angular/core";
 import { jwtDecode } from 'jwt-decode';
 import { TokensDto } from "../dtos/account/tokens.dto";
+import { catchError, Observable, tap, throwError } from "rxjs";
+import { environment } from "../../../environments/environment";
+import { HttpClient } from "@angular/common/http";
+import { Router } from "@angular/router";
 
 @Injectable({
     providedIn: 'root'
   })
   export class JwtService {
+
+    constructor(private httpClient: HttpClient, private router: Router){}
     setTokens(tokens: TokensDto) : void {
         localStorage.setItem('access_token',tokens.accessToken)
         localStorage.setItem('refresh_token',tokens.refreshToken)
+    }
+
+    IsLoged(): boolean {
+        const token = this.getToken()
+        if (!token) {
+            return false; 
+        }
+        return true; 
+    }
+    
+    getToken(): string | null {
+        return localStorage.getItem('access_token');
     }
 
     decodeToken(token: string): any {
@@ -68,5 +86,30 @@ import { TokensDto } from "../dtos/account/tokens.dto";
         localStorage.removeItem('access_token');
         localStorage.removeItem('refresh_token');
     }
+
+
+    refreshAccessToken(): Observable<any> {
+        const refreshToken = localStorage.getItem('refresh_token') || '';
+        const accessToken = localStorage.getItem('access_token') || '';
+
+        const url = `${environment.apiUrl}/auth/refreshToken`;
+
+        const token: TokensDto = {
+        accessToken,
+        refreshToken
+        };
+        return this.httpClient.post<TokensDto>(url, token).pipe(
+          tap((response) => {
+            
+            localStorage.setItem('access_token', response.accessToken);
+            localStorage.setItem('refresh_token', response.refreshToken);
+          }),
+          catchError((error) => {
+            this.router.navigate(['/auth/login']);
+            console.error('Error refreshing access token:', error);
+            return throwError(error);
+          })
+        );
+      }
 
 }
