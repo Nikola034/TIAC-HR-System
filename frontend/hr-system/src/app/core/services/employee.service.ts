@@ -25,7 +25,11 @@ export class EmployeeService {
     return this.http.get<AllEmployeesDto>(`${this.baseUrl}${query}`);
   }
 
-  getEmployeeById(id: string): Observable<Employee> {
+  getAllEmployeesOnProject(projectId: string): Observable<AllEmployeesDto> {
+    return this.http.get<AllEmployeesDto>(`${this.baseUrl}allEmployees/${projectId}`);
+  }
+  
+  getEmployeeById(id: string | undefined): Observable<Employee> {
     return this.http.get<Employee>(`${this.baseUrl}${id}`);
   }
 

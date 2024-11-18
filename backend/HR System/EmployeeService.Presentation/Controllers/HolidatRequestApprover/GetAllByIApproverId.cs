@@ -29,7 +29,7 @@ namespace EmployeeService.Presentation.Controllers.HolidatRequestApprover
                 await SendNotFoundAsync(ct);
             }
 
-            await SendOkAsync(holidayRequests.ToApiResponseFromGetAllByApproverId(), ct);
+            await SendOkAsync(holidayRequests.ToApiResponse(), ct);
         }
     }
 }

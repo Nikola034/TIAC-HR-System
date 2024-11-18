@@ -59,7 +59,7 @@ namespace EmployeeService.Infrastructure.Persistance.Employee
         public async Task<int> GetTotalPagesAsync(int page, int items, CancellationToken cancellationToken = default)
         {
             var count = await _context.Employees.CountAsync(cancellationToken);
-            return (int)Math.Floor((double)count / items);
+            return (int)Math.Ceiling((double)count / items);
         }
 
         public async Task<Core.Entities.Employee?> UpdateEmployeeAsync(Core.Entities.Employee user, CancellationToken cancellationToken = default)

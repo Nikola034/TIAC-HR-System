@@ -1,6 +1,7 @@
 ﻿using EmployeeService.Application.Common.Repositories;
 using EmployeeService.Core.Entities;
 using EmployeeService.Infrastructure.Persistance;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -45,11 +46,23 @@ namespace EmployeeService.Infrastructure.Persistence.HolidayRequest
             .ToListAsync(cancellationToken);
             return holidayRequests;
         }
-        public async Task<IEnumerable<Core.Entities.HolidayRequest>> GetAllHolidayRequestsBySenderIdAsync(Guid senderId, CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<Core.Entities.HolidayRequest>> GetAllHolidayRequestsBySenderIdAsync(Guid senderId, int page, int items, CancellationToken cancellationToken = default)
         {
-            var holidayRequests = await _context.HolidayRequests.OrderBy(x => x.Id)
-            .Where(x =>  x.SenderId == senderId)
-            .ToListAsync(cancellationToken);
+            var holidayRequests = new List<Core.Entities.HolidayRequest>();
+            if (page != -1 && items != -1)
+            {
+                holidayRequests = await _context.HolidayRequests.OrderBy(x => x.Id)
+                .Include(x => x.Sender)
+                .Where(x => x.SenderId == senderId)
+                .Skip((page - 1) * items)
+                .Take(items)
+                .ToListAsync(cancellationToken);
+                return holidayRequests;
+            }
+            holidayRequests = await _context.HolidayRequests.OrderBy(x => x.Id)
+                .Include(x => x.Sender)
+                .Where(x => x.SenderId == senderId)
+                .ToListAsync(cancellationToken);
             return holidayRequests;
         }
         public async Task<int> GetTotalPagesAsync(int page, int items, CancellationToken cancellationToken = default)

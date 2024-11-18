@@ -27,8 +27,8 @@
       <mat-form-field appearance="fill" class="full-width">
         <mat-label>Select employee's role</mat-label>
         <mat-select formControlName="role">
-          <mat-option value="developer">Developer</mat-option>
-          <mat-option value="manager">Manager</mat-option>
+          <mat-option [value]=0>Developer</mat-option>
+          <mat-option [value]=1>Manager</mat-option>
         </mat-select>
       </mat-form-field>
       <button mat-raised-button color="primary" type="submit">

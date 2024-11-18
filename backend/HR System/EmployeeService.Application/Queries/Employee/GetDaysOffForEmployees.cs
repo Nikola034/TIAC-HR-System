@@ -25,7 +25,7 @@ namespace EmployeeService.Application.Queries.Employee
             List<GetDaysOffForEmployeeReport> reports = new List<GetDaysOffForEmployeeReport>();
             foreach(var employee in employees)
             {
-                var holidayRequestsForEmployee = await _holidayRequestRepository.GetAllHolidayRequestsBySenderIdAsync(employee.Id, cancellationToken);
+                var holidayRequestsForEmployee = await _holidayRequestRepository.GetAllHolidayRequestsBySenderIdAsync(employee.Id, -1, -1, cancellationToken);
                 int realizedDays = 0;
                 foreach(var holidayRequest in holidayRequestsForEmployee.Where(x => x.Status == Core.Enums.HolidayRequestStatus.Approved))
                 {

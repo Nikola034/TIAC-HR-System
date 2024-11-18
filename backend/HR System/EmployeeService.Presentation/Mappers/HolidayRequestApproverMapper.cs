@@ -1,5 +1,6 @@
 ﻿using EmployeeService.Application.Commands.HolidayRequest;
 using EmployeeService.Application.Commands.HolidayRequestApprover;
+using EmployeeService.Application.Queries.HolidayRequestApprover;
 using EmployeeService.Core.Entities;
 using EmployeeService.Presentation.Contracts.Employee;
 using EmployeeService.Presentation.Contracts.HolidayRequest;
@@ -38,11 +39,19 @@ namespace EmployeeService.Presentation.Mappers
                 HolidayRequestApprovers = holidayRequests
             };
         }
-        public static GetAllHolidayRequestApproversByApproverIdResponse ToApiResponseFromGetAllByApproverId(this IEnumerable<Core.Entities.HolidayRequestApprover> holidayRequests)
+        public static GetAllHolidayRequestApproversByApproverIdResponse ToApiResponse(this IEnumerable<GetAllHolidayRequestsApproversByApproverIdQueryResponse> holidayRequests)
         {
             return new GetAllHolidayRequestApproversByApproverIdResponse
             {
-                HolidayRequestApprovers = holidayRequests
+                HolidayRequestApprovers = holidayRequests.Select(request => new GetAllHolidayRequestApproversByApproverIdDto
+                {
+                    Id = request.Id,
+                    RequestId = request.RequestId,
+                    SenderName = request.SenderName,
+                    SenderSurname = request.SenderSurname,
+                    Start = request.Start,
+                    End = request.End
+                })
             };
         }
         public static UpdateHolidayRequestApproverCommand ToCommand(this UpdateHolidayRequestApproverRequest request) => new UpdateHolidayRequestApproverCommand(request.RequestId, request.ApproverId, request.Status);

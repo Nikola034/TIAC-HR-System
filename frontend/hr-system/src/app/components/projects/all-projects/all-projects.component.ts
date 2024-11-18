@@ -28,7 +28,6 @@ export class AllProjectsComponent implements OnInit, OnDestroy {
         this.projects = response.projects
         this.totalPages = response.totalPages
       })).subscribe();
-    
   }
 
   getQueryString() : string {

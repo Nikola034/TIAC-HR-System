@@ -43,7 +43,7 @@ namespace EmployeeService.Application.Commands.Employee
                 return false;
             }
 
-            var holidayRequests = await _holidayRequestRepository.GetAllHolidayRequestsBySenderIdAsync(existingEmployee.Id, cancellationToken);
+            var holidayRequests = await _holidayRequestRepository.GetAllHolidayRequestsBySenderIdAsync(existingEmployee.Id, -1, -1, cancellationToken);
 
             if (holidayRequests.Any())
             {

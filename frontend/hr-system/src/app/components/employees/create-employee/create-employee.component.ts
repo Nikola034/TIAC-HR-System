@@ -56,6 +56,7 @@ export class CreateEmployeeComponent {
           }),
           tap((employeeResponse) => {
             this.swal.fireSwalSuccess('Success', 'Employee created successfully!');
+            this.router.navigate(['employees'])
           }),
           catchError((error) => {
             this.swal.fireSwalError('Something went wrong');

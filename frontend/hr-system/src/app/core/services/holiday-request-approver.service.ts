@@ -19,6 +19,10 @@ export class HolidayRequestApproverService {
     return this.http.get<GetAllHolidayRequestApproversByApproverIdDto>(`${this.baseUrl}` + '/byApprover/' + approverId);
   }
 
+  getHolidayRequestApproverByApproverAndRequestId(requestId: string, approverId : string): Observable<HolidayRequestApprover> {
+    return this.http.get<HolidayRequestApprover>(`${this.baseUrl}` + '/byApprover/' + requestId + '/' + approverId);
+  }
+
   updateHolidayRequestApprover(dto : UpdateHolidayRequestApproverDto): Observable<HolidayRequestApprover> {
     return this.http.put<HolidayRequestApprover>(`${this.baseUrl}`,dto);
   }
