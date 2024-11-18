@@ -12,6 +12,7 @@ import { LoginFormComponent } from './components/login/login-form/login-form.com
 import { ResetPasswordFormComponent } from './components/login/reset-password-form/reset-password-form.component';
 import { EmployeesComponent } from './components/employees/employees/employees.component';
 import { CreateEmployeeComponent } from './components/employees/create-employee/create-employee.component';
+import { ChangePasswordFormComponent } from './components/login/change-password-form/change-password-form.component';
 
 const routes: Routes = [
   { path:'projects', component: AllProjectsComponent},
@@ -25,10 +26,11 @@ const routes: Routes = [
   { path:'my-projects', component: MyProjectsComponent},
   { path:'my-projects/:id', component: ProjectDetailsComponent},
   { path:'profile', component: EditProfileComponent},
-  { path: 'create-project', component: CreateProjectComponent},
-  { path: 'edit-project', component: CreateProjectComponent},
-  { path: '', component: LoginFormComponent},
-  { path: 'reset-password', component: ResetPasswordFormComponent},
+  { path:'create-project', component: CreateProjectComponent},
+  { path:'edit-project', component: CreateProjectComponent},
+  { path:'', component: LoginFormComponent},
+  { path:'reset-password', component: ResetPasswordFormComponent},
+  { path:'resetPassword/:resetPasswordToken', component: ChangePasswordFormComponent}
 ];
 
 @NgModule({
