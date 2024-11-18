@@ -43,7 +43,7 @@ namespace EmployeeService.Application.Commands.Employee
                 return false;
             }
 
-            var holidayRequests = await _holidayRequestRepository.GetAllHolidayRequestsBySenderIdAsync(existingEmployee.Id, cancellationToken);
+            var holidayRequests = await _holidayRequestRepository.GetAllHolidayRequestsBySenderIdAsync(existingEmployee.Id, -1, -1, cancellationToken);
 
             if (holidayRequests.Any())
             {
@@ -60,6 +60,17 @@ namespace EmployeeService.Application.Commands.Employee
                     }
 
                     await _holidayRequestRepository.DeleteHolidayRequestAsync(holidayRequest.Id, cancellationToken);
+                }
+            }
+
+            var holidayRequestsApproversToApprove = await _holidayRequestApproverRepository.GetHolidayRequestApproversByApproverIdAsync(existingEmployee.Id, cancellationToken);
+            foreach (var holidayRequestApprover in holidayRequestsApproversToApprove)
+            {
+                await _holidayRequestApproverRepository.DeleteHolidayRequestApproverAsync(holidayRequestApprover.Id, cancellationToken);
+                var requestForApprover = await _holidayRequestRepository.GetHolidayRequestByIdAsync(holidayRequestApprover.RequestId, cancellationToken);
+                if(!(await _holidayRequestApproverRepository.GetHolidayRequestApproversByRequestIdAsync(requestForApprover.Id)).Any())
+                {
+                    await _holidayRequestRepository.DeleteHolidayRequestAsync(requestForApprover.Id, cancellationToken);
                 }
             }
 

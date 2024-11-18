@@ -33,6 +33,24 @@ namespace EmployeeService.Presentation.Mappers
                 Page = response.Page,
             };
         }
+
+        public static GetAllHolidayRequestsBySenderIdResponse ToApiResponse(this GetAllHolidayRequestsBySenderIdQueryResponse response)
+        {
+            return new GetAllHolidayRequestsBySenderIdResponse
+            {
+                HolidayRequests = response.HolidayRequests,
+                TotalPages = (int)response.TotalPages,
+                Page = (int)response.Page,
+                ItemsPerPage = response.Items
+            };
+        }
+        public static GetAllHolidayRequestsToApproveResponse ToApiResponse(this GetAllHolidayRequestsToApproveQueryResponse response)
+        {
+            return new GetAllHolidayRequestsToApproveResponse
+            {
+                HolidayRequests = response.HolidayRequests,
+            };
+        }
         public static CreateHolidayRequestResponse ToApiResponseFromCreate(this HolidayRequest holidayRequest)
         {
             return new CreateHolidayRequestResponse

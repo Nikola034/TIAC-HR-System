@@ -4,7 +4,7 @@ import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { HolidayRequestService } from '../../../core/services/holiday-request.service';
 import { CreateHolidayRequestDto } from '../../../core/dtos/holiday-request/create-holiday-request.dto';
-import { HolidayRequestStatus } from '../../../core/models/holiday-request.model';
+import { HolidayRequest, HolidayRequestStatus } from '../../../core/models/holiday-request.model';
 import { JwtService } from '../../../core/services/jwt.service';
 import { catchError, Subject, takeUntil, tap, throwError } from 'rxjs';
 import { Router } from '@angular/router';
@@ -22,9 +22,14 @@ export class SendHolidayRequestFormComponent {
     start: new FormControl<Date | null | undefined>(null),
     end: new FormControl<Date | null | undefined>(null),
   });
+  responseRequest: HolidayRequest | undefined
 
-  onCancel(): void {
-    this.dialogRef.close();
+  onCancel(newRequest: HolidayRequest | undefined): void {
+    this.dialogRef.close(newRequest);
+  }
+
+  rangeFilter(date: Date): boolean {
+    return date.getTime() > new Date().getTime();
   }
 
   private destroy$ = new Subject<void>();
@@ -39,11 +44,12 @@ export class SendHolidayRequestFormComponent {
     .pipe(takeUntil(this.destroy$), tap((response) => {
       this.swal.fireSwalSuccess("Holiday request created successfully")
       this.router.navigate(['holiday-requests'])
+      this.responseRequest = response
       }),
       catchError( error => {
         this.swal.fireSwalError("Something went wrong")
         return throwError(() => error);
       })).subscribe();
-    this.onCancel();
+    this.onCancel(this.responseRequest);
   }
 }

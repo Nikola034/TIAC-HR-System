@@ -20,9 +20,21 @@ export class EmployeeService {
   getAllDevelopers(): Observable<AllDevelopersDto> {
     return this.http.get<AllDevelopersDto>(`${this.baseUrl}developers`);
   }
-
+  
   getAllEmployees(query: string): Observable<AllEmployeesDto> {
     return this.http.get<AllEmployeesDto>(`${this.baseUrl}${query}`);
+  }
+
+  getAllEmployeesOnProject(projectId: string): Observable<AllEmployeesDto> {
+    return this.http.get<AllEmployeesDto>(`${this.baseUrl}allEmployees/${projectId}`);
+  }
+  
+  getEmployeeById(id: string | undefined): Observable<Employee> {
+    return this.http.get<Employee>(`${this.baseUrl}${id}`);
+  }
+
+  getEmployeeByAccountId(accountId: string): Observable<Employee> {
+    return this.http.get<Employee>(`${this.baseUrl}getByAccountId/${accountId}`);
   }
 
   createEmployee(dto : CreateEmployeeDto): Observable<Employee> {

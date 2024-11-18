@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import { Employee } from '../../../core/models/employee.model';
+import { Employee, EmployeeRole } from '../../../core/models/employee.model';
 import {
   catchError,
   combineLatest,
+  concatMap,
   forkJoin,
   map,
   Observable,
@@ -48,7 +49,7 @@ export class EmployeesComponent {
     private employeeService: EmployeeService,
     private router: Router,
     private swal: AlertService,
-    private accountservice: AccountService
+    private accountService: AccountService
   ) {}
 
   ngOnInit() {
@@ -57,26 +58,44 @@ export class EmployeesComponent {
 
   refreshData() {
     this.employeeService.getAllEmployees(this.getQueryString())
-      .pipe(
-        takeUntil(this.destroy$),
-        switchMap((employeesResponse) => {
-          const accountIds = this.getAccountIds(employeesResponse.employees);
-          this.employees = employeesResponse.employees;
-          this.totalPages = employeesResponse.totalPages
-          return combineLatest([
-            of(this.employees),
-            this.accountservice.getAccountsByIds(accountIds)
-          ]);
-        }),
-        tap(([employees, accountsResponse]) => {
-          this.accounts = accountsResponse.accounts;
-        }),
-        catchError((error) => {
-          this.swal.fireSwalError('Something went wrong');
-          return throwError(() => error);
-        })
-      )
-      .subscribe();
+    .pipe(
+      takeUntil(this.destroy$),
+      switchMap((employeesResponse) => {
+        this.employees = employeesResponse.employees;
+        this.totalPages = employeesResponse.totalPages;
+        const accountIds = this.getAccountIds(employeesResponse.employees);
+
+        return this.accountService.getAccountsByIds(accountIds).pipe(
+          map((accountsResponse) => ({
+            employees: employeesResponse.employees,
+            accounts: accountsResponse.accounts,
+          }))
+        );
+      }),
+      tap(({ employees, accounts }) => {
+        this.employees = employees;
+        this.accounts = accounts;  
+      }),
+      catchError((error) => {
+        this.swal.fireSwalError('Something went wrong');
+        return throwError(() => error);
+      })
+    )
+    .subscribe();
+  }
+
+  getRoleString(role: EmployeeRole) : string{
+    switch(role) { 
+      case 0: { 
+        return 'Developer'
+      } 
+      case  1: { 
+        return 'Manager'
+      } 
+      default: { 
+         return ''
+      } 
+   } 
   }
 
   getQueryString(): string {
@@ -94,9 +113,9 @@ export class EmployeesComponent {
     return dto;
   }
 
-  editEmployee(employee: Employee): void {
+  editEmployee(employeeId: string): void {
     this.router.navigate(['edit-employee'], {
-      state: { employeeData: employee },
+      state: { employeeId: employeeId},
     });
   }
 
@@ -140,7 +159,7 @@ export class EmployeesComponent {
   }
 
   getEmailForEmployee(accountId: string): string | undefined {
-    return this.accounts.find((account) => account.id == accountId)?.email;
+    return this.accounts.find(account => account.id === accountId)?.email || 'Loading...'
   }
 
   ngOnDestroy(): void {

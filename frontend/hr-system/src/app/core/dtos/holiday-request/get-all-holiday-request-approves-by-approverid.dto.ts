@@ -1,5 +1,10 @@
 import { HolidayRequestApprover } from "../../models/holiday-request-approver.model.ts";
 
 export interface GetAllHolidayRequestApproversByApproverIdDto{
-    holidayRequestApprovers: HolidayRequestApprover[],
+    id: string,
+    requestId: string,
+    senderName: string,
+    senderSurname: string,
+    start: Date,
+    end: Date
 }

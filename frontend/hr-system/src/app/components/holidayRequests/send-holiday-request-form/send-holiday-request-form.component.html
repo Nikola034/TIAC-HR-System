@@ -1,7 +1,7 @@
 <h2 mat-dialog-title>Send Holiday Request</h2>
 <mat-dialog-content>
   <mat-form-field>
-    <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
+    <mat-date-range-input [formGroup]="range" [rangePicker]="picker" [dateFilter]="rangeFilter">
       <input matStartDate formControlName="start" placeholder="Start date">
       <input matEndDate formControlName="end" placeholder="End date">
     </mat-date-range-input>
@@ -18,6 +18,6 @@
   </mat-form-field>
 </mat-dialog-content>
 <mat-dialog-actions>
-  <button mat-button (click)="onCancel()">Cancel</button>
+  <button mat-button (click)="onCancel(this.responseRequest)">Cancel</button>
   <button mat-button (click)="sendRequest()" cdkFocusInitial>Send</button>
 </mat-dialog-actions>

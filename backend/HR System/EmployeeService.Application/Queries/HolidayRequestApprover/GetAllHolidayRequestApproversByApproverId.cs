@@ -8,20 +8,37 @@ using System.Threading.Tasks;
 
 namespace EmployeeService.Application.Queries.HolidayRequestApprover
 {
-    public class GetAllHolidayRequestApproversByApproverIdHandler : IRequestHandler<GetAllHolidayRequestsApproversByApproverIdQuery, IEnumerable<Core.Entities.HolidayRequestApprover>>
+    public class GetAllHolidayRequestApproversByApproverIdHandler : IRequestHandler<GetAllHolidayRequestsApproversByApproverIdQuery, IEnumerable<GetAllHolidayRequestsApproversByApproverIdQueryResponse>>
     {
-
+        private readonly IHolidayRequestRepository _holidayRequestRepository;
         private readonly IHolidayRequestApproverRepository _holidayRequestApproverRepository;
-        public GetAllHolidayRequestApproversByApproverIdHandler(IHolidayRequestApproverRepository holidayRequestApproverRepository)
+        public GetAllHolidayRequestApproversByApproverIdHandler(IHolidayRequestRepository holidayRequestRepository, IHolidayRequestApproverRepository holidayRequestApproverRepository)
         {
+            _holidayRequestRepository = holidayRequestRepository;
             _holidayRequestApproverRepository = holidayRequestApproverRepository;
         }
-        public async Task<IEnumerable<Core.Entities.HolidayRequestApprover>> Handle(GetAllHolidayRequestsApproversByApproverIdQuery request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<GetAllHolidayRequestsApproversByApproverIdQueryResponse>> Handle(GetAllHolidayRequestsApproversByApproverIdQuery request, CancellationToken cancellationToken)
         {
-            return await _holidayRequestApproverRepository.GetHolidayRequestApproversByApproverIdAsync(request.ApproverId, cancellationToken);
+            var approvers = await _holidayRequestApproverRepository.GetHolidayRequestApproversByApproverIdAsync(request.ApproverId, cancellationToken);
+            List<GetAllHolidayRequestsApproversByApproverIdQueryResponse> responses = new List<GetAllHolidayRequestsApproversByApproverIdQueryResponse>();
+            foreach (var approver in approvers)
+            {
+                var holidayRequest = await _holidayRequestRepository.GetHolidayRequestByIdAsync(approver.RequestId, cancellationToken);
+                responses.Add(new GetAllHolidayRequestsApproversByApproverIdQueryResponse
+                (
+                   approver.Id,
+                   approver.RequestId,
+                   holidayRequest.Sender.Name,
+                   holidayRequest.Sender.Surname,
+                   holidayRequest.Start,
+                   holidayRequest.End
+                ));
+            }
+            return responses;
         }
     }
 
 
-    public record GetAllHolidayRequestsApproversByApproverIdQuery(Guid ApproverId) : IRequest<IEnumerable<Core.Entities.HolidayRequestApprover>>;
+    public record GetAllHolidayRequestsApproversByApproverIdQuery(Guid ApproverId) : IRequest<IEnumerable<GetAllHolidayRequestsApproversByApproverIdQueryResponse>>;
+    public record GetAllHolidayRequestsApproversByApproverIdQueryResponse(Guid Id, Guid RequestId, string SenderName, string SenderSurname, DateTime Start, DateTime End);
 }
