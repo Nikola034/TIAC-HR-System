@@ -66,6 +66,8 @@
           mat-icon-button
           matTooltip="Click to delete"
           (click)="deleteHolidayRequest(holidayRequest.id)"
+          [disabled]="holidayRequest.status != 1"
+          class="delete"
           color="primary"
         >
           <mat-icon color="primary">delete</mat-icon>
@@ -129,7 +131,7 @@
           (click)="
             approveHolidayRequestApprover(
               approver.requestId,
-              approver.approverId
+              this.jwtService.getIdFromToken()
             )
           "
         >
@@ -139,7 +141,7 @@
           mat-raised-button
           class="deny button-w"
           (click)="
-            denyHolidayRequestApprover(approver.requestId, approver.approverId)
+            denyHolidayRequestApprover(approver.requestId, this.jwtService.getIdFromToken())
           "
         >
           Deny

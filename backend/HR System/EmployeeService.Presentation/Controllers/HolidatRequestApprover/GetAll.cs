@@ -20,7 +20,6 @@ namespace EmployeeService.Presentation.Controllers.HolidatRequestApprover
         public override void Configure()
         {
             Get("employees/holidayRequestApprovers/all/{page}");
-            AllowAnonymous();
         }
 
         public override async Task HandleAsync(CancellationToken ct)

@@ -18,7 +18,6 @@ namespace EmployeeService.Presentation.Controllers.HolidayRequest
         public override void Configure()
         {
             Get("employees/holidayRequests/bySender/{senderId}");
-            AllowAnonymous();
         }
 
         public override async Task HandleAsync(CancellationToken ct)

@@ -47,8 +47,8 @@ export class HolidayRequestsComponent{
   filteredHolidayRequests: HolidayRequest[] = [];
   holidayRequestApprovers: GetAllHolidayRequestApproversByApproverIdDto[] = [];
   
-  report: any
   dataSource = new MatTableDataSource<any>();
+  report: DaysOffReportDto | undefined
 
   pageNumber: number = 1;
   totalPages: number = 1;
@@ -63,7 +63,7 @@ export class HolidayRequestsComponent{
   constructor(
     private employeeService: EmployeeService,
     private holidayRequestService: HolidayRequestService,
-    private jwtService: JwtService,
+    public jwtService: JwtService,
     private swal: AlertService,
     private holidayRequestApproverService: HolidayRequestApproverService,
     private router: Router,
@@ -80,6 +80,7 @@ export class HolidayRequestsComponent{
     this.employeeService.getDaysOffForEmployee(this.jwtService.getIdFromToken())
       .pipe(takeUntil(this.destroy$), tap((response) =>{
         this.dataSource.data = [response]
+        this.report = response
       })).subscribe();
   }
 
@@ -97,8 +98,6 @@ export class HolidayRequestsComponent{
       takeUntil(this.destroy$),
       tap((response) => {
         this.holidayRequestApprovers = response.holidayRequestApprovers;
-        console.log(response)
-        console.log(this.holidayRequestApprovers.length)
       })
     ).subscribe();
   }
@@ -137,11 +136,12 @@ export class HolidayRequestsComponent{
             takeUntil(this.destroy$),
             switchMap(() =>
               this.holidayRequestService
-                .getAllHolidayRequests(this.getQueryString())
+                .getAllHolidayRequestsBySenderId(this.jwtService.getIdFromToken(), this.getQueryString())
                 .pipe(
                   tap((response) => {
                     this.holidayRequests = response.holidayRequests;
                     this.totalPages = response.totalPages;
+                    this.getDaysOffReport();
                   }),
                   catchError((error) => {
                     this.swal.fireSwalError('Something went wrong');
@@ -214,7 +214,6 @@ export class HolidayRequestsComponent{
           approverId: approverId,
           status: HolidayRequestStatus.Denied,
         };
-
         this.holidayRequestApproverService
           .updateHolidayRequestApprover(dto)
           .pipe(
@@ -226,6 +225,7 @@ export class HolidayRequestsComponent{
                   tap((response) => {
                     this.holidayRequestApprovers =
                       response.holidayRequestApprovers;
+                      console.log(response)
                   }),
                   catchError((error) => {
                     this.swal.fireSwalError('Something went wrong');
@@ -309,12 +309,13 @@ export class HolidayRequestsComponent{
         const doc = new jsPDF();
 
         doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-        doc.save('captured-content.pdf');
+        doc.save(this.dataSource.data[0].report.employee.name + ' ' + this.dataSource.data[0].report.employee.surname + ' DaysOff Report ' + this.formatDate(new Date));
       });
     }
   }
 
   openRequestDialog(): void {
+    
     const dialogRef = this.dialog.open(SendHolidayRequestFormComponent, {
       height: '260px',
       width: '340px',
