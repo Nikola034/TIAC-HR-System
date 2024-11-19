@@ -15,12 +15,17 @@ export class MyProjectsComponent {
   projects : Project[] = []
   private destroy$ = new Subject<void>();
 
+  noProjects: boolean | undefined
+
   constructor(private jwtService: JwtService, private projectService: ProjectService, private router: Router, private swal: AlertService){}
 
   ngOnInit(){
     this.projectService.getAllForEmployee(this.jwtService.getIdFromToken())
       .pipe(takeUntil(this.destroy$), tap((response) =>{
         this.projects = response.projects
+        if(this.projects.length == 0){
+          this.noProjects = true
+        }
       })).subscribe();
   }
 

@@ -3,6 +3,11 @@
     flex-direction: row;
     justify-content: space-between;
     font-size: 1.3rem;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 999;
 }
 .button-row {
     display: flex;

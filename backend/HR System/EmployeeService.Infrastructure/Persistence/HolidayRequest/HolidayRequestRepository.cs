@@ -62,6 +62,7 @@ namespace EmployeeService.Infrastructure.Persistence.HolidayRequest
                 holidayRequests = await _context.HolidayRequests.OrderBy(x => x.Id)
                 .Include(x => x.Sender)
                 .Where(x => x.SenderId == senderId)
+                .OrderBy(x => x.Start)
                 .Skip((page - 1) * items)
                 .Take(items)
                 .ToListAsync(cancellationToken);
@@ -70,6 +71,7 @@ namespace EmployeeService.Infrastructure.Persistence.HolidayRequest
             holidayRequests = await _context.HolidayRequests.OrderBy(x => x.Id)
                 .Include(x => x.Sender)
                 .Where(x => x.SenderId == senderId)
+                .OrderBy(x => x.Start)
                 .ToListAsync(cancellationToken);
             return holidayRequests;
         }

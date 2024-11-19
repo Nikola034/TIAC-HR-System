@@ -34,7 +34,7 @@ namespace EmployeeService.Application.Queries.HolidayRequestApprover
                    holidayRequest.End
                 ));
             }
-            return responses;
+            return responses.OrderBy(x => x.Start);
         }
     }
 

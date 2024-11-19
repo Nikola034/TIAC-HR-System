@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ViewChild } from '@angular/core';
 import {
   catchError,
   map,
@@ -33,6 +33,7 @@ import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import { DaysOffReportDto } from '../../../core/dtos/employee/days-off-report.dto';
 import { MatTableDataSource } from '@angular/material/table';
+import { MatSort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-holiday-requests-component',
@@ -116,7 +117,7 @@ export class HolidayRequestsComponent{
 
   loadNewPage(selectedPage: number): void {
     this.pageNumber = selectedPage;
-    this.refreshHolidayRequests()
+    this.refreshHolidayRequests();
   }
 
   deleteHolidayRequest(id: string): void {
@@ -229,7 +230,6 @@ export class HolidayRequestsComponent{
                   tap((response) => {
                     this.holidayRequestApprovers =
                       response.holidayRequestApprovers;
-                      console.log(response)
                   }),
                   catchError((error) => {
                     this.swal.fireSwalError('Something went wrong');
@@ -329,6 +329,7 @@ export class HolidayRequestsComponent{
       this.holidayRequests.push(newRequest);
       this.refreshHolidayRequests();
       this.refreshHolidayRequestApprovers();
+      this.getDaysOffReport()
     });
   }
 }
