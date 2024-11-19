@@ -13,28 +13,6 @@ import { ResetPasswordFormComponent } from './components/login/reset-password-fo
 import { EmployeesComponent } from './components/employees/employees/employees.component';
 import { CreateEmployeeComponent } from './components/employees/create-employee/create-employee.component';
 import { EditEmployeeComponent } from './components/employees/edit-employee/edit-employee.component';
-<<<<<<< HEAD
-import { AuthGuardService } from './core/services/auth-guard.service';
-import { AdminGuardService } from './core/services/admin-guard.service';
-import { UserGuardService } from './core/services/user-guard.service';
-
-const routes: Routes = [
-  { path: 'projects', component: AllProjectsComponent,  canActivate: [AuthGuardService, AdminGuardService]},
-  { path: 'employees', component: EmployeesComponent, canActivate: [AuthGuardService, AdminGuardService]},
-  { path: 'create-employee', component: CreateEmployeeComponent, canActivate: [AuthGuardService, AdminGuardService] },
-  { path: 'edit-employee', component: EditEmployeeComponent, canActivate: [AuthGuardService, AdminGuardService]},
-  { path: 'clients', component: AllClientsComponent, canActivate: [AuthGuardService, AdminGuardService]},
-  { path: 'profile', component: EditProfileComponent, canActivate: [AuthGuardService]},
-  { path: 'create-client', component: CreateClientComponent, canActivate: [AuthGuardService, AdminGuardService]},
-  { path: 'edit-client', component: CreateClientComponent , canActivate: [AuthGuardService, AdminGuardService]},
-  { path: 'holiday-requests', component: HolidayRequestsComponent , canActivate: [AuthGuardService]},
-  { path: 'my-projects', component: MyProjectsComponent, canActivate: [AuthGuardService, UserGuardService]},
-  { path: 'my-projects/:id', component: ProjectDetailsComponent, canActivate: [AuthGuardService, UserGuardService] },
-  { path: 'create-project', component: CreateProjectComponent, canActivate: [AuthGuardService, AdminGuardService]},
-  { path: 'edit-project', component: CreateProjectComponent, canActivate: [AuthGuardService, AdminGuardService]},
-  { path: '', component: LoginFormComponent },
-  { path: 'reset-password', component: ResetPasswordFormComponent },
-=======
 import { ChangePasswordFormComponent } from './components/login/change-password-form/change-password-form.component';
 
 const routes: Routes = [
@@ -55,7 +33,6 @@ const routes: Routes = [
   { path:'', component: LoginFormComponent},
   { path:'reset-password', component: ResetPasswordFormComponent},
   { path:'resetPassword/:resetPasswordToken', component: ChangePasswordFormComponent}
->>>>>>> develop
 ];
 
 @NgModule({
