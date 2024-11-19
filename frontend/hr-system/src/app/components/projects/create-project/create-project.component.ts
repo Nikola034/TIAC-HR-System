@@ -169,7 +169,7 @@ export class CreateProjectComponent {
         // Restore the original display style
         data.style.display = originalDisplay;
 
-        const imgWidth = 208;
+        const imgWidth = 238;
         const pageHeight = 295;
         const imgHeight = (canvas.height * imgWidth) / canvas.width;
         const position = 0;
@@ -178,7 +178,7 @@ export class CreateProjectComponent {
         const doc = new jsPDF();
 
         doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-        doc.save('captured-content.pdf');
+        doc.save(this.createProjectForm.get('title')?.value + ' Report');
       });
     }
   }

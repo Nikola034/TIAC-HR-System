@@ -16,7 +16,6 @@ namespace IdentityService.Presentation.Controllers.User
         public override void Configure()
         {
             Delete("auth/{accountId}");
-            AllowAnonymous();
         }
 
         public override async Task HandleAsync(CancellationToken ct)

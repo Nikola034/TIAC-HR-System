@@ -20,7 +20,6 @@ namespace ProjectService.Presentation.Controllers.Project
         public override void Configure()
         {
             Get("/projects/without-paging");
-            AllowAnonymous();
         }
 
         public override async Task HandleAsync(CancellationToken ct)

@@ -1,83 +1,181 @@
 <div class="all-holidayRequests-container">
-    <div class="header-div">
-      <h1>My Holiday Requests</h1>
-      <button mat-flat-button class="add-button" (click)="openRequestDialog()" color="primary">
-        <mat-icon>add</mat-icon>
-        <mat-label>New Holiday Request</mat-label>
-      </button> 
-    </div>
-    <table mat-table [dataSource]="holidayRequests" *ngIf="holidayRequests.length > 0" class="mat-elevation-z6">
-      <ng-container matColumnDef="status">
-        <th mat-header-cell *matHeaderCellDef> Status </th>
-        <td mat-cell *matCellDef="let request">
-          <mat-icon [matTooltip]="getStatusString(request.status)" matTooltipPosition="right" class="status-icon" [ngStyle]="{color: getStatusColor(request.status) }" aria-hidden="false" aria-label="Status icon">{{ getStatusIcon(request.status) }}</mat-icon>
-        </td>
-      </ng-container>
-      <ng-container matColumnDef="sender">
-        <th mat-header-cell *matHeaderCellDef> Sender </th>
-        <td mat-cell *matCellDef="let holidayRequest"> {{holidayRequest.sender.name + ' ' + holidayRequest.sender.surname}} </td>
-      </ng-container>
-        <ng-container matColumnDef="start">
-          <th mat-header-cell *matHeaderCellDef> Start Date </th>
-          <td mat-cell *matCellDef="let holidayRequest"> {{formatDate(holidayRequest.start)}} </td>
+  <div class="header-div">
+    <h1>My Holiday Requests</h1>
+    <button
+      mat-raised-button
+      color="primary"
+      class="pdf-button"
+      (click)="generateReport()"
+    >
+      <mat-icon style="margin: 0">picture_as_pdf</mat-icon>
+    </button>
+    <button
+      mat-flat-button
+      class="add-button"
+      (click)="openRequestDialog()"
+      color="primary"
+    >
+      <mat-icon>add</mat-icon>
+      <mat-label>New Holiday Request</mat-label>
+    </button>
+  </div>
+  <table
+    mat-table
+    [dataSource]="holidayRequests"
+    *ngIf="holidayRequests.length > 0"
+    class="mat-elevation-z6"
+  >
+    <ng-container matColumnDef="status">
+      <th mat-header-cell *matHeaderCellDef>Status</th>
+      <td mat-cell *matCellDef="let request">
+        <mat-icon
+          [matTooltip]="getStatusString(request.status)"
+          matTooltipPosition="right"
+          class="status-icon"
+          [ngStyle]="{ color: getStatusColor(request.status) }"
+          aria-hidden="false"
+          aria-label="Status icon"
+          >{{ getStatusIcon(request.status) }}</mat-icon
+        >
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="sender">
+      <th mat-header-cell *matHeaderCellDef>Sender</th>
+      <td mat-cell *matCellDef="let holidayRequest">
+        {{ holidayRequest.sender.name + " " + holidayRequest.sender.surname }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="start">
+      <th mat-header-cell *matHeaderCellDef>Start Date</th>
+      <td mat-cell *matCellDef="let holidayRequest">
+        {{ formatDate(holidayRequest.start) }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="end">
+      <th mat-header-cell *matHeaderCellDef>End Date</th>
+      <td mat-cell *matCellDef="let holidayRequest">
+        {{ formatDate(holidayRequest.end) }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="delete">
+      <th mat-header-cell *matHeaderCellDef style="text-align: center">
+        Delete
+      </th>
+      <td mat-cell *matCellDef="let holidayRequest" style="text-align: center">
+        <button
+          mat-icon-button
+          matTooltip="Click to delete"
+          (click)="deleteHolidayRequest(holidayRequest.id)"
+          [disabled]="holidayRequest.status != 1"
+          class="delete"
+          color="primary"
+        >
+          <mat-icon color="primary">delete</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+
+  <app-paginator
+    [pageNumber]="pageNumber"
+    [totalPages]="totalPages"
+    *ngIf="holidayRequests.length > 0"
+    (loadNewPageEmmiter)="loadNewPage($event)"
+  />
+
+  <div class="header-div" *ngIf="holidayRequestApprovers.length > 0">
+    <h1>Incoming Holiday Requests</h1>
+  </div>
+  <table
+    mat-table
+    [dataSource]="holidayRequestApprovers"
+    class="mat-elevation-z6"
+    *ngIf="holidayRequestApprovers.length > 0"
+  >
+    <!-- Sender Column -->
+    <ng-container matColumnDef="sender">
+      <th mat-header-cell *matHeaderCellDef>Sender</th>
+      <td mat-cell *matCellDef="let approver">
+        {{ approver.senderName + " " + approver.senderSurname }}
+      </td>
+    </ng-container>
+
+    <!-- Start Date Column -->
+    <ng-container matColumnDef="start">
+      <th mat-header-cell *matHeaderCellDef>Start Date</th>
+      <td mat-cell *matCellDef="let approver">
+        {{ formatDate(approver.start) }}
+      </td>
+    </ng-container>
+
+    <!-- End Date Column -->
+    <ng-container matColumnDef="end">
+      <th mat-header-cell *matHeaderCellDef>End Date</th>
+      <td mat-cell *matCellDef="let approver">
+        {{ formatDate(approver.end) }}
+      </td>
+    </ng-container>
+
+    <!-- Approve/Deny Buttons Column -->
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef style="text-align: center">
+        Actions
+      </th>
+      <td mat-cell *matCellDef="let approver" style="text-align: center">
+        <button
+          mat-raised-button
+          class="approve button-w"
+          (click)="
+            approveHolidayRequestApprover(
+              approver.requestId,
+              this.jwtService.getIdFromToken()
+            )
+          "
+        >
+          Approve
+        </button>
+        <button
+          mat-raised-button
+          class="deny button-w"
+          (click)="
+            denyHolidayRequestApprover(approver.requestId, this.jwtService.getIdFromToken())
+          "
+        >
+          Deny
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="approverColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: approverColumns"></tr>
+  </table>
+</div>
+<div hidden  id="pdf-content">
+  <div class="report" >
+    <h1>{{ dataSource.data[0]?.report.employee.name + ' ' + dataSource.data[0]?.report.employee.surname }}</h1> 
+    <h1 style="font-size: 1.5rem;">Days Off Report</h1>
+      <table [dataSource]="dataSource" mat-table class="mat-elevation-z6">
+        <ng-container matColumnDef="used">
+          <th mat-header-cell *matHeaderCellDef> Used Days Off </th>
+          <td mat-cell *matCellDef="let element"> {{element.report.realizedDays}}</td>
         </ng-container>
-        <ng-container matColumnDef="end">
-          <th mat-header-cell *matHeaderCellDef> End Date </th>
-          <td mat-cell *matCellDef="let holidayRequest"> {{formatDate(holidayRequest.end)}} </td>
-        </ng-container> 
-        <ng-container matColumnDef="delete">
-          <th mat-header-cell *matHeaderCellDef style="text-align: center;"> Delete </th>
-          <td mat-cell *matCellDef="let holidayRequest" style="text-align: center;">
-             <button mat-icon-button matTooltip="Click to delete" (click)="deleteHolidayRequest(holidayRequest.id)" color="primary">
-                <mat-icon color="primary">delete</mat-icon>
-            </button> 
-          </td>
+
+        <ng-container matColumnDef="remaining">
+          <th mat-header-cell *matHeaderCellDef> Remaining Days Off </th>
+          <td mat-cell *matCellDef="let element"> {{element.report.remainingDays}} </td>
         </ng-container>
       
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-    </table>
+        <ng-container matColumnDef="pending">
+          <th mat-header-cell *matHeaderCellDef> Pending Holiday Requests </th>
+          <td mat-cell *matCellDef="let element"> {{element.report.pendingHolidayRequests}} </td>
+        </ng-container>
 
-    <app-paginator [pageNumber]="pageNumber" [totalPages]="totalPages" *ngIf="holidayRequests.length > 0" (loadNewPageEmmiter)="loadNewPage($event)"/>
-
-    <div class="header-div" *ngIf="holidayRequestApprovers.length > 0">
-      <h1>Incoming Holiday Requests</h1>
-    </div>
-    <table mat-table [dataSource]="holidayRequestApprovers" class="mat-elevation-z6" *ngIf="holidayRequestApprovers.length > 0">
-      <!-- Sender Column -->
-      <ng-container matColumnDef="sender">
-        <th mat-header-cell *matHeaderCellDef> Sender </th>
-        <td mat-cell *matCellDef="let approver"> 
-          {{ approver.senderName + ' ' + approver.senderSurname }} 
-        </td>
-      </ng-container>
-  
-      <!-- Start Date Column -->
-      <ng-container matColumnDef="start">
-        <th mat-header-cell *matHeaderCellDef> Start Date </th>
-        <td mat-cell *matCellDef="let approver">
-          {{ formatDate(approver.start) }}
-        </td>
-      </ng-container>
-  
-      <!-- End Date Column -->
-      <ng-container matColumnDef="end">
-        <th mat-header-cell *matHeaderCellDef> End Date </th>
-        <td mat-cell *matCellDef="let approver">
-          {{ formatDate(approver.end) }}
-        </td>
-      </ng-container>
-  
-      <!-- Approve/Deny Buttons Column -->
-      <ng-container matColumnDef="actions" >
-        <th mat-header-cell *matHeaderCellDef style="text-align: center;"> Actions </th>
-        <td mat-cell *matCellDef="let approver" style="text-align: center;">
-          <button mat-raised-button class="approve button-w" (click)="approveHolidayRequestApprover(approver.requestId, approver.approverId)">Approve</button>
-          <button mat-raised-button class="deny button-w" (click)="denyHolidayRequestApprover(approver.requestId, approver.approverId)">Deny</button>
-        </td>
-      </ng-container>
-  
-      <tr mat-header-row *matHeaderRowDef="approverColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: approverColumns;"></tr>
+        <tr mat-header-row *matHeaderRowDef="reportColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: reportColumns"></tr>
     </table>
   </div>
+
+</div>

@@ -17,9 +17,13 @@ export class AppComponent implements OnInit, OnDestroy {
       if (event instanceof NavigationEnd) {
         // List of routes that should not show the navbar
         const excludedRoutes = ['/', '/reset-password'];
+        const parameterizedRouteRegex = /^\/passwordReset\/[^/]+$/; 
+        const currentRoute = event.urlAfterRedirects;
 
-        // Check if the current route is in the list of excluded routes
-        this.showNavbar = !excludedRoutes.includes(event.urlAfterRedirects);
+        // Check if the route matches any of the excluded routes
+        this.showNavbar =
+          !excludedRoutes.includes(currentRoute) &&
+          !parameterizedRouteRegex.test(currentRoute);
       }
     })).subscribe();
   }

@@ -19,7 +19,6 @@ namespace EmployeeService.Presentation.Controllers.Employee
         public override void Configure()
         {
             Get("/employees/{employeeId}");
-            AllowAnonymous();
         }
 
         public override async Task HandleAsync(CancellationToken ct)

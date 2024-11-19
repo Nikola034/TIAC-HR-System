@@ -16,87 +16,129 @@
     border-top-left-radius: 0.3rem;
     border-top-right-radius: 0.3rem;
     margin-top: 20px;
-  }
-  .full-width {
-    width: 100%;
-    margin-bottom: 1rem;
-  }
-  button {
-    padding: 1.5rem 3rem;
-    font-size: 1.5rem;
-    margin-inline: auto;
-    display: flex;
-    margin-top: 20px;
-  }
-  .header{
-    border-top-left-radius: 0.3rem;
-    border-top-right-radius: 0.3rem;
-    display: flex;
-    justify-content: center;
-    background-color: #c62828;
-  }
-  form{
-    padding: 1rem;
-    padding-bottom: 1.6rem;
-  }
-  .header-icon{
-    font-size: 8rem;
-    width: 200px;
-    height: 140px;
-    display: flex;
-    justify-content: center;
-    color: rgb(255, 255, 255);
-  }
+}
+.full-width {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+button {
+  padding: 1.5rem 3rem;
+  font-size: 1.5rem;
+  margin-inline: auto;
+  display: flex;
+  margin-top: 20px;
+}
+.header{
+  border-top-left-radius: 0.3rem;
+  border-top-right-radius: 0.3rem;
+  display: flex;
+  justify-content: center;
+  background-color: #c62828;
+}
+form{
+  padding: 1rem;
+  padding-bottom: 1.6rem;
+}
+.header-icon{
+  font-size: 8rem;
+  width: 200px;
+  height: 140px;
+  display: flex;
+  justify-content: center;
+  color: rgb(255, 255, 255);
+}
 
-  .edit-employees-container {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: space-between;
-    min-height: 250px;
-    height: 100%;
-    width: 50%;
-    margin-top: 30px;
-  }
+.edit-employees-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  min-height: 250px;
+  height: 100%;
+  width: 50%;
+  margin-top: 30px;
+}
 
-  .add-to-project-container {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: flex-start;
-    width : 100%
-  }
+.add-to-project-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  width : 100%
+}
 
-  .developer-select {
-    max-width: 250px;
-  }
+.developer-select {
+  max-width: 250px;
+}
 
-  .add-to-project-button {
-    margin-top: 0;
-  }
+.add-to-project-button {
+  margin-top: 0;
+}
 
-  .pdf-button {
-    margin-top: 0;
-    max-width: 80px;
-    padding: 0;
-    height: 48px;
-    margin-right: 0;
-  }
+.pdf-button {
+  margin-top: 0;
+  max-width: 80px;
+  padding: 0;
+  height: 48px;
+  margin-right: 0;
+}
 
-  .report {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    margin: 20px;
-    width: 100%;
-  }
+.report {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  margin: 20px;
+  width: 90%;
+}
 
-  .report-info {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
-  }
+.report-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 100%;
+  margin-left: 50px;
+}
+
+.developers-report-container {
+  width: 50%;
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  align-items: flex-start;
+  margin-bottom: 10px;
+}
+
+.report h1 {
+  font-size: 50px;
+}
+
+.report-info h2 {
+  font-size: 40px;
+  margin-bottom: 5px;
+}
+
+.report-info h3 {
+  margin: 0;
+}
+
+.index {
+    width: 10%;
+    font-size: larger;
+}
+
+.name {
+    width: 45%;
+    font-size: larger;
+
+}
+
+.surname {
+    width: 45%;
+    font-size: larger;
+
+}
+
 
   

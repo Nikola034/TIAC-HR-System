@@ -21,12 +21,12 @@ namespace ProjectServiceApplication.Commands.Project
         {
             var persistedEmployeeProject = await _employeeProjectRepository.AddEmployeeToProjectAsync(req.ToDomainEntity(), ct);
             var employeesOnProject = await _employeeProjectRepository.GetAllEmployeesOnProjectAsync(req.ProjectId, ct);
-            var jsonString = await _employeeHttpClient.GetAllDevelopersAsync(ct);
+            var jsonString = await _employeeHttpClient.GetAllDevelopersAsync(req.Token,ct);
             return EmployeeProjectMapper.MapJsonStringToResponse(jsonString,employeesOnProject);
         }
     }
 
-    public record AddEmployeeToProjectCommand(Guid EmployeeId, Guid ProjectId) : IRequest<AddOrRemoveEmployeeFromProjectCommandResponse>;
+    public record AddEmployeeToProjectCommand(Guid EmployeeId, Guid ProjectId, string Token) : IRequest<AddOrRemoveEmployeeFromProjectCommandResponse>;
     public record AddOrRemoveEmployeeFromProjectCommandResponse(IEnumerable<EmployeeDto> Working, IEnumerable<EmployeeDto> NotWorking);
     
     public class EmployeeDto

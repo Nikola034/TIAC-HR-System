@@ -8,6 +8,6 @@ namespace Common.HttpCLients
 {
     public interface IAccountServiceHttpClient
     {
-        public Task<bool> DeleteEmployeeAccount(Guid employeeId, CancellationToken cancellationToken = default(CancellationToken));
+        public Task<bool> DeleteEmployeeAccount(Guid employeeId, string token, CancellationToken cancellationToken = default(CancellationToken));
     }
 }

@@ -17,12 +17,13 @@ public class AddEmployeeToProject : Endpoint<AddOrRemoveEmployeeFromProjectReque
     public override void Configure()
     {
         Put("/projects/addToProject");
-        AllowAnonymous();
+        Policies("ManagersOnly");
     }
 
     public override async Task HandleAsync(AddOrRemoveEmployeeFromProjectRequest req, CancellationToken ct)
     {
-        var project = await _mediator.Send(req.ToAddCommand(), ct);
+        var authHeader = HttpContext.Request.Headers["Authorization"].ToString();
+        var project = await _mediator.Send(req.ToAddCommand(authHeader), ct);
         await SendOkAsync(project.ToApiResponse(), ct);
     }
 }

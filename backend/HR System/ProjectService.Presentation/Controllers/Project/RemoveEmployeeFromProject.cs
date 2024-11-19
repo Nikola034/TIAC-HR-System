@@ -19,12 +19,12 @@ public class RemoveEmployeeFromProject : Endpoint<AddOrRemoveEmployeeFromProject
     public override void Configure()
     {
         Put("/projects/removeFromProject");
-        AllowAnonymous();
     }
 
     public override async Task HandleAsync(AddOrRemoveEmployeeFromProjectRequest req, CancellationToken ct)
     {
-        var project = await _mediator.Send(req.ToRemoveCommand(), ct);
+        var authHeader = HttpContext.Request.Headers["Authorization"].ToString();
+        var project = await _mediator.Send(req.ToRemoveCommand(authHeader), ct);
         await SendOkAsync(project.ToApiResponse(), ct);
     }
 }

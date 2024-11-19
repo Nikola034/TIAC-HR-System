@@ -25,12 +25,12 @@ namespace Application.Queries.Project
             if (project is null)
                 return null;
             var workingIds = await _employeeProjectRepository.GetAllEmployeesOnProjectAsync(req.Id, ct);
-            var jsonString = await _employeeHttpClient.GetAllDevelopersAsync(ct);
+            var jsonString = await _employeeHttpClient.GetAllDevelopersAsync(req.Token,ct);
             return ProjectMapper.MapJsonStringToResponse(jsonString,workingIds,project);
         }
         
     }
 
-    public record GetProjectByIdQuery(Guid Id) : IRequest<GetProjectByIdQueryResponse?>;
+    public record GetProjectByIdQuery(Guid Id,string Token) : IRequest<GetProjectByIdQueryResponse?>;
     public record GetProjectByIdQueryResponse(Core.Entities.Project Project, IEnumerable<EmployeeDto> Working, IEnumerable<EmployeeDto> NotWorking);
 }

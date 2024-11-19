@@ -19,7 +19,7 @@ namespace EmployeeService.Application.Queries.HolidayRequest
         public async Task<GetAllHolidayRequestsBySenderIdQueryResponse> Handle(GetAllHolidayRequestsBySenderIdQuery request, CancellationToken cancellationToken)
         {
             var holidayRequests = await _holidayRequestRepository.GetAllHolidayRequestsBySenderIdAsync(request.senderId, request.page, request.items, cancellationToken);
-            var totalPages = (int)Math.Ceiling((double)holidayRequests.Count() / request.items);
+            var totalPages = (int)Math.Ceiling((double)(await _holidayRequestRepository.GetAllHolidayRequestsAsync(-1, -1, cancellationToken)).Where(x => x.SenderId == request.senderId).Count() / request.items);
             return new GetAllHolidayRequestsBySenderIdQueryResponse(holidayRequests, request.page, totalPages, request.items);
         }
     }

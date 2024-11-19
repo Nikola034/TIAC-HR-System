@@ -74,34 +74,34 @@ namespace EmployeeService.Application.Commands.Employee
                 }
             }
 
-            var employeeProjectsIds = await _projectHttpClient.GetProjectsForEmployeeAsync(existingEmployee.Id, cancellationToken);
+            var employeeProjectsIds = await _projectHttpClient.GetProjectsForEmployeeAsync(existingEmployee.Id, request.Token, cancellationToken);
 
             if (employeeProjectsIds.Any())
             {
                 foreach(var projectId in employeeProjectsIds)
                 {
                     var dto = new RemoveEmployeeFromProjectDto {EmployeeId = existingEmployee.Id, ProjectId = projectId};
-                    await _projectHttpClient.RemoveEmployeeFromProjectAsync(dto, cancellationToken);
+                    await _projectHttpClient.RemoveEmployeeFromProjectAsync(dto, request.Token, cancellationToken);
                 }
             }
 
-            var leadingProjectsIds = await _projectHttpClient.GetLeadingProjectIdsForEmployeeAsync(existingEmployee.Id, cancellationToken);
+            var leadingProjectsIds = await _projectHttpClient.GetLeadingProjectIdsForEmployeeAsync(existingEmployee.Id, request.Token, cancellationToken);
 
             if(leadingProjectsIds.Any())
             {
                 foreach(var leadingProject in leadingProjectsIds)
                 {
-                    await _projectHttpClient.RemoveTeamLeadFromProjectAsync(leadingProject, cancellationToken);
+                    await _projectHttpClient.RemoveTeamLeadFromProjectAsync(leadingProject, request.Token, cancellationToken);
                 }
             }
 
             var persistedEmployee = await _employeeRepository.DeleteEmployeeAsync(existingEmployee.Id, cancellationToken);
 
-            var deletedAccount = await _accountServiceHttpClient.DeleteEmployeeAccount(existingEmployee.AccountId, cancellationToken);
+            var deletedAccount = await _accountServiceHttpClient.DeleteEmployeeAccount(existingEmployee.AccountId, request.Token, cancellationToken);
 
             return true;
         }
     }
 
-    public record DeleteEmployeeCommand(Guid Id) : IRequest<bool>;
+    public record DeleteEmployeeCommand(Guid Id, string Token) : IRequest<bool>;
 }

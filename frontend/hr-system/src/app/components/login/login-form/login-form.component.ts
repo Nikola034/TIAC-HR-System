@@ -35,8 +35,10 @@ export class LoginFormComponent {
         response => {
           this.jwtService.setTokens(response)
           if(this.jwtService.IsLoggedIn()) {
-            if(this.jwtService.IsDeveloper())
+            if(this.jwtService.IsDeveloper()){
               this.router.navigate(['my-projects'])
+              return;
+            }
             if(this.jwtService.IsManager()) 
               this.router.navigate(['projects'])
             else
