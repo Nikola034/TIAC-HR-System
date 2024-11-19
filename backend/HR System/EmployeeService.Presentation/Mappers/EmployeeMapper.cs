@@ -36,7 +36,7 @@ namespace EmployeeService.Presentation.Mappers
         {
             return new GetDaysOffForEmployeesResponse
             {
-                Reports = response.Reports,
+                Report = response.Report,
             };
         }
 

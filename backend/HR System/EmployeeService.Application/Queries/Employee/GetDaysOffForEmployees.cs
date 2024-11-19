@@ -21,26 +21,21 @@ namespace EmployeeService.Application.Queries.Employee
         }
         public async Task<GetDaysOffForEmployeesQueryResponse> Handle(GetDaysOffForEmployeesQuery request, CancellationToken cancellationToken)
         {
-            var employees = await _employeeRepository.GetAllEmployeesWithoutPagingAsync(cancellationToken);
-            List<GetDaysOffForEmployeeReport> reports = new List<GetDaysOffForEmployeeReport>();
-            foreach(var employee in employees)
+            var employee = await _employeeRepository.GetEmployeeByIdAsync(request.Id, cancellationToken);
+            var holidayRequestsForEmployee = await _holidayRequestRepository.GetAllHolidayRequestsBySenderIdAsync(employee.Id, -1, -1, cancellationToken);
+            int realizedDays = 0;
+            foreach (var holidayRequest in holidayRequestsForEmployee.Where(x => x.Status == Core.Enums.HolidayRequestStatus.Approved))
             {
-                var holidayRequestsForEmployee = await _holidayRequestRepository.GetAllHolidayRequestsBySenderIdAsync(employee.Id, -1, -1, cancellationToken);
-                int realizedDays = 0;
-                foreach(var holidayRequest in holidayRequestsForEmployee.Where(x => x.Status == Core.Enums.HolidayRequestStatus.Approved))
-                {
-                    realizedDays += (holidayRequest.End - holidayRequest.Start).Days;
-                }
-                GetDaysOffForEmployeeReport report = new GetDaysOffForEmployeeReport(employee, realizedDays, employee.DaysOff, holidayRequestsForEmployee.Where(x => x.Status == Core.Enums.HolidayRequestStatus.Pending).Count());
-                reports.Add(report);
+                realizedDays += (holidayRequest.End - holidayRequest.Start).Days;
             }
-            return new GetDaysOffForEmployeesQueryResponse(reports);
+            GetDaysOffForEmployeeReport report = new GetDaysOffForEmployeeReport(employee, realizedDays, employee.DaysOff, holidayRequestsForEmployee.Where(x => x.Status == Core.Enums.HolidayRequestStatus.Pending).Count());
+            return new GetDaysOffForEmployeesQueryResponse(report);
         }
     }
 
 
-    public record GetDaysOffForEmployeesQuery() : IRequest<GetDaysOffForEmployeesQueryResponse>;
+    public record GetDaysOffForEmployeesQuery(Guid Id) : IRequest<GetDaysOffForEmployeesQueryResponse>;
 
-    public record GetDaysOffForEmployeesQueryResponse(IEnumerable<GetDaysOffForEmployeeReport> Reports);
+    public record GetDaysOffForEmployeesQueryResponse(GetDaysOffForEmployeeReport Report);
     public record GetDaysOffForEmployeeReport(Core.Entities.Employee Employee, int realizedDays, int remainingDays, int pendingHolidayRequests);
 }

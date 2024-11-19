@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import {
   catchError,
   map,
@@ -29,6 +29,10 @@ import { AlertService } from '../../../core/services/alert.service';
 import { EmployeeService } from '../../../core/services/employee.service';
 import { GetSenderForApproverDto } from '../../../core/dtos/holiday-request/get-sender-for-approver.dto';
 import { GetAllHolidayRequestApproversByApproverIdDto } from '../../../core/dtos/holiday-request/get-all-holiday-request-approves-by-approverid.dto';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
+import { DaysOffReportDto } from '../../../core/dtos/employee/days-off-report.dto';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-holiday-requests-component',
@@ -36,12 +40,15 @@ import { GetAllHolidayRequestApproversByApproverIdDto } from '../../../core/dtos
   styleUrl: './holiday-requests.component.css',
   providers: [DatePipe],
 })
-export class HolidayRequestsComponent {
+export class HolidayRequestsComponent{
   readonly dialog = inject(MatDialog);
 
   holidayRequests: HolidayRequest[] = [];
   filteredHolidayRequests: HolidayRequest[] = [];
   holidayRequestApprovers: GetAllHolidayRequestApproversByApproverIdDto[] = [];
+  
+  report: any
+  dataSource = new MatTableDataSource<any>();
 
   pageNumber: number = 1;
   totalPages: number = 1;
@@ -49,6 +56,7 @@ export class HolidayRequestsComponent {
 
   displayedColumns: string[] = ['status', 'sender', 'start', 'end', 'delete'];
   approverColumns: string[] = ['sender', 'start', 'end', 'actions'];
+  reportColumns: string[] = ['used', 'remaining', 'pending'];
 
   private destroy$ = new Subject<void>();
 
@@ -63,8 +71,16 @@ export class HolidayRequestsComponent {
   ) {}
 
   ngOnInit() {
+    this.getDaysOffReport();
     this.refreshHolidayRequests();
     this.refreshHolidayRequestApprovers();
+  }
+
+  getDaysOffReport(): void{
+    this.employeeService.getDaysOffForEmployee(this.jwtService.getIdFromToken())
+      .pipe(takeUntil(this.destroy$), tap((response) =>{
+        this.dataSource.data = [response]
+      })).subscribe();
   }
 
   refreshHolidayRequests(): void {
@@ -80,7 +96,9 @@ export class HolidayRequestsComponent {
     pipe(
       takeUntil(this.destroy$),
       tap((response) => {
-        this.holidayRequestApprovers = response
+        this.holidayRequestApprovers = response.holidayRequestApprovers;
+        console.log(response)
+        console.log(this.holidayRequestApprovers.length)
       })
     ).subscribe();
   }
@@ -165,7 +183,7 @@ export class HolidayRequestsComponent {
                 .pipe(
                   tap((response) => {
                     this.holidayRequestApprovers =
-                      response;
+                      response.holidayRequestApprovers;
                   }),
                   catchError((error) => {
                     this.swal.fireSwalError('Something went wrong');
@@ -207,7 +225,7 @@ export class HolidayRequestsComponent {
                 .pipe(
                   tap((response) => {
                     this.holidayRequestApprovers =
-                      response;
+                      response.holidayRequestApprovers;
                   }),
                   catchError((error) => {
                     this.swal.fireSwalError('Something went wrong');
@@ -270,6 +288,30 @@ export class HolidayRequestsComponent {
 
   getHolidayRequestEndDate(requestId: string): Date | undefined {
     return this.holidayRequests.find((x) => x.id == requestId)?.end;
+  }
+
+  generateReport(){
+    const data = document.getElementById('pdf-content'); // The HTML element to capture
+    if(data){
+      const originalDisplay = data.style.display;
+      data.style.display = 'block'; // or 'inline-block' depending on your needs
+
+      html2canvas(data).then(canvas => {
+        // Restore the original display style
+        data.style.display = originalDisplay;
+
+        const imgWidth = 208;
+        const pageHeight = 295;
+        const imgHeight = (canvas.height * imgWidth) / canvas.width;
+        const position = 0;
+
+        const imgData = canvas.toDataURL('image/png');
+        const doc = new jsPDF();
+
+        doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+        doc.save('captured-content.pdf');
+      });
+    }
   }
 
   openRequestDialog(): void {

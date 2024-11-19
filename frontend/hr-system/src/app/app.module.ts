@@ -89,22 +89,12 @@ import { ChangePasswordFormComponent } from './components/login/change-password-
     MatSelectModule,
     FormsModule,
     MatDividerModule,
-    MatTooltipModule,
-    JwtModule.forRoot({
-      jwtOptionsProvider: {
-        provide: JWT_OPTIONS,
-        useValue: {
-          tokenGetter: tokenGetter,
-          allowedDomains: [environment.apiUrl], // Your API domain
-          disallowedRoutes: [environment.apiUrl + '/auth/login'], // Routes to exclude
-        },
-      },
-    })
+    MatTooltipModule
   ],
   providers: [provideNativeDateAdapter(),
     {
       provide: HTTP_INTERCEPTORS,
-      useClass: JwtInterceptor,
+      useClass: HttpInterceptorService,
       multi: true,
     },
     // Other providers...

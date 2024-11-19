@@ -7,6 +7,7 @@ import { AllDevelopersDto } from '../dtos/employee/all-developers.dto';
 import { AllEmployeesDto } from '../dtos/employee/all-employees.dto';
 import { CreateEmployeeDto } from '../dtos/employee/create-employee.dto';
 import { UpdateEmployeeDto } from '../dtos/employee/update-employee.dto';
+import { DaysOffReportDto } from '../dtos/employee/days-off-report.dto';
 
 @Injectable({
   providedIn: 'root'
@@ -31,6 +32,10 @@ export class EmployeeService {
   
   getEmployeeById(id: string | undefined): Observable<Employee> {
     return this.http.get<Employee>(`${this.baseUrl}${id}`);
+  }
+
+  getDaysOffForEmployee(id: string | undefined): Observable<DaysOffReportDto> {
+    return this.http.get<DaysOffReportDto>(`${this.baseUrl}daysOff/${id}`);
   }
 
   getEmployeeByAccountId(accountId: string): Observable<Employee> {

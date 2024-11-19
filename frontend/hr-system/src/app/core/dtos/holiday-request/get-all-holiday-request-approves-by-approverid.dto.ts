@@ -8,3 +8,7 @@ export interface GetAllHolidayRequestApproversByApproverIdDto{
     start: Date,
     end: Date
 }
+
+export interface GetAllHolidayRequestApproversByApproverIdResponse {
+    holidayRequestApprovers: GetAllHolidayRequestApproversByApproverIdDto[]
+}
