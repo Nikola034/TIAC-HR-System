@@ -62,4 +62,9 @@ export class EditEmployeeComponent {
           })).subscribe();
     }
   }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

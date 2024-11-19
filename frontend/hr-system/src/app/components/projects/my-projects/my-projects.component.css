@@ -7,23 +7,29 @@
     margin-inline: auto;
     justify-content: space-between;
     padding-bottom: 3rem;
+    background-color: #F7F1F1
 }
 .no-projects-container {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh; /* Full viewport height */
-    background-color: #f8f9fa; /* Light background color */
+    background-color: #F7F1F1 /* Light background color */
   }
   
   .no-projects-content {
-    text-align: center;
-    color: #d32f2f; /* Red color for the icon and text */
+    text-align: center;/* Red color for the icon and text */
+    color: #c62828;
+    align-items: center;
+    justify-content: center;
   }
   
   .no-projects-icon {
-    font-size: 80px; /* Large size for the icon */
+    font-size: 16rem; /* Large size for the icon */
     margin-bottom: 16px;
+    width: 100%;
+    height: 100%;
+    display: inline-block;
   }
   
   .no-projects-message {

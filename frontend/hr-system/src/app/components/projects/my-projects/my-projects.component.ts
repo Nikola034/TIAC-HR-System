@@ -23,4 +23,9 @@ export class MyProjectsComponent {
         this.projects = response.projects
       })).subscribe();
   }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

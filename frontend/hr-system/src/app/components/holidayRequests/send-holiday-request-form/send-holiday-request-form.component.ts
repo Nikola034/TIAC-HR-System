@@ -66,4 +66,9 @@ export class SendHolidayRequestFormComponent {
       })).subscribe();
     this.onCancel(this.responseRequest);
   }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

@@ -140,6 +140,10 @@ export class HolidayRequestsComponent{
                 .pipe(
                   tap((response) => {
                     this.holidayRequests = response.holidayRequests;
+                    if(this.totalPages > response.totalPages){
+                      this.pageNumber = 1
+                      this.loadNewPage(this.pageNumber)
+                    }
                     this.totalPages = response.totalPages;
                     this.getDaysOffReport();
                   }),

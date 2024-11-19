@@ -43,4 +43,9 @@ export class ProjectDetailsComponent implements OnInit {
   goBack(): void {
     this.router.navigate(['/my-projects']);
   }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }
