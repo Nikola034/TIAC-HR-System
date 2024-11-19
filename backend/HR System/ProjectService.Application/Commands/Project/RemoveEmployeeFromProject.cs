@@ -21,9 +21,9 @@ namespace ProjectServiceApplication.Commands.Project
         {
             await _employeeProjectRepository.RemoveEmployeeFromProjectAsync(req.EmployeeId,req.ProjectId, ct);
             var employeesOnProject = await _employeeProjectRepository.GetAllEmployeesOnProjectAsync(req.ProjectId, ct);
-            var jsonString = await _employeeHttpClient.GetAllDevelopersAsync(ct);
+            var jsonString = await _employeeHttpClient.GetAllDevelopersAsync(req.Token,ct);
             return EmployeeProjectMapper.MapJsonStringToResponse(jsonString,employeesOnProject);
         }
     }
-    public record RemoveEmployeeFromProjectCommand(Guid EmployeeId, Guid ProjectId) : IRequest<AddOrRemoveEmployeeFromProjectCommandResponse>;
+    public record RemoveEmployeeFromProjectCommand(Guid EmployeeId, Guid ProjectId, string Token) : IRequest<AddOrRemoveEmployeeFromProjectCommandResponse>;
 }

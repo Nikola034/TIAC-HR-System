@@ -17,7 +17,6 @@ public class GetAllDevelopers: EndpointWithoutRequest<GetAllDevelopersResponse>
     public override void Configure()
     {
         Get("/employees/developers");
-        AllowAnonymous();
     }
 
     public override async Task HandleAsync(CancellationToken ct)

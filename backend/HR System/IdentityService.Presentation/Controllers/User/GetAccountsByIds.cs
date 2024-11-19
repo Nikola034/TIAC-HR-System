@@ -18,7 +18,6 @@ namespace IdentityService.Presentation.Controllers.User
         public override void Configure()
         {
             Post("auth/allByIds");
-            AllowAnonymous();
         }
 
         public override async Task HandleAsync(GetAccountsByIdsRequest request, CancellationToken ct)

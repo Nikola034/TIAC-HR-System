@@ -33,14 +33,6 @@ namespace ProjectServicePresentation.Mapper
             };
         }
 
-        public static GetProjectInfoResponse ToApiResponse(this ProjectInfo projectInfo)
-        {
-            return new GetProjectInfoResponse
-            {
-                ProjectInfo = projectInfo
-            };
-        }
-
         public static CreateProjectCommand ToCommand(this CreateProjectRequest request)
             => new CreateProjectCommand(request.Title, request.Description, request.ClientId, request.TeamLeadId);
 

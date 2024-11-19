@@ -18,13 +18,13 @@ public class GetById : EndpointWithoutRequest<ProjectByIdResponse>
     public override void Configure()
     {
         Get("/projects/{projectId}");
-        AllowAnonymous();
     }
 
     public override async Task HandleAsync(CancellationToken ct)
     {
+        var authHeader = HttpContext.Request.Headers["Authorization"].ToString();
         var projectId = Route<Guid>("projectId");
-        var project = await _mediator.Send(new GetProjectByIdQuery(projectId),ct);
+        var project = await _mediator.Send(new GetProjectByIdQuery(projectId,authHeader),ct);
         if (project is null)
         {
             await SendNotFoundAsync(ct);

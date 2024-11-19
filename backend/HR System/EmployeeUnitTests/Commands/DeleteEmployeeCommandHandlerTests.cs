@@ -36,6 +36,7 @@ namespace EmployeeUnitTests.Commands
 
             var command = new DeleteEmployeeCommand(
                 Guid.Parse("c950f40b-1480-4493-a506-a13f952961d1")
+                ,"Auth token"
             );
 
             var taskIds = new List<Guid> { Guid.NewGuid(), Guid.NewGuid() };

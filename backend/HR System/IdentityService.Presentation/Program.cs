@@ -5,6 +5,7 @@ using Core;
 using FastEndpoints.Security;
 using Application;
 using Common;
+using FastEndpoints.Security;
 
 var builder = WebApplication.CreateBuilder(args);
 
