@@ -38,13 +38,14 @@ export class ChangePasswordFormComponent {
   onSubmit() {
     if (this.resetPasswordForm.valid) {
       const dto : ResetPasswordDto = {
-        resetPasswordToken : this.route.snapshot.paramMap.get('refreshToken'),
+        passwordResetToken : this.route.snapshot.paramMap.get('resetPasswordToken'),
         password : this.resetPasswordForm.get('password')?.value,
 
       };
       this.accountService.resetPassword(dto).pipe(takeUntil(this.destroy$), tap(
         response => {
           this.swal.fireSwalSuccess(response)
+          this.router.navigate([''])
         }
       ), catchError(
         (error: HttpErrorResponse): Observable<any> => {

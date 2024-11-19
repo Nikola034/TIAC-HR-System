@@ -18,7 +18,7 @@ public class GetAll : EndpointWithoutRequest<GetAllClientsResponse>
     public override void Configure()
     {
         Get("/projects/clients/");
-        AllowAnonymous();
+        Policies("ManagersOnly");
     }
 
     public override async Task HandleAsync(CancellationToken ct)

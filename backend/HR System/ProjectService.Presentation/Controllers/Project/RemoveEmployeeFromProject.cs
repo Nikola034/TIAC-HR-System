@@ -19,7 +19,6 @@ public class RemoveEmployeeFromProject : Endpoint<AddOrRemoveEmployeeFromProject
     public override void Configure()
     {
         Put("/projects/removeFromProject");
-        AllowAnonymous();
     }
 
     public override async Task HandleAsync(AddOrRemoveEmployeeFromProjectRequest req, CancellationToken ct)

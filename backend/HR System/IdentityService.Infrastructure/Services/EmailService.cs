@@ -35,7 +35,7 @@ public class EmailService : IEmailService
         };
         
         var body =
-            "Click the following link in order to change your password: http://localhost:5000/passwordReset/" +
+            "Click the following link in order to change your password: http://localhost:4200/passwordReset/" +
             passwordResetToken;
         var mailToSend = new MailMessage()
         {
@@ -44,7 +44,7 @@ public class EmailService : IEmailService
             Body = body,
             IsBodyHtml = false
         };
-        mailToSend.To.Add(email);
+        mailToSend.To.Add("luka.mandic08@gmail.com");
         await client.SendMailAsync(mailToSend);
     }
 }

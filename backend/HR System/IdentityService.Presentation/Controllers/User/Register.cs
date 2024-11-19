@@ -20,7 +20,7 @@ namespace Presentation.Controllers.User
         public override void Configure()
         {
             Post("auth/register");
-            AllowAnonymous();
+            Policies("ManagersOnly");
         }
 
         public override async Task HandleAsync(RegisterUserRequest req, CancellationToken ct)

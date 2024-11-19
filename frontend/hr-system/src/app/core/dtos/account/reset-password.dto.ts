@@ -1,4 +1,4 @@
 export interface ResetPasswordDto {
-    resetPasswordToken : string | null,
+    passwordResetToken : string | null,
     password : string
 }
