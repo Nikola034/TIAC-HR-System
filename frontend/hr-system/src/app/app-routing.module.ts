@@ -13,6 +13,7 @@ import { ResetPasswordFormComponent } from './components/login/reset-password-fo
 import { EmployeesComponent } from './components/employees/employees/employees.component';
 import { CreateEmployeeComponent } from './components/employees/create-employee/create-employee.component';
 import { EditEmployeeComponent } from './components/employees/edit-employee/edit-employee.component';
+<<<<<<< HEAD
 import { AuthGuardService } from './core/services/auth-guard.service';
 import { AdminGuardService } from './core/services/admin-guard.service';
 import { UserGuardService } from './core/services/user-guard.service';
@@ -33,6 +34,28 @@ const routes: Routes = [
   { path: 'edit-project', component: CreateProjectComponent, canActivate: [AuthGuardService, AdminGuardService]},
   { path: '', component: LoginFormComponent },
   { path: 'reset-password', component: ResetPasswordFormComponent },
+=======
+import { ChangePasswordFormComponent } from './components/login/change-password-form/change-password-form.component';
+
+const routes: Routes = [
+  { path:'projects', component: AllProjectsComponent},
+  { path:'employees', component: EmployeesComponent},
+  { path:'create-employee', component: CreateEmployeeComponent},
+  { path:'edit-employee', component: EditEmployeeComponent},
+  { path:'clients', component: AllClientsComponent},
+  { path:'profile', component: EditProfileComponent},
+  { path:'create-client', component: CreateClientComponent},
+  { path:'edit-client', component: CreateClientComponent},
+  { path:'holiday-requests', component: HolidayRequestsComponent},
+  { path:'my-projects', component: MyProjectsComponent},
+  { path:'my-projects/:id', component: ProjectDetailsComponent},
+  { path:'profile', component: EditProfileComponent},
+  { path:'create-project', component: CreateProjectComponent},
+  { path:'edit-project', component: CreateProjectComponent},
+  { path:'', component: LoginFormComponent},
+  { path:'reset-password', component: ResetPasswordFormComponent},
+  { path:'resetPassword/:resetPasswordToken', component: ChangePasswordFormComponent}
+>>>>>>> develop
 ];
 
 @NgModule({

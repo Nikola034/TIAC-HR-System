@@ -14,6 +14,8 @@ import { Client } from '../../../core/models/client.model';
 import { EmployeeForProjectDto } from '../../../core/dtos/employee/employee-for-project.dto';
 import { UpdateProjectDto } from '../../../core/dtos/project/update-project.dto';
 import { AddOrRemoveEmployeeProjectDto } from '../../../core/dtos/employee/add-or-remove-employee-project.dto';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
 
 @Component({
   selector: 'app-create-project',
@@ -27,6 +29,7 @@ export class CreateProjectComponent {
   isEditMode : boolean = false;
   buttonContent : string = 'Create Project';
   displayedColumns : string[] = ['index', 'name', 'surname' , 'remove']
+  displayedColumnsForReport : string[] = ['index', 'name', 'surname' ]
 
   constructor(private fb: FormBuilder, private projectService : ProjectService,
               private clientService : ClientService, private employeeService : EmployeeService,
@@ -41,9 +44,10 @@ export class CreateProjectComponent {
 
   existingProjectId !: string
   clients : Client[] = []
-  developers : Employee[] = []
+  allDevelopers : Employee[] = []
   workingDevelopers : EmployeeForProjectDto[] = []
   availableDevelopers : EmployeeForProjectDto[] = []
+  selectedDeveloperId !: string
 
   ngOnInit(){
     this.clientService.getAllClients("?page=1&items-per-page=100")
@@ -53,7 +57,7 @@ export class CreateProjectComponent {
 
       this.employeeService.getAllDevelopers()
       .pipe(takeUntil(this.destroy$),tap( response => {
-        this.developers = response.developers;
+        this.allDevelopers = response.developers;
       })).subscribe()
 
     this.existingProjectId = history.state.projectData
@@ -138,9 +142,9 @@ export class CreateProjectComponent {
     ).subscribe()
   }
 
-  addEmployeeToProject(employeeId : string){
+  addEmployeeToProject(){
     const dto : AddOrRemoveEmployeeProjectDto = {
-      employeeId : employeeId,
+      employeeId : this.selectedDeveloperId,
       projectId : this.existingProjectId
     }
     this.projectService.addEmployeeToProject(dto).pipe(takeUntil(this.destroy$),
@@ -149,10 +153,45 @@ export class CreateProjectComponent {
         this.availableDevelopers = response.notWorking;
       }),
       catchError( error => {
-        this.swal.fireSwalError("Something went wrong while removing employee")
+        this.swal.fireSwalError("Something went wrong while adding employee")
         return throwError(() => error);
       })
     ).subscribe()
+  }
+
+  generateReport() {
+    const data = document.getElementById('pdf-content'); // The HTML element to capture
+    if(data){
+      const originalDisplay = data.style.display;
+      data.style.display = 'block'; // or 'inline-block' depending on your needs
+
+      html2canvas(data).then(canvas => {
+        // Restore the original display style
+        data.style.display = originalDisplay;
+
+        const imgWidth = 208;
+        const pageHeight = 295;
+        const imgHeight = (canvas.height * imgWidth) / canvas.width;
+        const position = 0;
+
+        const imgData = canvas.toDataURL('image/png');
+        const doc = new jsPDF();
+
+        doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+        doc.save('captured-content.pdf');
+      });
+    }
+  }
+
+  getClientForReport(): string|undefined {
+    let id = this.createProjectForm.get('client')?.value
+    return this.clients.find(client => client.id === id)?.name;
+  }
+
+  getTeamLeadForReport(): string|undefined {
+    let id = this.createProjectForm.get('teamLead')?.value
+    let dev = this.workingDevelopers.find(dev => dev.id === id);
+    return dev?.name + " " + dev?.surname
   }
 
   ngOnDestroy(): void {

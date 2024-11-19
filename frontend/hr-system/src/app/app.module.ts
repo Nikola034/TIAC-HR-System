@@ -44,6 +44,7 @@ import { environment } from '../environments/environment';
 export function tokenGetter() {
   return localStorage.getItem('access_token');
 }
+import { ChangePasswordFormComponent } from './components/login/change-password-form/change-password-form.component';
 
 @NgModule({
   declarations: [
@@ -66,6 +67,7 @@ export function tokenGetter() {
     CreateProjectComponent,
     EmployeesComponent,
     ClientProjectsComponent,
+    ChangePasswordFormComponent,
   ],
   imports: [
     BrowserModule,

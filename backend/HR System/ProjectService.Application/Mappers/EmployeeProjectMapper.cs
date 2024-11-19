@@ -21,7 +21,8 @@ public static class EmployeeProjectMapper
         var jsonObject = JObject.Parse(jsonString);
         var employeesArray  = (JArray)jsonObject["developers"];
         IEnumerable<EmployeeDto> working = employeesArray
-            .Where(emp => emp != null && emp["id"] != null && workingIds.Contains(Guid.Parse(emp["id"].ToString())))
+            .Where(emp => emp != null && emp["id"] != null
+                                      && emp["name"] != null && emp["surname"] != null && workingIds.Contains(Guid.Parse(emp["id"].ToString())))
             .Select(emp => new EmployeeDto
             {
                 Id = Guid.Parse(emp["id"].ToString()),
@@ -30,7 +31,8 @@ public static class EmployeeProjectMapper
             });
 
         IEnumerable<EmployeeDto> notWorking = employeesArray
-            .Where(emp => emp != null && emp["id"] != null && !workingIds.Contains(Guid.Parse(emp["id"].ToString())))
+            .Where(emp => emp != null && emp["id"] != null
+                                      && emp["name"] != null && emp["surname"] != null && !workingIds.Contains(Guid.Parse(emp["id"].ToString())))
             .Select(emp => new EmployeeDto
             {
                 Id = Guid.Parse(emp["id"].ToString()),

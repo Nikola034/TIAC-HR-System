@@ -1,5 +1,9 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AccountService } from '../../../core/services/account.service';
+import { AlertService } from '../../../core/services/alert.service';
+import { catchError, Observable, Subject, takeUntil, tap, throwError } from 'rxjs';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-reset-password-form',
@@ -8,8 +12,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class ResetPasswordFormComponent {
   resetPasswordForm: FormGroup;
+  private destroy$ = new Subject<void>()
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private accountService : AccountService, private swal : AlertService) {
     this.resetPasswordForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
     });
@@ -17,8 +22,23 @@ export class ResetPasswordFormComponent {
 
   onSubmit() {
     if (this.resetPasswordForm.valid) {
-      console.log('Form Submitted', this.resetPasswordForm.value);
+      this.accountService.sendPasswordResetEmail(this.resetPasswordForm.get('email')?.value).pipe(takeUntil(this.destroy$),
+      tap(
+        response => {
+          this.swal.fireSwalSuccess(response)
+        }
+      ), catchError(
+        (error: HttpErrorResponse): Observable<any> => {
+            this.swal.fireSwalError(error.error.detail)
+            return throwError(() => error);
+        },
+      )).subscribe()
     }
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
 }
