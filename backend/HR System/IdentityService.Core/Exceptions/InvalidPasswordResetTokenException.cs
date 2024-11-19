@@ -4,7 +4,7 @@ namespace Core.Exceptions;
 
 public class InvalidPasswordResetTokenException : BadRequestException
 {
-    public InvalidPasswordResetTokenException() : base("Provided refresh token is invalid or expired")
+    public InvalidPasswordResetTokenException() : base("Provided reset password token is invalid or expired")
     {
 
     }

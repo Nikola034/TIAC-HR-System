@@ -16,6 +16,11 @@ builder.Services.RegisterApplication()
 
 builder.Services.AddExceptionHandling();
 builder.Services.AddHttpServiceClients(builder.Configuration);
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("ManagersOnly", policy =>
+        policy.RequireClaim("Role", "Manager"));
+});
 
 var app = builder.Build();
 

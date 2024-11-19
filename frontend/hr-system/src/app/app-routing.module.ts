@@ -32,7 +32,7 @@ const routes: Routes = [
   { path:'edit-project', component: CreateProjectComponent},
   { path:'', component: LoginFormComponent},
   { path:'reset-password', component: ResetPasswordFormComponent},
-  { path:'resetPassword/:resetPasswordToken', component: ChangePasswordFormComponent}
+  { path:'passwordReset/:resetPasswordToken', component: ChangePasswordFormComponent}
 ];
 
 @NgModule({

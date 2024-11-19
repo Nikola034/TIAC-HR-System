@@ -17,7 +17,6 @@ public class GetAllEmployeesOnProject : EndpointWithoutRequest<GetAllEmployeesOn
     public override void Configure()
     {
         Get("/projects/allEmployees/{projectId}");
-        AllowAnonymous();
     }
 
     public override async Task HandleAsync(CancellationToken ct)

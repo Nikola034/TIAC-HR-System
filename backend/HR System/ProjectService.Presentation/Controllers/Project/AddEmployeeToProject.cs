@@ -17,7 +17,7 @@ public class AddEmployeeToProject : Endpoint<AddOrRemoveEmployeeFromProjectReque
     public override void Configure()
     {
         Put("/projects/addToProject");
-        AllowAnonymous();
+        Policies("ManagersOnly");
     }
 
     public override async Task HandleAsync(AddOrRemoveEmployeeFromProjectRequest req, CancellationToken ct)

@@ -17,7 +17,7 @@ namespace EmployeeService.Presentation.Controllers.Employee
         public override void Configure()
         {
             Post("employees");
-            AllowAnonymous();
+            Policies("ManagersOnly");
         }
 
         public override async Task HandleAsync(CreateEmployeeRequest req, CancellationToken ct)
