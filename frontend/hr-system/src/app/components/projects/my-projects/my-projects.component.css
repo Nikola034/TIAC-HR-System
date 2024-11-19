@@ -8,3 +8,25 @@
     justify-content: space-between;
     padding-bottom: 3rem;
 }
+.no-projects-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Full viewport height */
+    background-color: #f8f9fa; /* Light background color */
+  }
+  
+  .no-projects-content {
+    text-align: center;
+    color: #d32f2f; /* Red color for the icon and text */
+  }
+  
+  .no-projects-icon {
+    font-size: 80px; /* Large size for the icon */
+    margin-bottom: 16px;
+  }
+  
+  .no-projects-message {
+    font-size: 24px; /* Large text for the message */
+    font-weight: 500;
+  }

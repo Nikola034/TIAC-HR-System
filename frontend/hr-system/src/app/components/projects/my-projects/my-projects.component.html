@@ -1,3 +1,9 @@
+<div class="no-projects-container" *ngIf="projects.length == 0">
+    <div class="no-projects-content">
+      <mat-icon class="no-projects-icon">close</mat-icon>
+      <h2 class="no-projects-message">You have no projects</h2>
+    </div>
+  </div>
 <div class="project-cards-container">
     <app-project-card *ngFor="let project of projects" [project]="project"></app-project-card>
 </div>

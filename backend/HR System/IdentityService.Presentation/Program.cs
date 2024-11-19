@@ -2,6 +2,7 @@ using FastEndpoints;
 using FastEndpoints.Swagger;
 using Infrastructure;
 using Core;
+using FastEndpoints.Security;
 using Application;
 using Common;
 
@@ -16,6 +17,9 @@ builder.Services.RegisterApplication()
 
 builder.Services.AddExceptionHandling();
 builder.Services.AddHttpServiceClients(builder.Configuration);
+builder.Services.AddAuthenticationJwtBearer(s => s.SigningKey = builder.Configuration["JWT:Key"])
+    .AddAuthorization() //add this
+    .AddFastEndpoints();
 builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("ManagersOnly", policy =>
