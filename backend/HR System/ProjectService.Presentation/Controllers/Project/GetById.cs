@@ -18,8 +18,9 @@ public class GetById : EndpointWithoutRequest<ProjectByIdResponse>
     public override void Configure()
     {
         Get("/projects/{projectId}");
+        AllowAnonymous();
     }
-    
+
     public override async Task HandleAsync(CancellationToken ct)
     {
         var projectId = Route<Guid>("projectId");
