@@ -46,7 +46,7 @@ namespace EmployeeService.Application.Commands.HolidayRequest
                 domainEntity.Status = HolidayRequestStatus.Pending;
                 var persistedHolidayRequest = await _holidayRequestRepository.CreateHolidayRequestAsync(domainEntity, cancellationToken);
 
-                IEnumerable<Guid> teamLeadIds = await _projectHttpClient.GetTeamLeadsForEmployeeAsync(domainEntity.SenderId, cancellationToken);
+                IEnumerable<Guid> teamLeadIds = await _projectHttpClient.GetTeamLeadsForEmployeeAsync(domainEntity.SenderId, request.Token, cancellationToken);
                 if (teamLeadIds.Where(x => x != sender.Id).Any())
                 {
                     foreach (var teamLeadId in teamLeadIds)
@@ -80,5 +80,5 @@ namespace EmployeeService.Application.Commands.HolidayRequest
 
     }
 
-    public record CreateHolidayRequestCommand(DateTime Start, DateTime End, HolidayRequestStatus Status, Guid SenderId) : IRequest<Core.Entities.HolidayRequest>;
+    public record CreateHolidayRequestCommand(DateTime Start, DateTime End, HolidayRequestStatus Status, Guid SenderId, string Token) : IRequest<Core.Entities.HolidayRequest>;
 }

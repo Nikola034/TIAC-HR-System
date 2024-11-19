@@ -21,7 +21,8 @@ namespace EmployeeService.Presentation.Controllers.HolidayRequest
 
         public override async Task HandleAsync(CreateHolidayRequestRequest req, CancellationToken ct)
         {
-            var holidayRequest = await _mediator.Send(req.ToCommand(), ct);
+            var authHeader = HttpContext.Request.Headers["Authorization"].ToString();
+            var holidayRequest = await _mediator.Send(req.ToCommand(authHeader), ct);
             await SendOkAsync(holidayRequest.ToApiResponseFromCreate(), ct);
         }
     }

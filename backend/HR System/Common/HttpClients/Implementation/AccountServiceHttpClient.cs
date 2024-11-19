@@ -17,7 +17,7 @@ namespace Common.HttpClients.Implementation
             _httpClientFactory = httpClientFactory;
         }
 
-        public async Task<bool> DeleteEmployeeAccount(Guid accountId, CancellationToken cancellationToken = default)
+        public async Task<bool> DeleteEmployeeAccount(Guid accountId, string token, CancellationToken cancellationToken = default)
         {
             var httpClient = _httpClientFactory.CreateClient("AccountServiceClient");
             HttpRequestMessage request = new HttpRequestMessage
@@ -25,6 +25,7 @@ namespace Common.HttpClients.Implementation
                 Method = HttpMethod.Delete,
                 RequestUri = new Uri("auth/" + accountId, UriKind.Relative)
             };
+            request.Headers.Add("Authorization",token);
             var response = await httpClient.SendAsync(request, cancellationToken);
 
             return response.StatusCode != System.Net.HttpStatusCode.InternalServerError;

@@ -74,7 +74,7 @@ namespace EmployeeService.Presentation.Mappers
             };
         }
 
-        public static CreateHolidayRequestCommand ToCommand(this CreateHolidayRequestRequest request) => new CreateHolidayRequestCommand(request.Start, request.End, request.Status, request.SenderId);
+        public static CreateHolidayRequestCommand ToCommand(this CreateHolidayRequestRequest request, string token) => new CreateHolidayRequestCommand(request.Start, request.End, request.Status, request.SenderId, token);
         public static UpdateHolidayRequestCommand ToCommand(this UpdateHolidayRequestRequest request) => new UpdateHolidayRequestCommand(request.Id, request.Start, request.End, request.Status);
     }
 }
