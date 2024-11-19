@@ -332,7 +332,7 @@ export class HolidayRequestsComponent{
       this.holidayRequests.push(newRequest);
       this.refreshHolidayRequests();
       this.refreshHolidayRequestApprovers();
-      this.getDaysOffReport()
+      this.getDaysOffReport();
     });
   }
 }
