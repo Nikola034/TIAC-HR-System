@@ -13,5 +13,6 @@
         public string SenderSurname { get; set; }
         public DateTime Start { get; set; }
         public DateTime End { get; set; }
+        public Core.Enums.HolidayRequestStatus Status { get; set; }
     }
 }

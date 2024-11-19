@@ -141,9 +141,10 @@ export class HolidayRequestsComponent{
                 .pipe(
                   tap((response) => {
                     this.holidayRequests = response.holidayRequests;
-                    if(this.totalPages > response.totalPages){
-                      this.pageNumber = 1
-                      this.loadNewPage(this.pageNumber)
+                    if(this.pageNumber > response.totalPages){
+                      this.totalPages = response.totalPages
+                      this.pageNumber = response.totalPages;
+                      this.loadNewPage(this.totalPages)
                     }
                     this.totalPages = response.totalPages;
                     this.getDaysOffReport();
@@ -189,6 +190,7 @@ export class HolidayRequestsComponent{
                   tap((response) => {
                     this.holidayRequestApprovers =
                       response.holidayRequestApprovers;
+                      this.refreshHolidayRequestApprovers();
                   }),
                   catchError((error) => {
                     this.swal.fireSwalError('Something went wrong');
@@ -230,6 +232,7 @@ export class HolidayRequestsComponent{
                   tap((response) => {
                     this.holidayRequestApprovers =
                       response.holidayRequestApprovers;
+                      this.refreshHolidayRequestApprovers();
                   }),
                   catchError((error) => {
                     this.swal.fireSwalError('Something went wrong');

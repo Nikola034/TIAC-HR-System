@@ -1,4 +1,5 @@
 ﻿using EmployeeService.Application.Common.Repositories;
+using EmployeeService.Core.Enums;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -31,7 +32,8 @@ namespace EmployeeService.Application.Queries.HolidayRequestApprover
                    holidayRequest.Sender.Name,
                    holidayRequest.Sender.Surname,
                    holidayRequest.Start,
-                   holidayRequest.End
+                   holidayRequest.End,
+                   holidayRequest.Status
                 ));
             }
             return responses.OrderBy(x => x.Start);
@@ -40,5 +42,5 @@ namespace EmployeeService.Application.Queries.HolidayRequestApprover
 
 
     public record GetAllHolidayRequestsApproversByApproverIdQuery(Guid ApproverId) : IRequest<IEnumerable<GetAllHolidayRequestsApproversByApproverIdQueryResponse>>;
-    public record GetAllHolidayRequestsApproversByApproverIdQueryResponse(Guid Id, Guid RequestId, string SenderName, string SenderSurname, DateTime Start, DateTime End);
+    public record GetAllHolidayRequestsApproversByApproverIdQueryResponse(Guid Id, Guid RequestId, string SenderName, string SenderSurname, DateTime Start, DateTime End, HolidayRequestStatus Status);
 }

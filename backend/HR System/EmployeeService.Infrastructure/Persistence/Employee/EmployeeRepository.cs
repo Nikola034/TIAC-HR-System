@@ -44,7 +44,7 @@ namespace EmployeeService.Infrastructure.Persistance.Employee
         }
         public async Task<IEnumerable<Core.Entities.Employee>> GetAllEmployeesAsync(int page, int items, CancellationToken cancellationToken = default)
         {
-            var employees = await _context.Employees.OrderBy(x => x.Id)
+            var employees = await _context.Employees.OrderBy(x => x.Name)
             .Skip((page - 1) * items)
             .Take(items)
             .ToListAsync(cancellationToken);

@@ -32,7 +32,7 @@ export class EmployeesComponent {
   accounts: Account[] = [];
   pageNumber: number = 1;
   totalPages: number = 1;
-  itemsPerPage: number = 8;
+  itemsPerPage: number = 10;
   displayedColumns: string[] = [
     'name',
     'surname',
@@ -143,7 +143,13 @@ export class EmployeesComponent {
               this.employeeService.getAllEmployees(this.getQueryString()).pipe(
                 tap((response) => {
                   this.employees = response.employees;
+                  if(this.pageNumber > response.totalPages){
+                    this.totalPages = response.totalPages
+                    this.pageNumber = response.totalPages;
+                    this.loadNewPage(this.totalPages)
+                  }
                   this.totalPages = response.totalPages;
+                  this.refreshData()
                 }),
                 catchError((error) => {
                   this.swal.fireSwalError('Something went wrong');
