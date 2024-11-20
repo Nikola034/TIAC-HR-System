@@ -36,7 +36,12 @@ namespace EmployeeService.Presentation.Controllers.HolidayRequest
                 itemsPerPage = Convert.ToInt32(itemsPerPageQuery);
 
             }
-            var holidayRequest = await _mediator.Send(new GetAllHolidayRequestsBySenderIdQuery(senderId, page, itemsPerPage));
+            var status = Query<string>("status", isRequired: false);
+            if (status == null)
+            {
+                status = "all";
+            }
+            var holidayRequest = await _mediator.Send(new GetAllHolidayRequestsBySenderIdQuery(senderId, page, itemsPerPage, status));
             if (holidayRequest is null)
             {
                 await SendNotFoundAsync(ct);

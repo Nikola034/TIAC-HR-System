@@ -21,6 +21,7 @@ namespace Infrastructure.Persistance.Account
             builder.Property(x => x.RefreshTokenValidTo).HasColumnName("refreshtokenvalidto").HasColumnType("timestamp");
             builder.Property(x => x.PasswordResetToken).HasColumnName("passwordresettoken").HasColumnType("varchar(100)");
             builder.Property(x => x.PasswordResetTokenValidTo).HasColumnName("passwordresettokenvalidto").HasColumnType("timestamp");
+            builder.Property(x => x.IsBlocked).HasColumnName("isblocked").HasColumnType("boolean");
 
             builder.HasKey(x => x.Id);
             builder.HasIndex(x => x.Email).IsUnique();

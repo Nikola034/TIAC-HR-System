@@ -86,6 +86,11 @@ export class AllProjectsComponent implements OnInit, OnDestroy {
           switchMap( () => this.projectService.getAllProjects(this.getQueryString()).pipe(
           tap(response => {
             this.projects = response.projects;
+            if(this.pageNumber > response.totalPages){
+              this.totalPages = response.totalPages
+              this.pageNumber = response.totalPages;
+              this.loadNewPage(this.totalPages)
+            }
             this.totalPages = response.totalPages;
           })))).subscribe()
         this.swal.fireSwalSuccess("Project deleted successfully")

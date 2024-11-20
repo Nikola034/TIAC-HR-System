@@ -61,3 +61,6 @@ td{
 .delete:disabled mat-icon{
     color: gray;
 }
+mat-form-field{
+    margin-top: 15px;
+}

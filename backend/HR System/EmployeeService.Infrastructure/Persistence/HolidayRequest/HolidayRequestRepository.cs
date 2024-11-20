@@ -54,14 +54,31 @@ namespace EmployeeService.Infrastructure.Persistence.HolidayRequest
                 .ToListAsync(cancellationToken);
             return holidayRequests;
         }
-        public async Task<IEnumerable<Core.Entities.HolidayRequest>> GetAllHolidayRequestsBySenderIdAsync(Guid senderId, int page, int items, CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<Core.Entities.HolidayRequest>> GetAllHolidayRequestsBySenderIdAsync(Guid senderId, int page, int items, string status, CancellationToken cancellationToken = default)
         {
             var holidayRequests = new List<Core.Entities.HolidayRequest>();
+            Core.Enums.HolidayRequestStatus statusEnum = Core.Enums.HolidayRequestStatus.Approved;
+            if(status != "all")
+            {
+                if(status == "Approved")
+                {
+                    statusEnum = Core.Enums.HolidayRequestStatus.Approved;
+                }
+                else if (status == "Pending")
+                {
+                    statusEnum = Core.Enums.HolidayRequestStatus.Pending;
+                }
+                else if (status == "Denied")
+                {
+                    statusEnum = Core.Enums.HolidayRequestStatus.Denied;
+                }
+            }
             if (page != -1 && items != -1)
             {
                 holidayRequests = await _context.HolidayRequests.OrderBy(x => x.Id)
                 .Include(x => x.Sender)
-                .Where(x => x.SenderId == senderId)
+                .Where(x => x.SenderId == senderId && (status.Equals("all") || x.Status == statusEnum))
+                .OrderBy(x => x.Start)
                 .Skip((page - 1) * items)
                 .Take(items)
                 .ToListAsync(cancellationToken);
@@ -69,7 +86,8 @@ namespace EmployeeService.Infrastructure.Persistence.HolidayRequest
             }
             holidayRequests = await _context.HolidayRequests.OrderBy(x => x.Id)
                 .Include(x => x.Sender)
-                .Where(x => x.SenderId == senderId)
+                .Where(x => x.SenderId == senderId && (status.Equals("all") || x.Status == statusEnum))
+                .OrderBy(x => x.Start)
                 .ToListAsync(cancellationToken);
             return holidayRequests;
         }

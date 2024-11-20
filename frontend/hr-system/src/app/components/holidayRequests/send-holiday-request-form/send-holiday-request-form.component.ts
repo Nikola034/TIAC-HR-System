@@ -24,7 +24,6 @@ export class SendHolidayRequestFormComponent {
     start: new FormControl<Date | null | undefined>(null),
     end: new FormControl<Date | null | undefined>(null),
   });
-  responseRequest: HolidayRequest | undefined
   daysOff: number | undefined
 
   ngOnInit(){
@@ -58,13 +57,12 @@ export class SendHolidayRequestFormComponent {
     .pipe(takeUntil(this.destroy$), tap((response) => {
       this.swal.fireSwalSuccess("Holiday request created successfully")
       this.router.navigate(['holiday-requests'])
-      this.responseRequest = response
-      }),
+      this.onCancel(response);
+    }),
       catchError( error => {
         this.swal.fireSwalError("Something went wrong")
         return throwError(() => error);
       })).subscribe();
-    this.onCancel(this.responseRequest);
   }
 
   ngOnDestroy(): void {

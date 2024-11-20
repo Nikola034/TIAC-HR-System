@@ -104,6 +104,11 @@ export class AllClientsComponent {
           switchMap( () => this.clientService.getAllClients(this.getQueryString()).pipe(
           tap(response => {
             this.clients = response.clients;
+            if(this.pageNumber > response.totalPages){
+              this.totalPages = response.totalPages
+              this.pageNumber = response.totalPages;
+              this.loadNewPage(this.totalPages)
+            }
             this.totalPages = response.totalPages;
        })))).subscribe()
         this.swal.fireSwalSuccess("Client deleted successfully")

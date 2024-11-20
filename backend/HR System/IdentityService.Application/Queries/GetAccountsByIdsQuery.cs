@@ -24,12 +24,22 @@ namespace IdentityService.Application.Queries
                 ids.Add(Guid.Parse(id));
             }
             var accounts = await _accountRepository.GetAccountsByIdsAsync(ids, cancellationToken);
-            return new GetAccountsByIdsQueryResponse(accounts);
+            return new GetAccountsByIdsQueryResponse(accounts.Select(x => new GetAccountsByIdsQueryResponseDto
+            (
+                x.Id,
+                x.Email,
+                x.RefreshToken,
+                x.RefreshTokenValidTo,
+                x.PasswordResetToken,
+                x.PasswordResetTokenValidTo,
+                x.IsBlocked
+            )));
         }
     }
 
 
     public record GetAccountsByIdsQuery(IEnumerable<string> Ids) : IRequest<GetAccountsByIdsQueryResponse>;
 
-    public record GetAccountsByIdsQueryResponse(IEnumerable<Core.Entities.Account> Accounts);
+    public record GetAccountsByIdsQueryResponse(IEnumerable<GetAccountsByIdsQueryResponseDto> dtos);
+    public record GetAccountsByIdsQueryResponseDto(Guid Id, string Email, string RefreshToken, DateTime? RefreshTokenValidTo, string PasswordResetToken, DateTime? PasswordResetTokenValidTo, bool IsBlocked);
 }
