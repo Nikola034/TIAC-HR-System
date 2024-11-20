@@ -4,6 +4,7 @@ import {
   catchError,
   combineLatest,
   concatMap,
+  debounceTime,
   forkJoin,
   map,
   Observable,
@@ -28,7 +29,7 @@ import { SendAccountIdsDto } from '../../../core/dtos/account/send-account-ids.d
   styleUrl: './employees.component.css',
 })
 export class EmployeesComponent {
-  employees: Employee[] = [];
+  employees!: Employee[] 
   accounts: Account[] = [];
   pageNumber: number = 1;
   totalPages: number = 1;
@@ -48,16 +49,30 @@ export class EmployeesComponent {
   roleFilter = 'all'
 
   private destroy$ = new Subject<void>();
+  private searchParamChangeSubject = new Subject<void>();
 
   constructor(
     private employeeService: EmployeeService,
     private router: Router,
     private swal: AlertService,
     private accountService: AccountService
-  ) {}
+  ) {
+    this.searchParamChangeSubject
+      .pipe(
+        debounceTime(250), 
+        switchMap(async () => this.loadNewPage(1)) 
+      )
+      .subscribe((response) => {
+        console.log('Response:', response);
+      });
+  }
 
   ngOnInit() {
     this.refreshData();
+  }
+
+  onPropertyChange(): void{
+    this.searchParamChangeSubject.next();
   }
 
   refreshData() {
@@ -66,7 +81,7 @@ export class EmployeesComponent {
       takeUntil(this.destroy$),
       switchMap((employeesResponse) => {
         this.employees = employeesResponse.employees;
-        if(this.pageNumber > employeesResponse.totalPages){
+        if(this.pageNumber > employeesResponse.totalPages && employeesResponse.totalPages > 0){
           this.totalPages = employeesResponse.totalPages
           this.pageNumber = employeesResponse.totalPages;
           this.loadNewPage(this.totalPages)

@@ -1,11 +1,11 @@
-<div class="all-employees-container" *ngIf="employees.length > 0">
+<div class="all-employees-container" *ngIf="employees">
   <div class="header-div">
     <h1>Employees</h1>
     <mat-form-field class="role-filter">
       <mat-label>Search By</mat-label>
       <mat-select
         [(ngModel)]="searchCriteria"
-        (selectionChange)="refreshData()"
+        (selectionChange)="onPropertyChange()"
       >
         <mat-option value="name">Name</mat-option>
         <mat-option value="surname">Surname</mat-option>
@@ -17,14 +17,14 @@
         matInput
         type="text"
         [(ngModel)]="search"
-        (input)="refreshData()"
+        (input)="onPropertyChange()"
         placeholder="Search"
         class="search-input"
       />
     </mat-form-field>
     <mat-form-field class="role-filter">
       <mat-label>Filter by Role</mat-label>
-      <mat-select [(ngModel)]="roleFilter" (selectionChange)="refreshData()">
+      <mat-select [(ngModel)]="roleFilter" (selectionChange)="onPropertyChange()">
         <mat-option value="all">All Roles</mat-option>
         <mat-option value="Developer">Developer</mat-option>
         <mat-option value="Manager">Manager</mat-option>
