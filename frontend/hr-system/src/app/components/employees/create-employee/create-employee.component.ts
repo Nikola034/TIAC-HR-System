@@ -29,7 +29,6 @@ export class CreateEmployeeComponent {
       name: new FormControl('', Validators.required),
       surname: new FormControl('', Validators.required),
       email: new FormControl('', [Validators.required, Validators.email]),
-      password: new FormControl('', Validators.required),
       daysOff: new FormControl('', Validators.required),
       role: new FormControl('', Validators.required),
     });
@@ -40,7 +39,7 @@ export class CreateEmployeeComponent {
       if(!this.isEditMode){
         const accountDto: CreateAccountDto = {
           email: this.createEmployeeForm.get('email')?.value,
-          password: this.createEmployeeForm.get('password')?.value,
+          password: this.generateRandomString(20),
         };
         const employeeDto: CreateEmployeeDto = {
             name: this.createEmployeeForm.get('name')?.value,
@@ -69,6 +68,16 @@ export class CreateEmployeeComponent {
         
       }
     }
+  }
+
+  generateRandomString(length: number): string {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let result = '';
+    for (let i = 0; i < length; i++) {
+      const randomIndex = Math.floor(Math.random() * characters.length);
+      result += characters[randomIndex];
+    }
+    return result;
   }
 
   ngOnDestroy(): void {

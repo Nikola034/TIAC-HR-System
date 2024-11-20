@@ -10,10 +10,10 @@ export class AuthGuardService implements CanActivate {
   constructor(private jwtService: JwtService, private router: Router) { }
 
   canActivate(): boolean {
-    if (this.jwtService.IsLoged()) {
+    if (this.jwtService.IsLogged()) {
       return true;
     } else {
-      this.router.navigate(['/auth/login']);
+      this.router.navigate(['']);
       return false;
     }
   }

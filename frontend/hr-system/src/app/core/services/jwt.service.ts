@@ -17,7 +17,7 @@ import { Router } from "@angular/router";
         localStorage.setItem('refresh_token',tokens.refreshToken)
     }
 
-    IsLoged(): boolean {
+    IsLogged(): boolean {
         const token = this.getToken()
         if (!token) {
             return false; 
