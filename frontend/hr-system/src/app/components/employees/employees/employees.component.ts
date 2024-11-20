@@ -43,6 +43,10 @@ export class EmployeesComponent {
     'delete',
   ];
 
+  search = ''
+  searchCriteria = 'name'
+  roleFilter = 'all'
+
   private destroy$ = new Subject<void>();
 
   constructor(
@@ -62,6 +66,11 @@ export class EmployeesComponent {
       takeUntil(this.destroy$),
       switchMap((employeesResponse) => {
         this.employees = employeesResponse.employees;
+        if(this.pageNumber > employeesResponse.totalPages){
+          this.totalPages = employeesResponse.totalPages
+          this.pageNumber = employeesResponse.totalPages;
+          this.loadNewPage(this.totalPages)
+        }
         this.totalPages = employeesResponse.totalPages;
         const accountIds = this.getAccountIds(employeesResponse.employees);
 
@@ -99,7 +108,10 @@ export class EmployeesComponent {
   }
 
   getQueryString(): string {
-    return '?page=' + this.pageNumber + '&items-per-page=' + this.itemsPerPage;
+    if(this.search == ''){
+      return '?page=' + this.pageNumber + '&items-per-page=' + this.itemsPerPage + '&role=' + this.roleFilter;
+    }
+    return '?page=' + this.pageNumber + '&items-per-page=' + this.itemsPerPage + `&${this.searchCriteria}=` + this.search.toLowerCase() + '&role=' + this.roleFilter;
   }
 
   getAccountIds(employees: Employee[]): SendAccountIdsDto {

@@ -4,9 +4,11 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace EmployeeService.Infrastructure.Persistance.Employee
 {
@@ -35,16 +37,28 @@ namespace EmployeeService.Infrastructure.Persistance.Employee
             await _context.SaveChangesAsync(cancellationToken);
             return true;
         }
-        public async Task<IEnumerable<Core.Entities.Employee>> GetAllManagersAsync(CancellationToken cancellationToken = default)
+        public async Task<Core.Entities.Employee> GetFirstManagerAsync(Guid senderId, CancellationToken cancellationToken = default)
         {
             var employees = await _context.Employees.OrderBy(x => x.Id)
-            .Where(x => x.Role == Core.Enums.EmployeeRole.Manager)
-            .ToListAsync(cancellationToken);
+            .FirstOrDefaultAsync(x => x.Id != senderId && x.Role == Core.Enums.EmployeeRole.Manager);
             return employees;
         }
-        public async Task<IEnumerable<Core.Entities.Employee>> GetAllEmployeesAsync(int page, int items, CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<Core.Entities.Employee>> GetAllEmployeesAsync(int page, int items, string name, string surname, string role, CancellationToken cancellationToken = default)
         {
+            Core.Enums.EmployeeRole roleEnum = Core.Enums.EmployeeRole.Manager;
+            if (role != "all")
+            {
+                if(role == "Manager")
+                {
+                    roleEnum = Core.Enums.EmployeeRole.Manager;
+                }
+                else if (role == "Developer")
+                {
+                    roleEnum = Core.Enums.EmployeeRole.Developer;
+                }
+            }
             var employees = await _context.Employees.OrderBy(x => x.Name)
+            .Where(x => (name.Equals("") || x.Name.ToLower().Contains(name)) && (surname.Equals("") || x.Surname.ToLower().Contains(surname)) && (role.Equals("all") || x.Role == roleEnum))
             .Skip((page - 1) * items)
             .Take(items)
             .ToListAsync(cancellationToken);
@@ -56,12 +70,25 @@ namespace EmployeeService.Infrastructure.Persistance.Employee
             return await _context.Employees.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
         }
 
-        public async Task<int> GetTotalPagesAsync(int page, int items, CancellationToken cancellationToken = default)
+        public async Task<int> GetTotalPagesAsync(int page, int items, string name, string surname, string role, CancellationToken cancellationToken = default)
         {
-            var count = await _context.Employees.CountAsync(cancellationToken);
+            Core.Enums.EmployeeRole roleEnum = Core.Enums.EmployeeRole.Manager;
+            if (role != "all")
+            {
+                if (role == "Manager")
+                {
+                    roleEnum = Core.Enums.EmployeeRole.Manager;
+                }
+                else if (role == "Developer")
+                {
+                    roleEnum = Core.Enums.EmployeeRole.Developer;
+                }
+            }
+            var count = await _context.Employees
+                .Where(x => (name.Equals("") || x.Name.ToLower().Contains(name)) && (surname.Equals("") || x.Surname.ToLower().Contains(surname)) && (role.Equals("all") || x.Role == roleEnum))
+                .CountAsync(cancellationToken);
             return (int)Math.Ceiling((double)count / items);
         }
-
         public async Task<Core.Entities.Employee?> UpdateEmployeeAsync(Core.Entities.Employee user, CancellationToken cancellationToken = default)
         {
             _context.Employees.Update(user);

@@ -61,16 +61,13 @@ namespace EmployeeService.Application.Commands.HolidayRequest
                 }
                 else
                 {
-                    IEnumerable<Core.Entities.Employee> managers = await _employeeRepository.GetAllManagersAsync(cancellationToken);
-                    foreach (var manager in managers.Where(x => x.Id != request.SenderId))
-                    {
-                        Core.Entities.HolidayRequestApprover holidayRequestApprover = new Core.Entities.HolidayRequestApprover();
-                        holidayRequestApprover.Id = new Guid();
-                        holidayRequestApprover.RequestId = persistedHolidayRequest.Id;
-                        holidayRequestApprover.ApproverId = manager.Id;
-                        holidayRequestApprover.Status = HolidayRequestStatus.Pending;
-                        var persistedHolidayRequestApprover = await _holidayRequestApproverRepository.CreateHolidayRequestApproverAsync(holidayRequestApprover, cancellationToken);
-                    }
+                    Core.Entities.Employee manager = await _employeeRepository.GetFirstManagerAsync(request.SenderId, cancellationToken);
+                    Core.Entities.HolidayRequestApprover holidayRequestApprover = new Core.Entities.HolidayRequestApprover();
+                    holidayRequestApprover.Id = new Guid();
+                    holidayRequestApprover.RequestId = persistedHolidayRequest.Id;
+                    holidayRequestApprover.ApproverId = manager.Id;
+                    holidayRequestApprover.Status = HolidayRequestStatus.Pending;
+                    var persistedHolidayRequestApprover = await _holidayRequestApproverRepository.CreateHolidayRequestApproverAsync(holidayRequestApprover, cancellationToken);
                 }
 
                 return persistedHolidayRequest;

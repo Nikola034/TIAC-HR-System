@@ -51,6 +51,8 @@ export class HolidayRequestsComponent{
   dataSource = new MatTableDataSource<any>();
   report: DaysOffReportDto | undefined
 
+  statusFilter = 'all'
+
   pageNumber: number = 1;
   totalPages: number = 1;
   itemsPerPage: number = 5;
@@ -89,7 +91,12 @@ export class HolidayRequestsComponent{
     this.holidayRequestService.getAllHolidayRequestsBySenderId(this.jwtService.getIdFromToken(), this.getQueryString())
       .pipe(takeUntil(this.destroy$), tap((response) =>{
         this.holidayRequests = response.holidayRequests
-        this.totalPages = response.totalPages
+        if(this.pageNumber > response.totalPages && response.totalPages > 0){
+          this.totalPages = response.totalPages
+          this.pageNumber = response.totalPages;
+          this.loadNewPage(this.totalPages)
+        }
+        this.totalPages = response.totalPages;
       })).subscribe();
   }
 
@@ -112,7 +119,7 @@ export class HolidayRequestsComponent{
   }
 
   getQueryString(): string {
-    return '?page=' + this.pageNumber + '&items-per-page=' + this.itemsPerPage;
+    return '?page=' + this.pageNumber + '&items-per-page=' + this.itemsPerPage + '&status=' + this.statusFilter;
   }
 
   loadNewPage(selectedPage: number): void {

@@ -22,7 +22,7 @@ namespace EmployeeService.Application.Queries.Employee
         public async Task<GetDaysOffForEmployeesQueryResponse> Handle(GetDaysOffForEmployeesQuery request, CancellationToken cancellationToken)
         {
             var employee = await _employeeRepository.GetEmployeeByIdAsync(request.Id, cancellationToken);
-            var holidayRequestsForEmployee = await _holidayRequestRepository.GetAllHolidayRequestsBySenderIdAsync(employee.Id, -1, -1, cancellationToken);
+            var holidayRequestsForEmployee = await _holidayRequestRepository.GetAllHolidayRequestsBySenderIdAsync(employee.Id, -1, -1, "all", cancellationToken);
             int realizedDays = 0;
             foreach (var holidayRequest in holidayRequestsForEmployee.Where(x => x.Status == Core.Enums.HolidayRequestStatus.Approved))
             {

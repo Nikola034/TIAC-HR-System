@@ -37,7 +37,22 @@ namespace EmployeeService.Presentation.Controllers.Employee
                 itemsPerPage = Convert.ToInt32(itemsPerPageQuery);
 
             }
-            var employee = await _mediator.Send(new GetAllEmployeesQuery(page, itemsPerPage));
+            var name = Query<string>("name", isRequired: false);
+            if(name == null)
+            {
+                name = "";
+            }
+            var surname = Query<string>("surname", isRequired: false);
+            if (surname == null)
+            {
+                surname = "";
+            }
+            var role = Query<string>("role", isRequired: false);
+            if (role == null)
+            {
+                role = "all";
+            }
+            var employee = await _mediator.Send(new GetAllEmployeesQuery(page, itemsPerPage, name, surname, role));
             if (employee is null)
             {
                 await SendNotFoundAsync(ct);

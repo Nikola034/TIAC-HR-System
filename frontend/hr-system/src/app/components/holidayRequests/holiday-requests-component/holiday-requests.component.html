@@ -9,6 +9,15 @@
     >
       <mat-icon style="margin: 0">picture_as_pdf</mat-icon>
     </button>
+    <mat-form-field class="role-filter">
+      <mat-label>Filter by Status</mat-label>
+      <mat-select [(ngModel)]="statusFilter" (selectionChange)="refreshHolidayRequests()">
+        <mat-option value="all">All</mat-option>
+        <mat-option value="Approved">Approved</mat-option>
+        <mat-option value="Pending">Pending</mat-option>
+        <mat-option value="Denied">Denied</mat-option>
+      </mat-select>
+    </mat-form-field>
     <button
       mat-flat-button
       class="add-button"
