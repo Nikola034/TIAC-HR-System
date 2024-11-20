@@ -14,7 +14,7 @@ namespace EmployeeService.Application.Common.Repositories
         public Task<HolidayRequestApprover?> DeleteHolidayRequestApproverAsync(Guid id, CancellationToken cancellationToken = default(CancellationToken));
         public Task<HolidayRequestApprover?> UpdateHolidayRequestApproverAsync(HolidayRequestApprover holidayRequestApprover, CancellationToken cancellationToken = default(CancellationToken));
         public Task<IEnumerable<HolidayRequestApprover>> GetAllHolidayRequestApproversAsync(int page, CancellationToken cancellationToken = default(CancellationToken));
-        public Task<IEnumerable<HolidayRequestApprover>> GetHolidayRequestApproversByApproverIdAsync(Guid ApproverId, CancellationToken cancellationToken = default(CancellationToken));
+        public Task<IEnumerable<HolidayRequestApprover>> GetHolidayRequestApproversByApproverIdAsync(Guid ApproverId, bool onlyPending, CancellationToken cancellationToken = default(CancellationToken));
         public Task<IEnumerable<HolidayRequestApprover>> GetHolidayRequestApproversByRequestIdAsync(Guid RequestId, CancellationToken cancellationToken = default(CancellationToken));
         public Task<Core.Entities.HolidayRequestApprover?> GetHolidayRequestApproverByRequestIdAndApproverIdAsync(Guid RequestId, Guid ApproverId, CancellationToken cancellationToken = default);
     }

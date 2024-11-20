@@ -63,7 +63,7 @@ namespace EmployeeService.Application.Commands.Employee
                 }
             }
 
-            var holidayRequestsApproversToApprove = await _holidayRequestApproverRepository.GetHolidayRequestApproversByApproverIdAsync(existingEmployee.Id, cancellationToken);
+            var holidayRequestsApproversToApprove = await _holidayRequestApproverRepository.GetHolidayRequestApproversByApproverIdAsync(existingEmployee.Id, false, cancellationToken);
             foreach (var holidayRequestApprover in holidayRequestsApproversToApprove)
             {
                 await _holidayRequestApproverRepository.DeleteHolidayRequestApproverAsync(holidayRequestApprover.Id, cancellationToken);

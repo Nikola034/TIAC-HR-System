@@ -52,10 +52,10 @@ namespace EmployeeService.Infrastructure.Persistence.HolidayRequestApprover
             return await _context.HolidayRequestApprovers.AsNoTracking().FirstOrDefaultAsync(x => x.RequestId == requestId && x.ApproverId == approverId, cancellationToken);
         }
 
-        public async Task<IEnumerable<Core.Entities.HolidayRequestApprover>> GetHolidayRequestApproversByApproverIdAsync(Guid ApproverId, CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<Core.Entities.HolidayRequestApprover>> GetHolidayRequestApproversByApproverIdAsync(Guid ApproverId, bool onlyPending, CancellationToken cancellationToken = default)
         {
             var holidayRequestApprovers = await _context.HolidayRequestApprovers
-            .Where(x => x.ApproverId == ApproverId && x.Status == Core.Enums.HolidayRequestStatus.Pending)
+            .Where(x => x.ApproverId == ApproverId && (!onlyPending || x.Status == Core.Enums.HolidayRequestStatus.Pending))
             .ToListAsync(cancellationToken);
             return holidayRequestApprovers;
         }
