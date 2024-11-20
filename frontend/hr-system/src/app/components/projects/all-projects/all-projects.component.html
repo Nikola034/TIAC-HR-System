@@ -1,6 +1,18 @@
-<div class="all-projects-container" *ngIf="projects.length > 0">
+<div class="all-projects-container" *ngIf="projects">
   <div class="header-div">
     <h1>All projects</h1>
+    <mat-form-field class="example-full-width">
+      <mat-label>Project title</mat-label>
+      <input matInput placeholder="Ex. Angular" [(ngModel)]="titleSearch" (input)="onPropertyChange()">
+    </mat-form-field>
+    <mat-form-field class="example-full-width">
+      <mat-label>Project description</mat-label>
+      <input matInput placeholder="Ex. Application" [(ngModel)]="descriptionSearch" (input)="onPropertyChange()">
+    </mat-form-field>
+    <mat-form-field class="example-full-width">
+      <mat-label>Client name</mat-label>
+      <input matInput placeholder="Ex. InnovaTech" [(ngModel)]="clientSearch" (input)="onPropertyChange()">
+    </mat-form-field>
     <button mat-raised-button class="add-button" color="primary" routerLink="/create-project">
       <mat-icon>add</mat-icon>
       <mat-label>New Project</mat-label>

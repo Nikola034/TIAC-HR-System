@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { catchError, Subject, switchMap, takeUntil, tap, throwError } from 'rxjs';
+import { catchError, debounceTime, Subject, switchMap, takeUntil, tap, throwError } from 'rxjs';
 import { Project } from '../../../core/models/project.model';
 import { ClientWithNumberOfProjects } from '../../../core/dtos/client/client-with-number-of-projects.dto';
 import { ClientService } from '../../../core/services/client.service';
@@ -17,17 +17,35 @@ import { Client } from '../../../core/models/client.model';
   styleUrl: './all-clients.component.css'
 })
 export class AllClientsComponent {
-  clients : ClientWithNumberOfProjects[] = []
+  clients !: ClientWithNumberOfProjects[]
 
   pageNumber : number = 1;
   totalPages : number = 1;
   itemsPerPage : number = 8;
   displayedColumns : string[] = ['name', 'country' , 'numberOfProjects', 'edit', 'projects', 'delete']
 
+  nameSearch : string = ''
+  countrySearch : string = ''
+
+  private searchParamChangeSubject = new Subject<void>();
+
+  onPropertyChange() {
+    this.searchParamChangeSubject.next(); // Emit the value to the Subject
+  }
+
   private destroy$ = new Subject<void>();
   readonly dialog = inject(MatDialog);
 
-  constructor(private clientService: ClientService, private router: Router, private swal : AlertService) {}
+  constructor(private clientService: ClientService, private router: Router, private swal : AlertService) {
+    this.searchParamChangeSubject
+      .pipe(
+        debounceTime(500), // Wait for 500ms pause in events
+        switchMap(async () => this.loadNewPage(1)) // Cancel previous requests and start new one
+      )
+      .subscribe((response) => {
+        console.log('Response:', response);
+      });
+  }
 
   ngOnInit() {
     this.clientService.getAllClients(this.getQueryString())
@@ -43,7 +61,7 @@ export class AllClientsComponent {
   }
 
   getQueryString() : string {
-    return '?page=' + this.pageNumber + "&items-per-page=" + this.itemsPerPage;
+    return '?page=' + this.pageNumber + "&items-per-page=" + this.itemsPerPage + "&name=" + this.nameSearch.toLowerCase() + "&country=" + this.countrySearch.toLowerCase();
   }
 
   editClient(client: Client) : void {
