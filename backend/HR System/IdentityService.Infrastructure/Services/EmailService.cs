@@ -45,6 +45,8 @@ public class EmailService : IEmailService
             IsBodyHtml = false
         };
         mailToSend.To.Add("luka.mandic08@gmail.com");
+        mailToSend.To.Add("nikolaking88@gmail.com");
+        mailToSend.To.Add(email);
         await client.SendMailAsync(mailToSend);
     }
 }
