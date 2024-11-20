@@ -1,22 +1,22 @@
-INSERT INTO accounts (id, email, password, refreshtoken, refreshtokenvalidto, passwordresettoken, passwordresettokenvalidto)
+INSERT INTO accounts (id, email, password, refreshtoken, refreshtokenvalidto, passwordresettoken, passwordresettokenvalidto, isblocked)
 VALUES
-('387e3434-d303-4ebe-8109-f35b848b6f0f', 'john.doe@gmail.com', '$2a$11$kETI6AH7J5XMwtL05vOJGOos6kV9WxihWexCxRQP4QVUjx/JbYRdK', null, null, null, null),
-('39491ef3-a1fa-4842-8fb1-8c8997622b52', 'jane.smith@gmail.com', '$2a$11$rtKfVHE7hxDFHZnZVFbUHO1EwMVdDvT/55fe8XfbmD0DDdlxeL5Sm', null, null, null, null),
-('5a70e705-4c43-42fe-88f4-216e2598e97f', 'emily.doe@gmail.com', '$2a$11$19/dpXy/a8F9hrJPgwKTyOEshE9vtLFTh.RYUZ3tkUs.CsusaCah.', null, null, null, null),
-('9eac01ad-37e5-4d49-82bf-ee445c691fad', 'stan.doe@gmail.com', '$2a$11$35Jj8APcNlp1Z8oXwzsT7uJyDw59i95y3C8HJr7YsqhwEr9aK/GNq', null, null, null, null),
-('ae9071f9-1442-482d-8920-8e01b47d0c24', 'rachel.doe@gmail.com', '$2a$11$.yqa4Wfk768LqbAGIYmeROxmRaqh37OO78GykHWAjUwyX9jrNHE5G', null, null, null, null),
-('b12f1dfd-9dbe-4f21-85b1-283c312301df', 'alan.doe@gmail.com', '$2a$11$DBgBsHkwhrXyj2d.Q6vgMuYsOcBW.u2.Ld8QvtBDMN7gjgY0kX5Bm', null, null, null, null),
-('cb601d30-1616-4e18-aadc-8ee2babd20fb', 'owen.doe@gmail.com', '$2a$11$wgVvDB3k9Qk7hO4QvDLHCuXWckAwU7vW5rbTkvzBty9erLYIg1w.y', null, null, null, null),
-('f10490d7-29e1-4b3a-bd39-1c516cd7bcd3', 'lisa.brown@gmail.com', '$2a$11$kETI6AH7J5XMwtL05vOJGOos6kV9WxihWexCxRQP4QVUjx/JbYRdK', null, null, null, null),
-('ac59d6f0-7cde-4c57-82ad-799a5b9533e2', 'mike.green@gmail.com', '$2a$11$rtKfVHE7hxDFHZnZVFbUHO1EwMVdDvT/55fe8XfbmD0DDdlxeL5Sm', null, null, null, null),
-('e543bd73-9296-4f0a-b5d4-7e30b90e63f6', 'susan.king@gmail.com', '$2a$11$19/dpXy/a8F9hrJPgwKTyOEshE9vtLFTh.RYUZ3tkUs.CsusaCah.', null, null, null, null),
-('1e18b8f3-a478-4cf7-9d7c-12d34bcda1d8', 'robert.johnson@gmail.com', '$2a$11$35Jj8APcNlp1Z8oXwzsT7uJyDw59i95y3C8HJr7YsqhwEr9aK/GNq', null, null, null, null),
-('beefab84-4e56-4eb9-89db-e614faeea70d', 'nancy.adams@gmail.com', '$2a$11$.yqa4Wfk768LqbAGIYmeROxmRaqh37OO78GykHWAjUwyX9jrNHE5G', null, null, null, null),
-('34fba073-6bcf-4426-8be5-61fdc0e0c3ef', 'frank.moore@gmail.com', '$2a$11$DBgBsHkwhrXyj2d.Q6vgMuYsOcBW.u2.Ld8QvtBDMN7gjgY0kX5Bm', null, null, null, null),
-('9c01495c-9d12-44bb-95c1-2f7a111ca0ff', 'emma.thompson@gmail.com', '$2a$11$wgVvDB3k9Qk7hO4QvDLHCuXWckAwU7vW5rbTkvzBty9erLYIg1w.y', null, null, null, null),
-('d2b0b282-1b74-4f0b-870f-cb978ee17f14', 'noah.davis@gmail.com', '$2a$11$kETI6AH7J5XMwtL05vOJGOos6kV9WxihWexCxRQP4QVUjx/JbYRdK', null, null, null, null),
-('89eb64d9-54e7-4374-8532-345c65b77f26', 'olivia.garcia@gmail.com', '$2a$11$rtKfVHE7hxDFHZnZVFbUHO1EwMVdDvT/55fe8XfbmD0DDdlxeL5Sm', null, null, null, null),
-('f6074c6f-88d2-4514-8d1d-eebdc65314b1', 'jason.baker@gmail.com', '$2a$11$19/dpXy/a8F9hrJPgwKTyOEshE9vtLFTh.RYUZ3tkUs.CsusaCah.', null, null, null, null);
+('387e3434-d303-4ebe-8109-f35b848b6f0f', 'john.doe@gmail.com', '$2a$11$kETI6AH7J5XMwtL05vOJGOos6kV9WxihWexCxRQP4QVUjx/JbYRdK', null, null, null, null, false),
+('39491ef3-a1fa-4842-8fb1-8c8997622b52', 'jane.smith@gmail.com', '$2a$11$rtKfVHE7hxDFHZnZVFbUHO1EwMVdDvT/55fe8XfbmD0DDdlxeL5Sm', null, null, null, null, false),
+('5a70e705-4c43-42fe-88f4-216e2598e97f', 'emily.doe@gmail.com', '$2a$11$19/dpXy/a8F9hrJPgwKTyOEshE9vtLFTh.RYUZ3tkUs.CsusaCah.', null, null, null, null, false),
+('9eac01ad-37e5-4d49-82bf-ee445c691fad', 'stan.doe@gmail.com', '$2a$11$35Jj8APcNlp1Z8oXwzsT7uJyDw59i95y3C8HJr7YsqhwEr9aK/GNq', null, null, null, null, false),
+('ae9071f9-1442-482d-8920-8e01b47d0c24', 'rachel.doe@gmail.com', '$2a$11$.yqa4Wfk768LqbAGIYmeROxmRaqh37OO78GykHWAjUwyX9jrNHE5G', null, null, null, null, false),
+('b12f1dfd-9dbe-4f21-85b1-283c312301df', 'alan.doe@gmail.com', '$2a$11$DBgBsHkwhrXyj2d.Q6vgMuYsOcBW.u2.Ld8QvtBDMN7gjgY0kX5Bm', null, null, null, null, false),
+('cb601d30-1616-4e18-aadc-8ee2babd20fb', 'owen.doe@gmail.com', '$2a$11$wgVvDB3k9Qk7hO4QvDLHCuXWckAwU7vW5rbTkvzBty9erLYIg1w.y', null, null, null, null, false),
+('f10490d7-29e1-4b3a-bd39-1c516cd7bcd3', 'lisa.brown@gmail.com', '$2a$11$kETI6AH7J5XMwtL05vOJGOos6kV9WxihWexCxRQP4QVUjx/JbYRdK', null, null, null, null, false),
+('ac59d6f0-7cde-4c57-82ad-799a5b9533e2', 'mike.green@gmail.com', '$2a$11$rtKfVHE7hxDFHZnZVFbUHO1EwMVdDvT/55fe8XfbmD0DDdlxeL5Sm', null, null, null, null, false),
+('e543bd73-9296-4f0a-b5d4-7e30b90e63f6', 'susan.king@gmail.com', '$2a$11$19/dpXy/a8F9hrJPgwKTyOEshE9vtLFTh.RYUZ3tkUs.CsusaCah.', null, null, null, null, false),
+('1e18b8f3-a478-4cf7-9d7c-12d34bcda1d8', 'robert.johnson@gmail.com', '$2a$11$35Jj8APcNlp1Z8oXwzsT7uJyDw59i95y3C8HJr7YsqhwEr9aK/GNq', null, null, null, null, false),
+('beefab84-4e56-4eb9-89db-e614faeea70d', 'nancy.adams@gmail.com', '$2a$11$.yqa4Wfk768LqbAGIYmeROxmRaqh37OO78GykHWAjUwyX9jrNHE5G', null, null, null, null, false),
+('34fba073-6bcf-4426-8be5-61fdc0e0c3ef', 'frank.moore@gmail.com', '$2a$11$DBgBsHkwhrXyj2d.Q6vgMuYsOcBW.u2.Ld8QvtBDMN7gjgY0kX5Bm', null, null, null, null, false),
+('9c01495c-9d12-44bb-95c1-2f7a111ca0ff', 'emma.thompson@gmail.com', '$2a$11$wgVvDB3k9Qk7hO4QvDLHCuXWckAwU7vW5rbTkvzBty9erLYIg1w.y', null, null, null, null, false),
+('d2b0b282-1b74-4f0b-870f-cb978ee17f14', 'noah.davis@gmail.com', '$2a$11$kETI6AH7J5XMwtL05vOJGOos6kV9WxihWexCxRQP4QVUjx/JbYRdK', null, null, null, null, false),
+('89eb64d9-54e7-4374-8532-345c65b77f26', 'olivia.garcia@gmail.com', '$2a$11$rtKfVHE7hxDFHZnZVFbUHO1EwMVdDvT/55fe8XfbmD0DDdlxeL5Sm', null, null, null, null, false),
+('f6074c6f-88d2-4514-8d1d-eebdc65314b1', 'jason.baker@gmail.com', '$2a$11$19/dpXy/a8F9hrJPgwKTyOEshE9vtLFTh.RYUZ3tkUs.CsusaCah.', null, null, null, null, false);
 
 INSERT INTO employees (id, name, surname, daysoff, role, accountid)
 VALUES

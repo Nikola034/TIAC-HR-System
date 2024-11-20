@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Application.Common.Repositories;
 using Application.Common.Services;
+using Common.Exceptions;
 using Common.HttpCLients;
 using Core.Exceptions;
 using MediatR;
@@ -33,6 +34,10 @@ namespace Application.Commands
             if (user is null)
             {
                 throw new WrongCredentialsException();
+            }
+            if (user.IsBlocked)
+            {
+                throw new BlockedUserException("Your account is blocked!");
             }
             var isPasswordCorrect = await _passwordHasher.VerifyPasswordAsync(request.Password, user.Password, cancellationToken);
 

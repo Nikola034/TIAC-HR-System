@@ -65,6 +65,19 @@ namespace Infrastructure.Persistance.User
             return await _context.Accounts.
                 FirstOrDefaultAsync(x => x.PasswordResetToken == passwordResetToken && x.PasswordResetTokenValidTo > DateTime.Now, cancellationToken);
         }
+        public async Task BlockUnblockUser(string email, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var existingAccount = await _context.Accounts.FirstOrDefaultAsync(x => x.Email == email, cancellationToken);
+            if (existingAccount.IsBlocked)
+            {
+                existingAccount.IsBlocked = false;
+            }
+            else
+            {
+                existingAccount.IsBlocked = true;
+            }
+            await _context.SaveChangesAsync(cancellationToken);
+        }
 
         public async Task ChangePasswordAsync(string email, string password, CancellationToken cancellationToken = default(CancellationToken))
         {
