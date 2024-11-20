@@ -19,14 +19,14 @@ namespace EmployeeService.Application.Queries.Employee
         }
         public async Task<GetAllEmployeesQueryResponse> Handle(GetAllEmployeesQuery request, CancellationToken cancellationToken)
         {
-            var employees = await _employeeRepository.GetAllEmployeesAsync(request.page, request.items, cancellationToken);
-            var totalPages = await _employeeRepository.GetTotalPagesAsync(request.page, request.items, cancellationToken);
+            var employees = await _employeeRepository.GetAllEmployeesAsync(request.page, request.items, request.name, request.surname, request.role, cancellationToken);
+            var totalPages = await _employeeRepository.GetTotalPagesAsync(request.page, request.items, request.name, request.surname, request.role, cancellationToken);
             return new GetAllEmployeesQueryResponse(employees, request.page, totalPages, request.items);
         }
     }
 
 
-    public record GetAllEmployeesQuery(int page, int items) : IRequest<GetAllEmployeesQueryResponse>;
+    public record GetAllEmployeesQuery(int page, int items, string name, string surname, string role) : IRequest<GetAllEmployeesQueryResponse>;
 
     public record GetAllEmployeesQueryResponse(IEnumerable<Core.Entities.Employee> Employees, int Page, int TotalPages, int ItemsPerPage);
 }

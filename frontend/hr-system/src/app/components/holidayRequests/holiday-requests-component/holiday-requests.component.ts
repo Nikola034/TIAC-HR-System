@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ViewChild } from '@angular/core';
 import {
   catchError,
   map,
@@ -33,6 +33,7 @@ import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import { DaysOffReportDto } from '../../../core/dtos/employee/days-off-report.dto';
 import { MatTableDataSource } from '@angular/material/table';
+import { MatSort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-holiday-requests-component',
@@ -49,6 +50,8 @@ export class HolidayRequestsComponent{
   
   dataSource = new MatTableDataSource<any>();
   report: DaysOffReportDto | undefined
+
+  statusFilter = 'all'
 
   pageNumber: number = 1;
   totalPages: number = 1;
@@ -88,7 +91,12 @@ export class HolidayRequestsComponent{
     this.holidayRequestService.getAllHolidayRequestsBySenderId(this.jwtService.getIdFromToken(), this.getQueryString())
       .pipe(takeUntil(this.destroy$), tap((response) =>{
         this.holidayRequests = response.holidayRequests
-        this.totalPages = response.totalPages
+        if(this.pageNumber > response.totalPages && response.totalPages > 0){
+          this.totalPages = response.totalPages
+          this.pageNumber = response.totalPages;
+          this.loadNewPage(this.totalPages)
+        }
+        this.totalPages = response.totalPages;
       })).subscribe();
   }
 
@@ -111,12 +119,12 @@ export class HolidayRequestsComponent{
   }
 
   getQueryString(): string {
-    return '?page=' + this.pageNumber + '&items-per-page=' + this.itemsPerPage;
+    return '?page=' + this.pageNumber + '&items-per-page=' + this.itemsPerPage + '&status=' + this.statusFilter;
   }
 
   loadNewPage(selectedPage: number): void {
     this.pageNumber = selectedPage;
-    this.refreshHolidayRequests()
+    this.refreshHolidayRequests();
   }
 
   deleteHolidayRequest(id: string): void {
@@ -140,9 +148,10 @@ export class HolidayRequestsComponent{
                 .pipe(
                   tap((response) => {
                     this.holidayRequests = response.holidayRequests;
-                    if(this.totalPages > response.totalPages){
-                      this.pageNumber = 1
-                      this.loadNewPage(this.pageNumber)
+                    if(this.pageNumber > response.totalPages){
+                      this.totalPages = response.totalPages
+                      this.pageNumber = response.totalPages;
+                      this.loadNewPage(this.totalPages)
                     }
                     this.totalPages = response.totalPages;
                     this.getDaysOffReport();
@@ -188,6 +197,7 @@ export class HolidayRequestsComponent{
                   tap((response) => {
                     this.holidayRequestApprovers =
                       response.holidayRequestApprovers;
+                      this.refreshHolidayRequestApprovers();
                   }),
                   catchError((error) => {
                     this.swal.fireSwalError('Something went wrong');
@@ -229,7 +239,7 @@ export class HolidayRequestsComponent{
                   tap((response) => {
                     this.holidayRequestApprovers =
                       response.holidayRequestApprovers;
-                      console.log(response)
+                      this.refreshHolidayRequestApprovers();
                   }),
                   catchError((error) => {
                     this.swal.fireSwalError('Something went wrong');
@@ -329,6 +339,7 @@ export class HolidayRequestsComponent{
       this.holidayRequests.push(newRequest);
       this.refreshHolidayRequests();
       this.refreshHolidayRequestApprovers();
+      this.getDaysOffReport();
     });
   }
 }

@@ -42,18 +42,23 @@ public class ClientRepository(ProjectDbContext dbContext) : IClientRepository
         return true;
     }
 
-    public async Task<IEnumerable<Core.Entities.Client>> GetAllClientsAsync(int pageNumber,int itemNumber, CancellationToken cancellationToken = default)
+    public async Task<IEnumerable<Core.Entities.Client>> GetAllClientsAsync(int pageNumber, int itemNumber, string name, string country, CancellationToken cancellationToken = default)
     {
         var clients = await dbContext.Clients.OrderBy(x => x.Id)
+            .Where(x => (x.Name.ToLower().Contains(name) || name.Equals("")) 
+                        && (x.Country.ToLower().Contains(country) || country.Equals("")))
             .Skip((pageNumber - 1) * itemNumber)
             .Take(itemNumber)
             .ToListAsync(cancellationToken);
         return clients;
     }
     
-    public async Task<int> GetTotalPageNumber(int itemNumber, CancellationToken ct = default(CancellationToken))
+    public async Task<int> GetTotalPageNumber(int itemNumber, string name, string country, CancellationToken ct = default(CancellationToken))
     {
-        var count = await dbContext.Clients.CountAsync(ct);
+        var count = await dbContext.Clients.
+            Where(x => (x.Name.ToLower().Contains(name) || name.Equals("")) 
+                       && (x.Country.ToLower().Contains(country) || country.Equals("")))
+            .CountAsync(ct);
         return (int)Math.Ceiling((double)count / itemNumber);
 
     }

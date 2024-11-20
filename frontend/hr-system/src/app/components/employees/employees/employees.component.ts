@@ -4,6 +4,7 @@ import {
   catchError,
   combineLatest,
   concatMap,
+  debounceTime,
   forkJoin,
   map,
   Observable,
@@ -21,6 +22,7 @@ import Swal from 'sweetalert2';
 import { AccountService } from '../../../core/services/account.service';
 import { Account } from '../../../core/models/account.model';
 import { SendAccountIdsDto } from '../../../core/dtos/account/send-account-ids.dto';
+import { JwtService } from '../../../core/services/jwt.service';
 
 @Component({
   selector: 'app-employees',
@@ -28,11 +30,11 @@ import { SendAccountIdsDto } from '../../../core/dtos/account/send-account-ids.d
   styleUrl: './employees.component.css',
 })
 export class EmployeesComponent {
-  employees: Employee[] = [];
+  employees!: Employee[] 
   accounts: Account[] = [];
   pageNumber: number = 1;
   totalPages: number = 1;
-  itemsPerPage: number = 8;
+  itemsPerPage: number = 10;
   displayedColumns: string[] = [
     'name',
     'surname',
@@ -40,20 +42,40 @@ export class EmployeesComponent {
     'daysOff',
     'role',
     'details',
+    'block',
     'delete',
   ];
 
+  search = ''
+  searchCriteria = 'name'
+  roleFilter = 'all'
+
   private destroy$ = new Subject<void>();
+  private searchParamChangeSubject = new Subject<void>();
 
   constructor(
     private employeeService: EmployeeService,
     private router: Router,
     private swal: AlertService,
+    private jwtService: JwtService,
     private accountService: AccountService
-  ) {}
+  ) {
+    this.searchParamChangeSubject
+      .pipe(
+        debounceTime(250), 
+        switchMap(async () => this.loadNewPage(1)) 
+      )
+      .subscribe((response) => {
+        console.log('Response:', response);
+      });
+  }
 
   ngOnInit() {
     this.refreshData();
+  }
+
+  onPropertyChange(): void{
+    this.searchParamChangeSubject.next();
   }
 
   refreshData() {
@@ -62,6 +84,11 @@ export class EmployeesComponent {
       takeUntil(this.destroy$),
       switchMap((employeesResponse) => {
         this.employees = employeesResponse.employees;
+        if(this.pageNumber > employeesResponse.totalPages && employeesResponse.totalPages > 0){
+          this.totalPages = employeesResponse.totalPages
+          this.pageNumber = employeesResponse.totalPages;
+          this.loadNewPage(this.totalPages)
+        }
         this.totalPages = employeesResponse.totalPages;
         const accountIds = this.getAccountIds(employeesResponse.employees);
 
@@ -99,7 +126,14 @@ export class EmployeesComponent {
   }
 
   getQueryString(): string {
-    return '?page=' + this.pageNumber + '&items-per-page=' + this.itemsPerPage;
+    if(this.search == ''){
+      return '?page=' + this.pageNumber + '&items-per-page=' + this.itemsPerPage + '&role=' + this.roleFilter;
+    }
+    return '?page=' + this.pageNumber + '&items-per-page=' + this.itemsPerPage + `&${this.searchCriteria}=` + this.search.toLowerCase() + '&role=' + this.roleFilter;
+  }
+
+  isCurrentUser(employeeId: string) : boolean {
+    return employeeId == this.jwtService.getIdFromToken()
   }
 
   getAccountIds(employees: Employee[]): SendAccountIdsDto {
@@ -124,6 +158,28 @@ export class EmployeesComponent {
     this.refreshData();
   }
 
+  blockEmployee(email: string | undefined): void{
+    this.accountService
+          .blockAccount(email)
+          .pipe(
+            takeUntil(this.destroy$),
+            switchMap(() =>
+              this.employeeService.getAllEmployees(this.getQueryString()).pipe(
+                tap((response) => {
+                  this.employees = response.employees;
+                  this.totalPages = response.totalPages;
+                  this.refreshData()
+                }),
+                catchError((error) => {
+                  this.swal.fireSwalError('Something went wrong');
+                  return throwError(() => error);
+                })
+              )
+            )
+          )
+          .subscribe();
+  }
+
   delete(id: string): void {
     Swal.fire({
       title: 'Are you sure?',
@@ -143,7 +199,13 @@ export class EmployeesComponent {
               this.employeeService.getAllEmployees(this.getQueryString()).pipe(
                 tap((response) => {
                   this.employees = response.employees;
+                  if(this.pageNumber > response.totalPages){
+                    this.totalPages = response.totalPages
+                    this.pageNumber = response.totalPages;
+                    this.loadNewPage(this.totalPages)
+                  }
                   this.totalPages = response.totalPages;
+                  this.refreshData()
                 }),
                 catchError((error) => {
                   this.swal.fireSwalError('Something went wrong');
@@ -160,6 +222,10 @@ export class EmployeesComponent {
 
   getEmailForEmployee(accountId: string): string | undefined {
     return this.accounts.find(account => account.id === accountId)?.email || 'Loading...'
+  }
+
+  isBlocked(accountId: string) : boolean | undefined{
+    return this.accounts.find(account => account.id === accountId)?.isBlocked
   }
 
   ngOnDestroy(): void {

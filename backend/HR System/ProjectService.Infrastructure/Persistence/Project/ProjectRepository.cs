@@ -45,9 +45,11 @@ public class ProjectRepository(ProjectDbContext dbContext) : IProjectRepository
         return true;
     }
 
-    public async Task<IEnumerable<Core.Entities.Project>> GetAllProjectsAsync(int pageNumber,int itemNumber, CancellationToken cancellationToken = default)
+    public async Task<IEnumerable<Core.Entities.Project>> GetAllProjectsAsync(int pageNumber, int itemNumber, string title, string description, string clientName, CancellationToken cancellationToken = default)
     {
         var projects = await dbContext.Projects.Include(x => x.Client).OrderBy(x => x.Id)
+            .Where(x => (x.Title.ToLower().Contains(title) || title.Equals("")) && (x.Description.ToLower().Contains(description) || description.Equals(""))
+                                && (x.Client.Name.ToLower().Contains(clientName) || clientName.Equals("")))
             .Skip((pageNumber - 1) * itemNumber)
             .Take(itemNumber)
             .ToListAsync(cancellationToken);
@@ -62,9 +64,10 @@ public class ProjectRepository(ProjectDbContext dbContext) : IProjectRepository
         return projects;
     }
 
-    public async Task<int> GetTotalPageNumber(int itemNumber, CancellationToken ct = default(CancellationToken))
+    public async Task<int> GetTotalPageNumber(int itemNumber, string title, string description, string clientName, CancellationToken ct = default(CancellationToken))
     {
-        var count = await dbContext.Projects.CountAsync(ct);
+        var count = await dbContext.Projects.Where(x => (x.Title.ToLower().Contains(title) || title.Equals("")) && (x.Description.ToLower().Contains(description) || description.Equals(""))
+            && (x.Client.Name.ToLower().Contains(clientName) || clientName.Equals(""))).CountAsync(ct);
         return (int)Math.Ceiling((double)count / itemNumber);
 
     }

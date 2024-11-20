@@ -2,9 +2,10 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Project } from '../../../core/models/project.model';
 import { ProjectService } from '../../../core/services/project.service';
 import { Router } from '@angular/router';
-import { Subject, switchMap, takeUntil, tap } from 'rxjs';
+import { debounceTime, Subject, switchMap, takeUntil, tap } from 'rxjs';
 import Swal from 'sweetalert2'
 import { AlertService } from '../../../core/services/alert.service';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-all-projects',
@@ -12,15 +13,34 @@ import { AlertService } from '../../../core/services/alert.service';
   styleUrl: './all-projects.component.css'
 })
 export class AllProjectsComponent implements OnInit, OnDestroy {
-  projects : Project[] = [  ];
+  projects !: Project[];
   pageNumber : number = 1;
   totalPages : number = 1;
   itemsPerPage : number = 8;
   displayedColumns : string[] = ['title', 'description' , 'client', 'details', 'delete']
 
+  titleSearch : string = ''
+  descriptionSearch : string = ''
+  clientSearch : string = ''
+
+  private searchParamChangeSubject = new Subject<void>();
+
+  onPropertyChange() {
+    this.searchParamChangeSubject.next(); // Emit the value to the Subject
+  }
+
   private destroy$ = new Subject<void>();
 
-  constructor(private projectService: ProjectService, private router: Router, private swal :AlertService) {}
+  constructor(private projectService: ProjectService, private router: Router, private swal :AlertService) {
+    this.searchParamChangeSubject
+      .pipe(
+        debounceTime(500), // Wait for 500ms pause in events
+        switchMap(async () => this.loadNewPage(1)) // Cancel previous requests and start new one
+      )
+      .subscribe((response) => {
+        console.log('Response:', response);
+      });
+  }
 
   ngOnInit() {
     this.projectService.getAllProjects(this.getQueryString())
@@ -31,8 +51,11 @@ export class AllProjectsComponent implements OnInit, OnDestroy {
   }
 
   getQueryString() : string {
-    return '?page=' + this.pageNumber + "&items-per-page=" + this.itemsPerPage;
+    return '?page=' + this.pageNumber + "&items-per-page=" + this.itemsPerPage
+    + "&title=" + this.titleSearch.toLowerCase() + "&description=" + this.descriptionSearch.toLowerCase() + "&client=" + this.clientSearch.toLowerCase();
   }
+
+
 
   editProject(projectId: string) : void {
     this.router.navigate(['edit-project'], { state: { projectData: projectId } })
@@ -63,6 +86,11 @@ export class AllProjectsComponent implements OnInit, OnDestroy {
           switchMap( () => this.projectService.getAllProjects(this.getQueryString()).pipe(
           tap(response => {
             this.projects = response.projects;
+            if(this.pageNumber > response.totalPages){
+              this.totalPages = response.totalPages
+              this.pageNumber = response.totalPages;
+              this.loadNewPage(this.totalPages)
+            }
             this.totalPages = response.totalPages;
           })))).subscribe()
         this.swal.fireSwalSuccess("Project deleted successfully")

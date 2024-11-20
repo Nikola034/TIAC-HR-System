@@ -1,4 +1,5 @@
 ﻿using EmployeeService.Application.Common.Repositories;
+using EmployeeService.Core.Enums;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -19,7 +20,7 @@ namespace EmployeeService.Application.Queries.HolidayRequestApprover
         }
         public async Task<IEnumerable<GetAllHolidayRequestsApproversByApproverIdQueryResponse>> Handle(GetAllHolidayRequestsApproversByApproverIdQuery request, CancellationToken cancellationToken)
         {
-            var approvers = await _holidayRequestApproverRepository.GetHolidayRequestApproversByApproverIdAsync(request.ApproverId, cancellationToken);
+            var approvers = await _holidayRequestApproverRepository.GetHolidayRequestApproversByApproverIdAsync(request.ApproverId, true, cancellationToken);
             List<GetAllHolidayRequestsApproversByApproverIdQueryResponse> responses = new List<GetAllHolidayRequestsApproversByApproverIdQueryResponse>();
             foreach (var approver in approvers)
             {
@@ -31,14 +32,15 @@ namespace EmployeeService.Application.Queries.HolidayRequestApprover
                    holidayRequest.Sender.Name,
                    holidayRequest.Sender.Surname,
                    holidayRequest.Start,
-                   holidayRequest.End
+                   holidayRequest.End,
+                   holidayRequest.Status
                 ));
             }
-            return responses;
+            return responses.OrderBy(x => x.Start);
         }
     }
 
 
     public record GetAllHolidayRequestsApproversByApproverIdQuery(Guid ApproverId) : IRequest<IEnumerable<GetAllHolidayRequestsApproversByApproverIdQueryResponse>>;
-    public record GetAllHolidayRequestsApproversByApproverIdQueryResponse(Guid Id, Guid RequestId, string SenderName, string SenderSurname, DateTime Start, DateTime End);
+    public record GetAllHolidayRequestsApproversByApproverIdQueryResponse(Guid Id, Guid RequestId, string SenderName, string SenderSurname, DateTime Start, DateTime End, HolidayRequestStatus Status);
 }

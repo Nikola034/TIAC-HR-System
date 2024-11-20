@@ -25,6 +25,8 @@ public class GetAll : EndpointWithoutRequest<GetAllClientsResponse>
     {
         var pageQuery = Query<string>("page", isRequired: false);
         var itemsPerPageQuery = Query<string>("items-per-page", isRequired: false);
+        var name = Query<string>("name", isRequired: false);
+        var country = Query<string>("country", isRequired: false);
         var page = 1;
         if (pageQuery != null) 
         {
@@ -36,7 +38,9 @@ public class GetAll : EndpointWithoutRequest<GetAllClientsResponse>
             itemsPerPage = Convert.ToInt32(itemsPerPageQuery);
 
         }
-        var result = await _mediator.Send(new GetAllClientsQuery(page,itemsPerPage), ct);
+        name ??= "";
+        country ??= "";
+        var result = await _mediator.Send(new GetAllClientsQuery(page,itemsPerPage,name,country), ct);
         await SendOkAsync(result.ToApiResponse(), ct);
     }
 }

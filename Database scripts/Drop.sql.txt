@@ -1,0 +1,7 @@
+drop table holidayRequestApprovers;
+drop table holidayRequests;
+drop table employeeProjects;
+drop table projects;
+drop table clients;
+drop table employees;
+drop table accounts;

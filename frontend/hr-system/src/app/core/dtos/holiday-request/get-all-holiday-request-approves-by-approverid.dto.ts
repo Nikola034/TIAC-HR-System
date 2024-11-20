@@ -1,4 +1,5 @@
 import { HolidayRequestApprover } from "../../models/holiday-request-approver.model.ts";
+import { HolidayRequestStatus } from "../../models/holiday-request.model.js";
 
 export interface GetAllHolidayRequestApproversByApproverIdDto{
     id: string,
@@ -6,7 +7,8 @@ export interface GetAllHolidayRequestApproversByApproverIdDto{
     senderName: string,
     senderSurname: string,
     start: Date,
-    end: Date
+    end: Date,
+    status: HolidayRequestStatus
 }
 
 export interface GetAllHolidayRequestApproversByApproverIdResponse {

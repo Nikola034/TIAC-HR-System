@@ -1,4 +1,4 @@
-export interface Account{
+export interface BlockedUserResponseDto{
     id: string,
     email: string,
     refreshToken: string,

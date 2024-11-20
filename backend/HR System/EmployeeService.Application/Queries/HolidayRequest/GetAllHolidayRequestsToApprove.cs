@@ -19,7 +19,7 @@ namespace EmployeeService.Application.Queries.HolidayRequest
         }
         public async Task<GetAllHolidayRequestsToApproveQueryResponse> Handle(GetAllHolidayRequestsToApprovesQuery request, CancellationToken cancellationToken)
         {
-            var approvers = await _holidayRequestApproverRepository.GetHolidayRequestApproversByApproverIdAsync(request.approverId, cancellationToken);
+            var approvers = await _holidayRequestApproverRepository.GetHolidayRequestApproversByApproverIdAsync(request.approverId, true, cancellationToken);
             List<Guid> holidayRequestsToApproveIds = new List<Guid>();
             foreach (var approver in approvers)
             {

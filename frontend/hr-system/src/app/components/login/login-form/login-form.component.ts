@@ -36,7 +36,7 @@ export class LoginFormComponent {
           this.jwtService.setTokens(response)
           if(this.jwtService.IsLoggedIn()) {
             if(this.jwtService.IsDeveloper()){
-              this.router.navigate(['my-projects'])
+              this.router.navigate(['holiday-requests'])
               return;
             }
             if(this.jwtService.IsManager()) 
