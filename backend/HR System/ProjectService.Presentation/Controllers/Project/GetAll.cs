@@ -25,6 +25,9 @@ public class GetAll : EndpointWithoutRequest<GetAllProjectsResponse>
     {
         var pageQuery = Query<string>("page", isRequired: false);
         var itemsPerPageQuery = Query<string>("items-per-page", isRequired: false);
+        var title = Query<string>("title", isRequired: false);
+        var description = Query<string>("description", isRequired: false);
+        var clientName = Query<string>("client", isRequired: false);
         var page = 1;
         if (pageQuery != null) 
         {
@@ -36,7 +39,10 @@ public class GetAll : EndpointWithoutRequest<GetAllProjectsResponse>
             itemsPerPage = Convert.ToInt32(itemsPerPageQuery);
 
         }
-        var result = await _mediator.Send(new GetAllProjectsQuery(page,itemsPerPage), ct);
+        title ??= "";
+        description ??= "";
+        clientName ??= "";
+        var result = await _mediator.Send(new GetAllProjectsQuery(page,itemsPerPage,title,description,clientName), ct);
         await SendOkAsync(result.ToApiResponse(), ct);
     }
 }

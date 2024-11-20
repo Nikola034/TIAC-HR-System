@@ -1,6 +1,14 @@
-<div class="all-clients-container" *ngIf="clients.length > 0">
+<div class="all-clients-container" *ngIf="clients">
     <div class="header-div">
       <h1>All clients</h1>
+      <mat-form-field class="example-full-width">
+        <mat-label>Name</mat-label>
+        <input matInput placeholder="Ex. InnovaTech" [(ngModel)]="nameSearch" (input)="onPropertyChange()">
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <mat-label>Country</mat-label>
+        <input matInput placeholder="Ex. Spain" [(ngModel)]="countrySearch" (input)="onPropertyChange()">
+      </mat-form-field>
       <button mat-flat-button class="add-button" color="primary" routerLink="/create-client">
         <mat-icon>add</mat-icon>
         <mat-label>New Client</mat-label>

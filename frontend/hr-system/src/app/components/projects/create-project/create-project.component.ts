@@ -48,6 +48,7 @@ export class CreateProjectComponent {
   workingDevelopers : EmployeeForProjectDto[] = []
   availableDevelopers : EmployeeForProjectDto[] = []
   selectedDeveloperId !: string
+  persistedTeamLeadId !: string
 
   ngOnInit(){
     this.clientService.getAllClients("?page=1&items-per-page=100")
@@ -68,7 +69,7 @@ export class CreateProjectComponent {
         tap( response => {
           this.workingDevelopers = response.working
           this.availableDevelopers = response.notWorking
-          
+          this.persistedTeamLeadId = response.teamLeadId
           this.createProjectForm.patchValue({
             title: response.title,
             description: response.description,
@@ -84,14 +85,25 @@ export class CreateProjectComponent {
     }
   }
 
+  teamLeadChanged(){
+    if(this.isEditMode){
+      let selectedId = this.createProjectForm.get('teamLead')?.value
+      if(selectedId)
+        if(!this.workingDevelopers.find(x => x.id == selectedId)){
+          this.addEmployeeToProject(selectedId)
+      }
+    }
+  }
+
   onSubmit() {
     if (this.createProjectForm.valid) {
       if(!this.isEditMode){
+        let teamLead = this.createProjectForm.get('teamLead')?.value != ""? this.createProjectForm.get('teamLead')?.value : null
         const dto: CreateProjectDto = {
             title: this.createProjectForm.get('title')?.value,
             description: this.createProjectForm.get('description')?.value,
             clientId: this.createProjectForm.get('client')?.value,
-            teamLeadId: this.createProjectForm.get('teamLead')?.value,
+            teamLeadId: teamLead,
           };
         this.projectService.createProject(dto)
           .pipe(takeUntil(this.destroy$), tap((response) => {
@@ -105,12 +117,13 @@ export class CreateProjectComponent {
       }
       else
       {
+        let teamLead = this.createProjectForm.get('teamLead')?.value != ""? this.createProjectForm.get('teamLead')?.value : null
         const dto: UpdateProjectDto = {
           id: this.existingProjectId,
           title: this.createProjectForm.get('title')?.value,
           description: this.createProjectForm.get('description')?.value,
           clientId: this.createProjectForm.get('client')?.value,
-          teamLeadId: this.createProjectForm.get('teamLead')?.value,
+          teamLeadId: teamLead,
         };
       this.projectService.updateProject(dto)
         .pipe(takeUntil(this.destroy$), tap((response) => {
@@ -134,6 +147,9 @@ export class CreateProjectComponent {
       tap( (response) => {
         this.workingDevelopers = response.working;
         this.availableDevelopers = response.notWorking;
+        if(dto.employeeId == this.persistedTeamLeadId)
+          this.createProjectForm.get('teamLead')?.patchValue('')
+          
       }),
       catchError( error => {
         this.swal.fireSwalError("Something went wrong while removing employee")
@@ -142,9 +158,10 @@ export class CreateProjectComponent {
     ).subscribe()
   }
 
-  addEmployeeToProject(){
+  addEmployeeToProject(selectedFromTeamLeadId : string){
+    let employeeId = selectedFromTeamLeadId !== ""? selectedFromTeamLeadId : this.selectedDeveloperId
     const dto : AddOrRemoveEmployeeProjectDto = {
-      employeeId : this.selectedDeveloperId,
+      employeeId : employeeId,
       projectId : this.existingProjectId
     }
     this.projectService.addEmployeeToProject(dto).pipe(takeUntil(this.destroy$),
