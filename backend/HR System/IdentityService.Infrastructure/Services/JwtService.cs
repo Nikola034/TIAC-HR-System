@@ -53,7 +53,10 @@ namespace Infrastructure.Services
             using (var rng = RandomNumberGenerator.Create())
             {
                 rng.GetBytes(randomNumber);
-                return Convert.ToBase64String(randomNumber);
+                return Convert.ToBase64String(randomNumber).Replace("+", "-")   
+                    .Replace("/", "_")   
+                    .TrimEnd('=').ToLower();
+;
             }
         }
     }
