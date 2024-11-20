@@ -7,6 +7,7 @@ using EmployeeService.Infrastructure.Persistance;
 using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
 using Common;
+using EmployeeService.Infrastructure.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.RegisterApplication()
@@ -26,7 +27,11 @@ builder.Services.AddAuthorization(options =>
 });
 builder.Services.AddHttpServiceClients(builder.Configuration);
 
+builder.Services.AddSignalR();
+
+
 var app = builder.Build();
+app.MapHub<NotificationHub>("/notificationHub");
 app.UseExceptionHandler();
 app.UseSwaggerGen();
 app.UseOpenApi();

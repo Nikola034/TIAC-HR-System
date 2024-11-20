@@ -11,6 +11,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using EmployeeService.Infrastructure.Services;
+using Microsoft.AspNetCore.SignalR;
 
 namespace EmployeeService.Application.Commands.HolidayRequest
 {
@@ -20,12 +22,15 @@ namespace EmployeeService.Application.Commands.HolidayRequest
         private readonly IHolidayRequestApproverRepository _holidayRequestApproverRepository;
         private readonly IEmployeeRepository _employeeRepository;
         private readonly IProjectHttpClient _projectHttpClient;
-        public CreateHolidayRequestCommandHandler(IHolidayRequestRepository holidayRequestRepository, IHolidayRequestApproverRepository holidayRequestApproverRepository, IEmployeeRepository employeeRepository, IProjectHttpClient projectHttpClient)
+        private readonly IHubContext<NotificationHub> _hubContext;
+        public CreateHolidayRequestCommandHandler(IHolidayRequestRepository holidayRequestRepository, IHolidayRequestApproverRepository holidayRequestApproverRepository,
+            IEmployeeRepository employeeRepository, IProjectHttpClient projectHttpClient, IHubContext<NotificationHub> hubContext)
         {
             _holidayRequestRepository = holidayRequestRepository;
             _holidayRequestApproverRepository = holidayRequestApproverRepository;
             _employeeRepository = employeeRepository;
             _projectHttpClient = projectHttpClient;
+            _hubContext = hubContext;
         }
         public async Task<Core.Entities.HolidayRequest> Handle(CreateHolidayRequestCommand request, CancellationToken cancellationToken)
         {
@@ -57,6 +62,8 @@ namespace EmployeeService.Application.Commands.HolidayRequest
                         holidayRequestApprover.ApproverId = teamLeadId;
                         holidayRequestApprover.Status = HolidayRequestStatus.Pending;
                         var persistedHolidayRequestApprover = await _holidayRequestApproverRepository.CreateHolidayRequestApproverAsync(holidayRequestApprover, cancellationToken);
+                        _hubContext.Clients.User(teamLeadId.ToString()).SendAsync("ReceiveNotification",
+                            $"{sender.Name} {sender.Surname} has sent a holiday request from {request.Start} until {request.End}");
                     }
                 }
                 else
@@ -70,6 +77,8 @@ namespace EmployeeService.Application.Commands.HolidayRequest
                         holidayRequestApprover.ApproverId = manager.Id;
                         holidayRequestApprover.Status = HolidayRequestStatus.Pending;
                         var persistedHolidayRequestApprover = await _holidayRequestApproverRepository.CreateHolidayRequestApproverAsync(holidayRequestApprover, cancellationToken);
+                        //_hubContext.Clients.User(manager.ToString()).SendAsync("ReceiveNotification",
+                           // $"{sender.Name} {sender.Surname} has sent a holiday request from {request.Start} until {request.End}");
                     }
                 }
 
