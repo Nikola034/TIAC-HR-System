@@ -153,13 +153,16 @@ namespace Common.HttpCLients.Implementation
             jsonObject["teamLeadId"] = JValue.CreateNull();
             jsonObject.Add("clientId", jsonObject["client"]["id"]);
             jsonObject.Remove("client");
+            jsonObject.Remove("working");
+            jsonObject.Remove("notWorking");
 
             var request = new HttpRequestMessage
             {
                 Method = HttpMethod.Put,
-                Content = JsonContent.Create(jsonObject),
+                Content = new StringContent(jsonObject.ToString(), Encoding.UTF8, "application/json"),
                 RequestUri = new Uri(httpClient.BaseAddress, "projects")
             };
+
             request.Headers.Add("Authorization",token);
             var response = await httpClient.SendAsync(request, cancellationToken);
 
