@@ -22,6 +22,7 @@ import Swal from 'sweetalert2';
 import { AccountService } from '../../../core/services/account.service';
 import { Account } from '../../../core/models/account.model';
 import { SendAccountIdsDto } from '../../../core/dtos/account/send-account-ids.dto';
+import { JwtService } from '../../../core/services/jwt.service';
 
 @Component({
   selector: 'app-employees',
@@ -41,6 +42,7 @@ export class EmployeesComponent {
     'daysOff',
     'role',
     'details',
+    'block',
     'delete',
   ];
 
@@ -55,6 +57,7 @@ export class EmployeesComponent {
     private employeeService: EmployeeService,
     private router: Router,
     private swal: AlertService,
+    private jwtService: JwtService,
     private accountService: AccountService
   ) {
     this.searchParamChangeSubject
@@ -129,6 +132,10 @@ export class EmployeesComponent {
     return '?page=' + this.pageNumber + '&items-per-page=' + this.itemsPerPage + `&${this.searchCriteria}=` + this.search.toLowerCase() + '&role=' + this.roleFilter;
   }
 
+  isCurrentUser(employeeId: string) : boolean {
+    return employeeId == this.jwtService.getIdFromToken()
+  }
+
   getAccountIds(employees: Employee[]): SendAccountIdsDto {
     let ids: string[] = [];
     this.employees.forEach((element) => {
@@ -149,6 +156,28 @@ export class EmployeesComponent {
   loadNewPage(selectedPage: number): void {
     this.pageNumber = selectedPage;
     this.refreshData();
+  }
+
+  blockEmployee(email: string | undefined): void{
+    this.accountService
+          .blockAccount(email)
+          .pipe(
+            takeUntil(this.destroy$),
+            switchMap(() =>
+              this.employeeService.getAllEmployees(this.getQueryString()).pipe(
+                tap((response) => {
+                  this.employees = response.employees;
+                  this.totalPages = response.totalPages;
+                  this.refreshData()
+                }),
+                catchError((error) => {
+                  this.swal.fireSwalError('Something went wrong');
+                  return throwError(() => error);
+                })
+              )
+            )
+          )
+          .subscribe();
   }
 
   delete(id: string): void {
@@ -193,6 +222,10 @@ export class EmployeesComponent {
 
   getEmailForEmployee(accountId: string): string | undefined {
     return this.accounts.find(account => account.id === accountId)?.email || 'Loading...'
+  }
+
+  isBlocked(accountId: string) : boolean | undefined{
+    return this.accounts.find(account => account.id === accountId)?.isBlocked
   }
 
   ngOnDestroy(): void {

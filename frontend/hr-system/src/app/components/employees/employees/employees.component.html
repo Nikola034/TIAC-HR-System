@@ -82,8 +82,24 @@
           matTooltip="Click to view details"
           (click)="editEmployee(employee.id)"
           color="primary"
+          [disabled]="isCurrentUser(employee.id)"
         >
           <mat-icon>edit</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="block">
+      <th mat-header-cell *matHeaderCellDef style="text-align: center">Block</th>
+      <td mat-cell *matCellDef="let employee" style="text-align: center">
+        <button
+          mat-icon-button
+          matTooltip="{{ isBlocked(employee.accountId) ? 'Unblock Employee' : 'Block Employee' }}"
+          (click)="blockEmployee(getEmailForEmployee(employee.accountId))"
+          color="primary"
+          [disabled]="isCurrentUser(employee.id)"
+        >
+          <mat-icon>{{ isBlocked(employee.accountId) ? 'lock' : 'lock_open' }}</mat-icon>
         </button>
       </td>
     </ng-container>
@@ -98,6 +114,7 @@
           matTooltip="Click to delete"
           (click)="delete(employee.id)"
           color="primary"
+          [disabled]="isCurrentUser(employee.id)"
         >
           <mat-icon>delete</mat-icon>
         </button>
