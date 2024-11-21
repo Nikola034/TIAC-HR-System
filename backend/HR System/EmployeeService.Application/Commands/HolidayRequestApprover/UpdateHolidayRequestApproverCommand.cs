@@ -3,6 +3,7 @@ using Core.Exceptions;
 using EmployeeService.Application.Common.Mappers;
 using EmployeeService.Application.Common.Repositories;
 using EmployeeService.Core.Enums;
+using EmployeeService.Infrastructure.Services;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -42,13 +43,18 @@ namespace EmployeeService.Application.Commands.HolidayRequestApprover
 
             if (request.Status == HolidayRequestStatus.Denied)
             {
-                int wantedDays = (holidayRequestForApproval.End - holidayRequestForApproval.Start).Days + 1 - CountWeekendDays(holidayRequestForApproval.Start, holidayRequestForApproval.End);
+                int wantedDays = (holidayRequestForApproval.End - holidayRequestForApproval.Start).Days + 1;
                 employeeForApproval.DaysOff += wantedDays;
                 await _employeeRepository.UpdateEmployeeAsync(employeeForApproval, cancellationToken);
 
                 holidayRequestForApproval.Status = HolidayRequestStatus.Denied;
                 holidayRequestForApproval.Sender = employeeForApproval;
-                await _holidayRequestRepository.UpdateHolidayRequestAsync(holidayRequestForApproval, cancellationToken);   
+                await _holidayRequestRepository.UpdateHolidayRequestAsync(holidayRequestForApproval, cancellationToken);
+                string requestCreatedMessage = $"Your holiday request from {holidayRequestForApproval.Start.Date.ToString("d")} to {holidayRequestForApproval.End.Date.ToString("d")} is DENIED";
+                if (SseConnectionManager.UserConnections.TryGetValue(holidayRequestForApproval.SenderId.ToString(), out var userChannel))
+                {
+                    await userChannel.Writer.WriteAsync(requestCreatedMessage, cancellationToken);
+                }
             }
             else if(!holidayRequestApproversForRequest
                 .Where(x => (x.Status == HolidayRequestStatus.Denied || x.Status == HolidayRequestStatus.Pending) && x.Id != domainEntity.Id)

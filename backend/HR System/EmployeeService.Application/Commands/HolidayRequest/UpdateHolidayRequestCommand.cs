@@ -2,6 +2,7 @@
 using EmployeeService.Application.Common.Mappers;
 using EmployeeService.Application.Common.Repositories;
 using EmployeeService.Core.Enums;
+using EmployeeService.Infrastructure.Services;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -25,10 +26,18 @@ namespace EmployeeService.Application.Commands.HolidayRequest
             var existingHolidayRequest = await _holidayrequestRepository.GetHolidayRequestByIdAsync(domainEntity.Id, cancellationToken);
             if (existingHolidayRequest is null)
             {
-                throw new NotFoundException("Employee with that ID doesn't exist!");
+                throw new NotFoundException("Holiday request with that ID doesn't exist!");
             }
             domainEntity.Sender = existingHolidayRequest.Sender;
             var persistedHolidayRequest = await _holidayrequestRepository.UpdateHolidayRequestAsync(domainEntity, cancellationToken);
+            if(persistedHolidayRequest.Status == HolidayRequestStatus.Approved)
+            {
+                string requestCreatedMessage = $"Your holiday request from {persistedHolidayRequest.Start.Date.ToString("d")} to {persistedHolidayRequest.End.Date.ToString("d")} is APPROVED";
+                if (SseConnectionManager.UserConnections.TryGetValue(persistedHolidayRequest.SenderId.ToString(), out var userChannel))
+                {
+                    await userChannel.Writer.WriteAsync(requestCreatedMessage, cancellationToken);
+                }
+            }
             return persistedHolidayRequest;
         }
 
