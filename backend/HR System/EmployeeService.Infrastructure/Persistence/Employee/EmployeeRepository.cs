@@ -37,11 +37,11 @@ namespace EmployeeService.Infrastructure.Persistance.Employee
             await _context.SaveChangesAsync(cancellationToken);
             return true;
         }
-        public async Task<Core.Entities.Employee> GetFirstManagerAsync(Guid senderId, CancellationToken cancellationToken = default)
+        public async Task<Core.Entities.Employee?> GetFirstManagerAsync(Guid senderId, CancellationToken cancellationToken = default)
         {
-            var employees = await _context.Employees.OrderBy(x => x.Id)
-            .FirstOrDefaultAsync(x => x.Id != senderId && x.Role == Core.Enums.EmployeeRole.Manager);
-            return employees;
+            var employee = await _context.Employees.OrderBy(x => x.Id)
+            .FirstOrDefaultAsync(x => x.Id != senderId && x.Role == Core.Enums.EmployeeRole.Manager, cancellationToken);
+            return employee;
         }
         public async Task<IEnumerable<Core.Entities.Employee>> GetAllEmployeesAsync(int page, int items, string name, string surname, string role, CancellationToken cancellationToken = default)
         {

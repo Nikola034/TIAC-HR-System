@@ -15,7 +15,7 @@ namespace EmployeeService.Application.Common.Repositories
         public Task<bool> DeleteEmployeeAsync(Guid id, CancellationToken cancellationToken = default(CancellationToken));
         public Task<Employee?> UpdateEmployeeAsync(Employee user, CancellationToken cancellationToken = default(CancellationToken));
         public Task<int> GetTotalPagesAsync(int page, int items, string name, string surname, string role, CancellationToken cancellationToken = default(CancellationToken));
-        public Task<Employee> GetFirstManagerAsync(Guid senderId, CancellationToken cancellationToken = default);
+        public Task<Employee?> GetFirstManagerAsync(Guid senderId, CancellationToken cancellationToken = default);
         public Task<IEnumerable<Employee>> GetAllEmployeesAsync(int page, int items, string name, string surname, string role, CancellationToken cancellationToken = default(CancellationToken));
         public Task<IEnumerable<Employee>> GetAllEmployeesWithoutPagingAsync(CancellationToken cancellationToken = default(CancellationToken));
         public Task<Employee?> GetEmployeeByAccountIdAsync(Guid id, CancellationToken cancellationToken = default(CancellationToken));

@@ -13,6 +13,7 @@ using System.Text;
 using System.Threading.Tasks;
 using EmployeeService.Infrastructure.Services;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.AspNetCore.Server.HttpSys;
 
 namespace EmployeeService.Application.Commands.HolidayRequest
 {
@@ -62,18 +63,20 @@ namespace EmployeeService.Application.Commands.HolidayRequest
                         holidayRequestApprover.ApproverId = teamLeadId;
                         holidayRequestApprover.Status = HolidayRequestStatus.Pending;
                         var persistedHolidayRequestApprover = await _holidayRequestApproverRepository.CreateHolidayRequestApproverAsync(holidayRequestApprover, cancellationToken);
-                        await _hubContext.Clients.User(teamLeadId.ToString()).SendAsync("ReceiveNotification",
-                            $"{sender.Name} {sender.Surname} has sent a holiday request from {request.Start} until {request.End}");
+                        //await _hubContext.Clients.User(teamLeadId.ToString()).SendAsync("ReceiveNotification",
+                        //    $"{sender.Name} {sender.Surname} has sent a holiday request from {request.Start} until {request.End}");
                     }
                 }
                 else
                 {
-                    Core.Entities.Employee manager = await _employeeRepository.GetFirstManagerAsync(request.SenderId, cancellationToken);
+                    Core.Entities.Employee? manager = await _employeeRepository.GetFirstManagerAsync(request.SenderId, cancellationToken);
                     Core.Entities.HolidayRequestApprover holidayRequestApprover = new Core.Entities.HolidayRequestApprover();
                     holidayRequestApprover.Id = new Guid();
                     holidayRequestApprover.RequestId = persistedHolidayRequest.Id;
-                    holidayRequestApprover.ApproverId = manager.Id;
+                    holidayRequestApprover.ApproverId = manager != null ? manager.Id : request.SenderId;
                     holidayRequestApprover.Status = HolidayRequestStatus.Pending;
+                    //await _hubContext.Clients.User(manager.Id.ToString()).SendAsync("ReceiveNotification",
+                    //        $"{sender.Name} {sender.Surname} has sent a holiday request from {request.Start} until {request.End}");
                     var persistedHolidayRequestApprover = await _holidayRequestApproverRepository.CreateHolidayRequestApproverAsync(holidayRequestApprover, cancellationToken);
                 }
 

@@ -35,6 +35,7 @@ app.MapHub<NotificationHub>("/notificationHub");
 app.UseExceptionHandler();
 app.UseSwaggerGen();
 app.UseOpenApi();
+app.UseWebSockets();
 app
 .UseAuthentication()
 .UseAuthorization()
