@@ -38,6 +38,7 @@ import { HttpInterceptorService } from './core/services/http-interceptor.service
 import { EmployeesComponent } from './components/employees/employees/employees.component';
 import { ClientProjectsComponent } from './components/clients/client-projects/client-projects.component';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {MatRadioModule} from '@angular/material/radio'; 
 
 // Function to retrieve the token
 export function tokenGetter() {
@@ -91,7 +92,8 @@ import { LoaderComponent } from './components/shared/loader/loader.component';
     FormsModule,
     MatDividerModule,
     MatTooltipModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatRadioModule
     ],
   providers: [provideNativeDateAdapter(),
     {
