@@ -63,41 +63,23 @@ VALUES
 
 INSERT INTO projects (id, title, description, teamleadid, clientid)
 VALUES
-('e9b1d3c1-2f45-4e6d-9f32-5c6b8f0b45d2', 'Website Redesign', 'Complete overhaul of the client website', '5fb4e623-5ba2-4cd6-9232-00d56b3cd354', 'b3fcb9d0-9adf-4eeb-81b2-8396af31f4d1'),
+('e9b1d3c1-2f45-4e6d-9f32-5c6b8f0b45d2', 'Website Redesign', 'Complete overhaul of the client website', NULL, 'b3fcb9d0-9adf-4eeb-81b2-8396af31f4d1'),
 
-('2d9d1c4e-6b3d-4f41-a1f5-d5297d92f5d9', 'Mobile App Development', 'Developing a cross-platform mobile app', '40cd5083-14c1-4aa9-a0d9-7bf96eb64df6', '92a1b2f3-6f3e-4a10-b8f5-0a71d4e3cb94'),
+('2d9d1c4e-6b3d-4f41-a1f5-d5297d92f5d9', 'Mobile App Development', 'Developing a cross-platform mobile app', NULL, '92a1b2f3-6f3e-4a10-b8f5-0a71d4e3cb94'),
 
 ('3b8e5f9b-2ae3-4d9a-9b47-1a54c3d7a992', 'Data Migration', 'Migrating legacy data to a new system', NULL, '7e4e4728-89b4-4f0c-8fc1-462cb90e3265'),
 
-('a2d1e5b6-f7b8-41ae-b21d-36e34cfe5c8b', 'SEO Optimization', 'Improving search engine rankings', '40cd5083-14c1-4aa9-a0d9-7bf96eb64df6', 'bcd5d4e5-3b49-4d5e-8286-4bbf53ec67d7'),
+('a2d1e5b6-f7b8-41ae-b21d-36e34cfe5c8b', 'SEO Optimization', 'Improving search engine rankings', NULL, 'bcd5d4e5-3b49-4d5e-8286-4bbf53ec67d7'),
 
 ('b4d2c6e3-f1b2-4a4d-a8d6-4b9f73b65f1c', 'Cloud Migration', 'Transitioning on-prem systems to the cloud', NULL, 'ae32f195-7c1d-4a67-8f3b-bd5e2f264f9f'),
-('f7b8eaf3-c9b9-49b7-8773-ec3e14b91cba', 'Backend Revamp', 'Revamping backend architecture', 'd1c1d1e9-22a5-4d99-933a-8a6589af291f', 'b3fcb9d0-9adf-4eeb-81b2-8396af31f4d1'),
-('73d1eb18-3d73-4a77-ae7f-6b67b7f82de1', 'UI Update', 'Updating UI for better UX', '94db6c43-f738-43e8-a9d4-7c4c7d1b3ed1', '92a1b2f3-6f3e-4a10-b8f5-0a71d4e3cb94'),
+('f7b8eaf3-c9b9-49b7-8773-ec3e14b91cba', 'Backend Revamp', 'Revamping backend architecture', NULL, 'b3fcb9d0-9adf-4eeb-81b2-8396af31f4d1'),
+('73d1eb18-3d73-4a77-ae7f-6b67b7f82de1', 'UI Update', 'Updating UI for better UX', NULL, '92a1b2f3-6f3e-4a10-b8f5-0a71d4e3cb94'),
 ('c7d91e2a-67f6-421e-a163-3f719ae8f3ea', 'Server Optimization', 'Optimizing server performance', NULL, '7e4e4728-89b4-4f0c-8fc1-462cb90e3265'),
-('f3a1e6e3-764b-4f8f-9234-f3a6f8d2e5ab', 'Data Analytics', 'Enhancing data insights', '27f1b0ec-b41a-471a-9b62-f01f18f7f68a', 'bcd5d4e5-3b49-4d5e-8286-4bbf53ec67d7'),
+('f3a1e6e3-764b-4f8f-9234-f3a6f8d2e5ab', 'Data Analytics', 'Enhancing data insights', NULL, 'bcd5d4e5-3b49-4d5e-8286-4bbf53ec67d7'),
 ('bb1a5c9e-921c-41f2-8f8f-58b6bdef95a2', 'Inventory Management', 'Developing inventory system', NULL, 'ae32f195-7c1d-4a67-8f3b-bd5e2f264f9f'),
-('c5d1fba9-91e8-4567-9c3a-0fbb5cb7e3f3', 'E-commerce Platform', 'Building new e-commerce system', 'd4f1b8e3-ecb2-4142-a4d8-81739a3cd123', 'b3fcb9d0-9adf-4eeb-81b2-8396af31f4d1'),
-('d8e7ab29-8c9d-4f3a-b7e3-1e86f7a6f8b5', 'ERP System', 'Implementing ERP solution', 'b27cfde9-5d42-4b0f-9f7f-2e2951a3bb29', '92a1b2f3-6f3e-4a10-b8f5-0a71d4e3cb94'),
+('c5d1fba9-91e8-4567-9c3a-0fbb5cb7e3f3', 'E-commerce Platform', 'Building new e-commerce system', NULL, 'b3fcb9d0-9adf-4eeb-81b2-8396af31f4d1'),
+('d8e7ab29-8c9d-4f3a-b7e3-1e86f7a6f8b5', 'ERP System', 'Implementing ERP solution', NULL, '92a1b2f3-6f3e-4a10-b8f5-0a71d4e3cb94'),
 ('fd2e1bf5-c5b9-4894-a0a7-4f7e5f3e7d9e', 'Cloud Backup', 'Setting up cloud backup solutions', NULL, '7e4e4728-89b4-4f0c-8fc1-462cb90e3265'),
-('a3d6e2b9-8f8d-4d7f-b2a7-3d7e2b5a3f4d', 'Digital Transformation', 'Leading digital transformation', '6a8f57c3-4a0d-4c37-a66d-3af27e5f83a1', 'bcd5d4e5-3b49-4d5e-8286-4bbf53ec67d7'),
-('4f2a9e6d-931f-4f0b-8f8f-9b7f6b2e9d1a', 'Cybersecurity Enhancement', 'Enhancing cybersecurity measures', 'c8d5d36a-e1f1-4cd3-a60b-97e6c6b19f44', 'ae32f195-7c1d-4a67-8f3b-bd5e2f264f9f');
+('a3d6e2b9-8f8d-4d7f-b2a7-3d7e2b5a3f4d', 'Digital Transformation', 'Leading digital transformation', NULL, 'bcd5d4e5-3b49-4d5e-8286-4bbf53ec67d7'),
+('4f2a9e6d-931f-4f0b-8f8f-9b7f6b2e9d1a', 'Cybersecurity Enhancement', 'Enhancing cybersecurity measures', NULL, 'ae32f195-7c1d-4a67-8f3b-bd5e2f264f9f');
 
-
-INSERT INTO employeeprojects(id, employeeid, projectid)
-VALUES
-('4be06a69-ae90-4f0d-8607-d299d8d1ca96', '5fb4e623-5ba2-4cd6-9232-00d56b3cd354', 'e9b1d3c1-2f45-4e6d-9f32-5c6b8f0b45d2'),
-
-('09fad54d-ca96-4ef8-a3d5-360764631d26', '40cd5083-14c1-4aa9-a0d9-7bf96eb64df6', '2d9d1c4e-6b3d-4f41-a1f5-d5297d92f5d9'),
-
-('f329d1b2-a9e7-4a1d-896a-7cf5eb8b334b', '40cd5083-14c1-4aa9-a0d9-7bf96eb64df6', 'a2d1e5b6-f7b8-41ae-b21d-36e34cfe5c8b'),
-('6f8b7d4a-a6c9-4d8a-a3f2-9d7e4b1f3a6c', 'd1c1d1e9-22a5-4d99-933a-8a6589af291f', 'f7b8eaf3-c9b9-49b7-8773-ec3e14b91cba'),
-('7f3d9e6b-8a1d-4f8f-b9c1-1d2e8b3f5c7e', '94db6c43-f738-43e8-a9d4-7c4c7d1b3ed1', '73d1eb18-3d73-4a77-ae7f-6b67b7f82de1'),
-('9a4f8d2b-3c6f-4d7a-a1f3-2e8b9c1d5f7e', '8a70b3f2-4e3a-4c7d-aefe-383a118b9413', 'c7d91e2a-67f6-421e-a163-3f719ae8f3ea'),
-('2c7f8b9d-6e3a-4f0b-b7f2-1d9a3e5f7d4b', '27f1b0ec-b41a-471a-9b62-f01f18f7f68a', 'f3a1e6e3-764b-4f8f-9234-f3a6f8d2e5ab'),
-('1d3e6b5a-8f2b-4f7a-b5d1-7f4a9e6c2d7f', 'd4f1b8e3-ecb2-4142-a4d8-81739a3cd123', 'bb1a5c9e-921c-41f2-8f8f-58b6bdef95a2'),
-('6b9a3e4d-1c8f-4d7b-a5e3-2f8a7d1b6e5f', 'b27cfde9-5d42-4b0f-9f7f-2e2951a3bb29', 'c5d1fba9-91e8-4567-9c3a-0fbb5cb7e3f3'),
-('3d8e1a5c-2b7f-4f8d-a5f1-6e7b9a2c5d3f', 'a67d95c2-587b-45f9-96d8-d7a2f9ebec90', 'd8e7ab29-8c9d-4f3a-b7e3-1e86f7a6f8b5'),
-('7b3e9d2f-8f6a-4c8d-b7a1-1f9e3d6b5a7f', '6a8f57c3-4a0d-4c37-a66d-3af27e5f83a1', 'fd2e1bf5-c5b9-4894-a0a7-4f7e5f3e7d9e'),
-('5f7a8d2b-9e3f-4b8d-b5c1-3d9a1e6f7a4b', 'c8d5d36a-e1f1-4cd3-a60b-97e6c6b19f44', 'a3d6e2b9-8f8d-4d7f-b2a7-3d7e2b5a3f4d'),
-('1f3d6e9b-7b5a-4c8f-a1d2-9b6a8e5d7f4c', '6a8f57c3-4a0d-4c37-a66d-3af27e5f83a1', '4f2a9e6d-931f-4f0b-8f8f-9b7f6b2e9d1a');

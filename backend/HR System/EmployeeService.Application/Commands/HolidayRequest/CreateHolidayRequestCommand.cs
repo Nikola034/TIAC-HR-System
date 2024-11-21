@@ -56,7 +56,7 @@ namespace EmployeeService.Application.Commands.HolidayRequest
                 IEnumerable<Guid> teamLeadIds = await _projectHttpClient.GetTeamLeadsForEmployeeAsync(domainEntity.SenderId, request.Token, cancellationToken);
                 if (teamLeadIds.Where(x => x != sender.Id).Any())
                 {
-                    foreach (var teamLeadId in teamLeadIds)
+                    foreach (var teamLeadId in teamLeadIds.Where(x => x != sender.Id))
                     {
                         Core.Entities.HolidayRequestApprover holidayRequestApprover = new Core.Entities.HolidayRequestApprover();
                         holidayRequestApprover.Id = new Guid();
