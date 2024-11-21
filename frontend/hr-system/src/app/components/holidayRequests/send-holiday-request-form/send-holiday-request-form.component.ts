@@ -38,7 +38,16 @@ export class SendHolidayRequestFormComponent {
   }
 
   rangeFilter(date: Date): boolean {
-    return date.getTime() > new Date().getTime();
+    const today = new Date();
+    
+    const isFutureDate = date.getTime() > today.getTime();
+  
+    const isWeekend = date.getDay() === 0 || date.getDay() === 6;
+
+    const isNationalHoliday = (date.getDate() === 19 && date.getMonth() == 11) || (date.getDate() === 11 && date.getMonth() == 10) || (date.getDate() === 31 && date.getMonth() == 11)
+    || (date.getDate() === 1 && date.getMonth() == 0) || (date.getDate() === 7 && date.getMonth() == 0) || (date.getDate() === 14 && date.getMonth() == 0)
+  
+    return isFutureDate && !isWeekend;
   }
 
   private destroy$ = new Subject<void>();

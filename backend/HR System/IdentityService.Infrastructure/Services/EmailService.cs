@@ -29,11 +29,10 @@ public class EmailService : IEmailService
         var host = _configuration["SmtpClientConfig:Host"];
         var client = new SmtpClient(host, port)
         {
-            EnableSsl = true,
+            EnableSsl = false,
             UseDefaultCredentials = false,
             Credentials = new NetworkCredential(mail, password)
         };
-        
         var body =
             "Click the following link in order to change your password: http://localhost:4200/passwordReset/" +
             passwordResetToken;

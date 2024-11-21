@@ -85,16 +85,6 @@ export class CreateProjectComponent {
     }
   }
 
-  teamLeadChanged(){
-    if(this.isEditMode){
-      let selectedId = this.createProjectForm.get('teamLead')?.value
-      if(selectedId)
-        if(!this.workingDevelopers.find(x => x.id == selectedId)){
-          this.addEmployeeToProject(selectedId)
-      }
-    }
-  }
-
   onSubmit() {
     if (this.createProjectForm.valid) {
       if(!this.isEditMode){
@@ -158,10 +148,9 @@ export class CreateProjectComponent {
     ).subscribe()
   }
 
-  addEmployeeToProject(selectedFromTeamLeadId : string){
-    let employeeId = selectedFromTeamLeadId !== ""? selectedFromTeamLeadId : this.selectedDeveloperId
+  addEmployeeToProject(){
     const dto : AddOrRemoveEmployeeProjectDto = {
-      employeeId : employeeId,
+      employeeId : this.selectedDeveloperId,
       projectId : this.existingProjectId
     }
     this.projectService.addEmployeeToProject(dto).pipe(takeUntil(this.destroy$),

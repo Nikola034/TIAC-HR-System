@@ -33,6 +33,7 @@ namespace Infrastructure.Services
                         new Claim(ClaimTypes.Name, username),
                         new Claim(ClaimTypes.Role, role),
                         new Claim("id",employeeId),
+                        new Claim(ClaimTypes.NameIdentifier, employeeId)
                     }
                 ),
                 Expires = DateTime.Now.AddMinutes(15),

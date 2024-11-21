@@ -23,6 +23,7 @@ export class EditEmployeeComponent {
       name: new FormControl('', Validators.required),
       surname: new FormControl('', Validators.required),
       role: new FormControl('', Validators.required),
+      daysOff: new FormControl('', Validators.required),
     });
   }
 
@@ -33,7 +34,8 @@ export class EditEmployeeComponent {
           this.editEmployeeForm.patchValue({
             name: this.employee.name,
             surname: this.employee.surname,
-            role: this.employee.role
+            role: this.employee.role,
+            daysOff: this.employee.daysOff
           });
           }),
           catchError( error => {
@@ -49,7 +51,7 @@ export class EditEmployeeComponent {
         name: this.editEmployeeForm.get('name')?.value,
         surname: this.editEmployeeForm.get('surname')?.value,
         role: this.editEmployeeForm.get('role')?.value,
-        daysOff: this.employee.daysOff
+        daysOff: this.editEmployeeForm.get('daysOff')?.value,
       }
       this.employeeService.updateEmployee(dto)
         .pipe(takeUntil(this.destroy$), tap((response) => {
