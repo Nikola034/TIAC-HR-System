@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <PackageReference Include="FastEndpoints" Version="5.31.0" />
+    <PackageReference Include="FastEndpoints.Security" Version="5.31.0" />
     <PackageReference Include="FastEndpoints.Swagger" Version="5.31.0" />
     <PackageReference Include="Npgsql" Version="8.0.5" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.10" />

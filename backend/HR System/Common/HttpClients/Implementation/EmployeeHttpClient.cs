@@ -14,7 +14,7 @@ public class EmployeeHttpClient : IEmployeeHttpClient
 
     }
 
-    public async Task<string> GetEmployeeByIdAsync(Guid employeeId, CancellationToken cancellationToken = default)
+    public async Task<string> GetEmployeeByIdAsync(Guid employeeId, string token, CancellationToken cancellationToken = default)
     {
         var httpClient = _httpClientFactory.CreateClient("EmployeeServiceClient");
         var request = new HttpRequestMessage
@@ -22,6 +22,7 @@ public class EmployeeHttpClient : IEmployeeHttpClient
             Method = HttpMethod.Get,
             RequestUri = new Uri("employees/" + employeeId, UriKind.Relative)
         };
+        request.Headers.Add("Authorization",token);
         var response = await httpClient.SendAsync(request,cancellationToken);
         response.EnsureSuccessStatusCode();
         return await response.Content.ReadAsStringAsync(cancellationToken);
@@ -40,7 +41,7 @@ public class EmployeeHttpClient : IEmployeeHttpClient
         return await response.Content.ReadAsStringAsync(cancellationToken);
     }
 
-    public async Task<string> GetAllDevelopersAsync(CancellationToken cancellationToken = default(CancellationToken))
+    public async Task<string> GetAllDevelopersAsync(string token, CancellationToken cancellationToken = default(CancellationToken))
     {
         var httpClient = _httpClientFactory.CreateClient("EmployeeServiceClient");
         var request = new HttpRequestMessage
@@ -48,6 +49,7 @@ public class EmployeeHttpClient : IEmployeeHttpClient
             Method = HttpMethod.Get,
             RequestUri = new Uri("employees/developers", UriKind.Relative)
         };
+        request.Headers.Add("Authorization",token);
         var response = await httpClient.SendAsync(request,cancellationToken);
         response.EnsureSuccessStatusCode();
         return await response.Content.ReadAsStringAsync(cancellationToken);

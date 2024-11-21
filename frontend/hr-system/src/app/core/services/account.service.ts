@@ -10,6 +10,8 @@ import { CreateAccountDto } from '../dtos/employee/create-account.dto';
 import { Account } from '../models/account.model';
 import { GetAccountByIdsDto } from '../dtos/account/get-account-by-ids.dto';
 import { SendAccountIdsDto } from '../dtos/account/send-account-ids.dto';
+import { ResetPasswordDto } from '../dtos/account/reset-password.dto';
+import { BlockedUserResponseDto } from '../dtos/account/blocked-user-response.dto';
 
 @Injectable({
   providedIn: 'root'
@@ -39,4 +41,16 @@ export class AccountService {
   refreshToken(dto : RefreshTokenDto): Observable<TokensDto> {
     return this.http.post<TokensDto>(`${this.baseUrl}refreshToken`,dto);
   }
+
+  sendPasswordResetEmail(email : string): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}resetPassword/${email}`)
+  }
+
+  resetPassword(dto : ResetPasswordDto): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}resetPassword`,dto)
+  }
+  
+  blockAccount(email: string | undefined): Observable<BlockedUserResponseDto>{
+    return this.http.put<BlockedUserResponseDto>(`${this.baseUrl}block/${email}`,{})
+  } 
 }

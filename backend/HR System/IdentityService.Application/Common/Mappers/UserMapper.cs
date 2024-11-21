@@ -13,8 +13,10 @@ namespace Application.Common.Mappers
         {
             return new Account
             {
+                Id = new Guid(),
                 Email = userCommand.Email,
                 Password = userCommand.Password,
+                PasswordResetTokenValidTo = DateTime.Now.AddHours(24)
             };
         }
 

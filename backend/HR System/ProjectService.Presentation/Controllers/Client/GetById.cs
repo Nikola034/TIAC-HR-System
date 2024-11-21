@@ -18,7 +18,7 @@ public class GetById : EndpointWithoutRequest<ClientByIdResponse>
     public override void Configure()
     {
         Get("/projects/clients/{clientId}");
-        AllowAnonymous();
+        Policies("ManagersOnly");
     }
     
     public override async Task HandleAsync(CancellationToken ct)

@@ -37,7 +37,7 @@ namespace EmployeeService.Application.Commands.HolidayRequest
                 await _holidayrequestApproversRepository.DeleteHolidayRequestApproverAsync(holidayRequest.Id, cancellationToken);
             }
 
-            int wantedDays = (existingHolidayRequest.End - existingHolidayRequest.Start).Days;
+            int wantedDays = (existingHolidayRequest.End - existingHolidayRequest.Start).Days - CountWeekendDays(existingHolidayRequest.Start, existingHolidayRequest.End) + 1;
             existingHolidayRequest.Sender.DaysOff += wantedDays;
             await _employeeRepository.UpdateEmployeeAsync(existingHolidayRequest.Sender, cancellationToken);
 
@@ -45,6 +45,22 @@ namespace EmployeeService.Application.Commands.HolidayRequest
             return persistedHolidayRequest;
         }
 
+        private int CountWeekendDays(DateTime start, DateTime end)
+        {
+            int weekendDays = 0;
+
+            // Iterate through each day in the range
+            for (DateTime date = start.Date; date <= end.Date; date = date.AddDays(1))
+            {
+                // Check if the day is Saturday or Sunday
+                if (date.DayOfWeek == DayOfWeek.Saturday || date.DayOfWeek == DayOfWeek.Sunday)
+                {
+                    weekendDays++;
+                }
+            }
+
+            return weekendDays;
+        }
     }
 
     public record DeleteHolidayRequestCommand(Guid Id) : IRequest<bool>;

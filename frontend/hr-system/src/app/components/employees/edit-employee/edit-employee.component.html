@@ -27,10 +27,24 @@
       <mat-form-field appearance="fill" class="full-width">
         <mat-label>Select employee's role</mat-label>
         <mat-select formControlName="role">
-          <mat-option value="developer">Developer</mat-option>
-          <mat-option value="manager">Manager</mat-option>
+          <mat-option [value]=0>Developer</mat-option>
+          <mat-option [value]=1>Manager</mat-option>
         </mat-select>
       </mat-form-field>
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Days Off</mat-label>
+        <input
+          matInput
+          formControlName="daysOff"
+          type="number"
+          max="100"
+          min="0"
+          placeholder="Enter employee's days off"
+        />
+        <mat-error *ngIf="editEmployeeForm.get('surname')?.hasError('required')"
+          >Surname is required</mat-error
+        >
+      </mat-form-field> 
       <button mat-raised-button color="primary" type="submit">
         Submit
       </button>

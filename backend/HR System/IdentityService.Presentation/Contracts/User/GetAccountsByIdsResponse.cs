@@ -2,6 +2,28 @@
 {
     public class GetAccountsByIdsResponse
     {
-        public IEnumerable<Core.Entities.Account> Accounts { get; set;  }
+        public IEnumerable<AccountDto> Accounts { get; set;  }
+    }
+
+    public class AccountDto
+    {
+        public AccountDto(Guid id, string email, string? refreshToken, DateTime? refreshTokenValidTo, string? passwordResetToken, DateTime? passwordResetTokenValidTo, bool isBlocked)
+        {
+            Id = id;
+            Email = email;
+            RefreshToken = refreshToken;
+            RefreshTokenValidTo = refreshTokenValidTo;
+            PasswordResetToken = passwordResetToken;
+            PasswordResetTokenValidTo = passwordResetTokenValidTo;
+            IsBlocked = isBlocked;
+        }
+
+        public Guid Id { get; set; }
+        public string Email { get; set; }
+        public string? RefreshToken { get; set; }
+        public DateTime? RefreshTokenValidTo { get; set; }
+        public string? PasswordResetToken { get; set; }
+        public DateTime? PasswordResetTokenValidTo { get; set; }
+        public bool IsBlocked { get; set; }
     }
 }

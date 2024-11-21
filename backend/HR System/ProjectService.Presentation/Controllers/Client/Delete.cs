@@ -16,7 +16,7 @@ public class Delete : EndpointWithoutRequest<bool>
     public override void Configure()
     {
         Delete("projects/clients/{clientId}");
-        AllowAnonymous();
+        Policies("ManagersOnly");
     }
 
     public override async Task HandleAsync(CancellationToken ct)

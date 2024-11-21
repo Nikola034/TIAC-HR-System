@@ -1,4 +1,4 @@
-<mat-card class="project-details-card">
+<mat-card class="project-details-card" *ngIf="project">
     <mat-card-header>
       <mat-card-title class="title">{{ project.title }}</mat-card-title>
       <mat-card-subtitle>Client: {{ project.client.name }} ({{ project.client.country }})</mat-card-subtitle>
@@ -6,7 +6,7 @@
   
     <mat-card-content class="description">
       <p><strong>Description:</strong> {{ project.description }}</p>
-      <p><strong>Team Lead:</strong> {{ teamLead.name + ' ' + teamLead.surname }}</p>
+      <p><strong>Team Lead:</strong> {{ getTeamLead() }}</p>
     </mat-card-content>
   
     <mat-divider style="margin-top: 1rem;"></mat-divider>

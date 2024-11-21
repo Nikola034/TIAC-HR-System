@@ -7,9 +7,11 @@ using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using Common.HttpCLients.Dtos;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace Common.HttpCLients.Implementation
 {
@@ -22,7 +24,7 @@ namespace Common.HttpCLients.Implementation
             _httpClientFactory = httpClientFactory;
         }
 
-        public async Task<IEnumerable<Guid>> GetTeamLeadsForEmployeeAsync(Guid employeeId, CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<Guid>> GetTeamLeadsForEmployeeAsync(Guid employeeId, string token, CancellationToken cancellationToken = default)
         {
             var httpClient = _httpClientFactory.CreateClient("ProjectServiceClient");
             var request = new HttpRequestMessage
@@ -30,6 +32,7 @@ namespace Common.HttpCLients.Implementation
                 Method = HttpMethod.Get,
                 RequestUri = new Uri("projects/allForEmployee/" + employeeId, UriKind.Relative)
             };
+            request.Headers.Add("Authorization",token);
             var response = await httpClient.SendAsync(request);
             response.EnsureSuccessStatusCode();
 
@@ -50,7 +53,7 @@ namespace Common.HttpCLients.Implementation
 
             return teamLeadIds;
         }
-        public async Task<IEnumerable<Guid>> GetLeadingProjectIdsForEmployeeAsync(Guid employeeId, CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<Guid>> GetLeadingProjectIdsForEmployeeAsync(Guid employeeId, string token, CancellationToken cancellationToken = default)
         {
             var httpClient = _httpClientFactory.CreateClient("ProjectServiceClient");
             var request = new HttpRequestMessage
@@ -58,6 +61,7 @@ namespace Common.HttpCLients.Implementation
                 Method = HttpMethod.Get,
                 RequestUri = new Uri("projects/without-paging", UriKind.Relative)
             };
+            request.Headers.Add("Authorization",token);
             var response = await httpClient.SendAsync(request);
             response.EnsureSuccessStatusCode();
 
@@ -82,7 +86,7 @@ namespace Common.HttpCLients.Implementation
 
             return leadingProjectsIds;
         }
-        public async Task<IEnumerable<Guid>> GetProjectsForEmployeeAsync(Guid employeeId, CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<Guid>> GetProjectsForEmployeeAsync(Guid employeeId, string token, CancellationToken cancellationToken = default)
         {
             var httpClient = _httpClientFactory.CreateClient("ProjectServiceClient");
             var request = new HttpRequestMessage
@@ -90,6 +94,7 @@ namespace Common.HttpCLients.Implementation
                 Method = HttpMethod.Get,
                 RequestUri = new Uri("projects/allForEmployee/" + employeeId, UriKind.Relative)
             };
+            request.Headers.Add("Authorization",token);
             var response = await httpClient.SendAsync(request);
             response.EnsureSuccessStatusCode();
 
@@ -111,19 +116,21 @@ namespace Common.HttpCLients.Implementation
             return projectIds;
         }
 
-        public async Task<bool> RemoveEmployeeFromProjectAsync(RemoveEmployeeFromProjectDto dto, CancellationToken cancellationToken = default)
+        public async Task<bool> RemoveEmployeeFromProjectAsync(RemoveEmployeeFromProjectDto dto, string token, CancellationToken cancellationToken = default)
         {
             var httpClient = _httpClientFactory.CreateClient("ProjectServiceClient");
             var request = new HttpRequestMessage
             {
+                Content = new StringContent(JsonSerializer.Serialize(dto), Encoding.UTF8, "application/json"),
                 Method = HttpMethod.Put,
                 RequestUri = new Uri("projects/removeFromProject", UriKind.Relative)
             };
+            request.Headers.Add("Authorization",token);
             var response = await httpClient.SendAsync(request, cancellationToken);
 
             return response.StatusCode != System.Net.HttpStatusCode.InternalServerError;
         }
-        public async Task<HttpResponseMessage> GetProjectByIdAsync(Guid projectId, CancellationToken cancellationToken = default)
+        public async Task<HttpResponseMessage> GetProjectByIdAsync(Guid projectId, string token, CancellationToken cancellationToken = default)
         {
             var httpClient = _httpClientFactory.CreateClient("ProjectServiceClient");
             var projectRequest = new HttpRequestMessage
@@ -131,27 +138,32 @@ namespace Common.HttpCLients.Implementation
                 Method = HttpMethod.Get,
                 RequestUri = new Uri("projects/" + projectId, UriKind.Relative)
             };
+            projectRequest.Headers.Add("Authorization",token);
             var projectResponse = await httpClient.SendAsync(projectRequest, cancellationToken);
             
             return projectResponse;
         }
-        public async Task<bool> RemoveTeamLeadFromProjectAsync(Guid projectId, CancellationToken cancellationToken = default)
+        public async Task<bool> RemoveTeamLeadFromProjectAsync(Guid projectId, string token, CancellationToken cancellationToken = default)
         {
             var httpClient = _httpClientFactory.CreateClient("ProjectServiceClient");
             
-            var projectResponse = await GetProjectByIdAsync(projectId, cancellationToken);
+            var projectResponse = await GetProjectByIdAsync(projectId, token, cancellationToken);
 
             var jsonObject = JObject.Parse(await projectResponse.Content.ReadAsStringAsync(cancellationToken));
             jsonObject["teamLeadId"] = JValue.CreateNull();
             jsonObject.Add("clientId", jsonObject["client"]["id"]);
             jsonObject.Remove("client");
+            jsonObject.Remove("working");
+            jsonObject.Remove("notWorking");
 
             var request = new HttpRequestMessage
             {
                 Method = HttpMethod.Put,
-                Content = JsonContent.Create(jsonObject),
+                Content = new StringContent(jsonObject.ToString(), Encoding.UTF8, "application/json"),
                 RequestUri = new Uri(httpClient.BaseAddress, "projects")
             };
+
+            request.Headers.Add("Authorization",token);
             var response = await httpClient.SendAsync(request, cancellationToken);
 
             return response.StatusCode != System.Net.HttpStatusCode.InternalServerError;

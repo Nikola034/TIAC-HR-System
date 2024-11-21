@@ -17,7 +17,7 @@ public class Update: Endpoint<UpdateClientRequest,UpdateClientResponse>
     public override void Configure()
     {
         Put("/projects/clients");
-        AllowAnonymous();
+        Policies("ManagersOnly");
     }
 
     public override async Task HandleAsync(UpdateClientRequest req, CancellationToken ct)

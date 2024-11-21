@@ -18,7 +18,6 @@ namespace EmployeeService.Presentation.Controllers.HolidayRequest
         public override void Configure()
         {
             Put("employees/holidayRequests");
-            AllowAnonymous();
         }
 
         public override async Task HandleAsync(UpdateHolidayRequestRequest req, CancellationToken ct)

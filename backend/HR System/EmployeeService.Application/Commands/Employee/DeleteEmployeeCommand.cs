@@ -43,7 +43,7 @@ namespace EmployeeService.Application.Commands.Employee
                 return false;
             }
 
-            var holidayRequests = await _holidayRequestRepository.GetAllHolidayRequestsBySenderIdAsync(existingEmployee.Id, cancellationToken);
+            var holidayRequests = await _holidayRequestRepository.GetAllHolidayRequestsBySenderIdAsync(existingEmployee.Id, -1, -1, "all", cancellationToken);
 
             if (holidayRequests.Any())
             {
@@ -63,34 +63,45 @@ namespace EmployeeService.Application.Commands.Employee
                 }
             }
 
-            var employeeProjectsIds = await _projectHttpClient.GetProjectsForEmployeeAsync(existingEmployee.Id, cancellationToken);
+            var holidayRequestsApproversToApprove = await _holidayRequestApproverRepository.GetHolidayRequestApproversByApproverIdAsync(existingEmployee.Id, false, cancellationToken);
+            foreach (var holidayRequestApprover in holidayRequestsApproversToApprove)
+            {
+                await _holidayRequestApproverRepository.DeleteHolidayRequestApproverAsync(holidayRequestApprover.Id, cancellationToken);
+                var requestForApprover = await _holidayRequestRepository.GetHolidayRequestByIdAsync(holidayRequestApprover.RequestId, cancellationToken);
+                if(!(await _holidayRequestApproverRepository.GetHolidayRequestApproversByRequestIdAsync(requestForApprover.Id)).Any())
+                {
+                    await _holidayRequestRepository.DeleteHolidayRequestAsync(requestForApprover.Id, cancellationToken);
+                }
+            }
+
+            var employeeProjectsIds = await _projectHttpClient.GetProjectsForEmployeeAsync(existingEmployee.Id, request.Token, cancellationToken);
 
             if (employeeProjectsIds.Any())
             {
                 foreach(var projectId in employeeProjectsIds)
                 {
                     var dto = new RemoveEmployeeFromProjectDto {EmployeeId = existingEmployee.Id, ProjectId = projectId};
-                    await _projectHttpClient.RemoveEmployeeFromProjectAsync(dto, cancellationToken);
+                    await _projectHttpClient.RemoveEmployeeFromProjectAsync(dto, request.Token, cancellationToken);
                 }
             }
 
-            var leadingProjectsIds = await _projectHttpClient.GetLeadingProjectIdsForEmployeeAsync(existingEmployee.Id, cancellationToken);
+            var leadingProjectsIds = await _projectHttpClient.GetLeadingProjectIdsForEmployeeAsync(existingEmployee.Id, request.Token, cancellationToken);
 
             if(leadingProjectsIds.Any())
             {
                 foreach(var leadingProject in leadingProjectsIds)
                 {
-                    await _projectHttpClient.RemoveTeamLeadFromProjectAsync(leadingProject, cancellationToken);
+                    await _projectHttpClient.RemoveTeamLeadFromProjectAsync(leadingProject, request.Token, cancellationToken);
                 }
             }
 
             var persistedEmployee = await _employeeRepository.DeleteEmployeeAsync(existingEmployee.Id, cancellationToken);
 
-            var deletedAccount = await _accountServiceHttpClient.DeleteEmployeeAccount(existingEmployee.AccountId, cancellationToken);
+            var deletedAccount = await _accountServiceHttpClient.DeleteEmployeeAccount(existingEmployee.AccountId, request.Token, cancellationToken);
 
             return true;
         }
     }
 
-    public record DeleteEmployeeCommand(Guid Id) : IRequest<bool>;
+    public record DeleteEmployeeCommand(Guid Id, string Token) : IRequest<bool>;
 }

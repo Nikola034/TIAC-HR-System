@@ -17,13 +17,13 @@ namespace EmployeeService.Presentation.Controllers.Employee
 
         public override void Configure()
         {
-            Get("employees/daysOff");
-            AllowAnonymous();
+            Get("employees/daysOff/{employeeId}");
         }
 
         public override async Task HandleAsync(CancellationToken ct)
         {
-            var report = await _mediator.Send(new GetDaysOffForEmployeesQuery());
+            var employeeId = Route<Guid>("employeeId");
+            var report = await _mediator.Send(new GetDaysOffForEmployeesQuery(employeeId));
             if (report is null)
             {
                 await SendNotFoundAsync(ct);

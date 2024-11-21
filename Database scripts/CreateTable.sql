@@ -5,7 +5,8 @@ CREATE TABLE accounts (
     refreshtoken varchar(100),
     refreshtokenvalidto timestamp,
     passwordresettoken varchar(100),
-    passwordresettokenvalidto timestamp 
+    passwordresettokenvalidto timestamp,
+    isblocked boolean
 );
 
 CREATE TABLE employees (

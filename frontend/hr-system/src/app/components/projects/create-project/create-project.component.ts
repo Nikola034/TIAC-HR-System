@@ -14,6 +14,8 @@ import { Client } from '../../../core/models/client.model';
 import { EmployeeForProjectDto } from '../../../core/dtos/employee/employee-for-project.dto';
 import { UpdateProjectDto } from '../../../core/dtos/project/update-project.dto';
 import { AddOrRemoveEmployeeProjectDto } from '../../../core/dtos/employee/add-or-remove-employee-project.dto';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
 
 @Component({
   selector: 'app-create-project',
@@ -27,6 +29,7 @@ export class CreateProjectComponent {
   isEditMode : boolean = false;
   buttonContent : string = 'Create Project';
   displayedColumns : string[] = ['index', 'name', 'surname' , 'remove']
+  displayedColumnsForReport : string[] = ['index', 'name', 'surname' ]
 
   constructor(private fb: FormBuilder, private projectService : ProjectService,
               private clientService : ClientService, private employeeService : EmployeeService,
@@ -41,9 +44,11 @@ export class CreateProjectComponent {
 
   existingProjectId !: string
   clients : Client[] = []
-  developers : Employee[] = []
+  allDevelopers : Employee[] = []
   workingDevelopers : EmployeeForProjectDto[] = []
   availableDevelopers : EmployeeForProjectDto[] = []
+  selectedDeveloperId !: string
+  persistedTeamLeadId !: string
 
   ngOnInit(){
     this.clientService.getAllClients("?page=1&items-per-page=100")
@@ -53,7 +58,7 @@ export class CreateProjectComponent {
 
       this.employeeService.getAllDevelopers()
       .pipe(takeUntil(this.destroy$),tap( response => {
-        this.developers = response.developers;
+        this.allDevelopers = response.developers;
       })).subscribe()
 
     this.existingProjectId = history.state.projectData
@@ -64,7 +69,7 @@ export class CreateProjectComponent {
         tap( response => {
           this.workingDevelopers = response.working
           this.availableDevelopers = response.notWorking
-          
+          this.persistedTeamLeadId = response.teamLeadId
           this.createProjectForm.patchValue({
             title: response.title,
             description: response.description,
@@ -83,11 +88,12 @@ export class CreateProjectComponent {
   onSubmit() {
     if (this.createProjectForm.valid) {
       if(!this.isEditMode){
+        let teamLead = this.createProjectForm.get('teamLead')?.value != ""? this.createProjectForm.get('teamLead')?.value : null
         const dto: CreateProjectDto = {
             title: this.createProjectForm.get('title')?.value,
             description: this.createProjectForm.get('description')?.value,
             clientId: this.createProjectForm.get('client')?.value,
-            teamLeadId: this.createProjectForm.get('teamLead')?.value,
+            teamLeadId: teamLead,
           };
         this.projectService.createProject(dto)
           .pipe(takeUntil(this.destroy$), tap((response) => {
@@ -101,12 +107,13 @@ export class CreateProjectComponent {
       }
       else
       {
+        let teamLead = this.createProjectForm.get('teamLead')?.value != ""? this.createProjectForm.get('teamLead')?.value : null
         const dto: UpdateProjectDto = {
           id: this.existingProjectId,
           title: this.createProjectForm.get('title')?.value,
           description: this.createProjectForm.get('description')?.value,
           clientId: this.createProjectForm.get('client')?.value,
-          teamLeadId: this.createProjectForm.get('teamLead')?.value,
+          teamLeadId: teamLead,
         };
       this.projectService.updateProject(dto)
         .pipe(takeUntil(this.destroy$), tap((response) => {
@@ -130,6 +137,9 @@ export class CreateProjectComponent {
       tap( (response) => {
         this.workingDevelopers = response.working;
         this.availableDevelopers = response.notWorking;
+        if(dto.employeeId == this.persistedTeamLeadId)
+          this.createProjectForm.get('teamLead')?.patchValue('')
+          
       }),
       catchError( error => {
         this.swal.fireSwalError("Something went wrong while removing employee")
@@ -138,9 +148,9 @@ export class CreateProjectComponent {
     ).subscribe()
   }
 
-  addEmployeeToProject(employeeId : string){
+  addEmployeeToProject(){
     const dto : AddOrRemoveEmployeeProjectDto = {
-      employeeId : employeeId,
+      employeeId : this.selectedDeveloperId,
       projectId : this.existingProjectId
     }
     this.projectService.addEmployeeToProject(dto).pipe(takeUntil(this.destroy$),
@@ -149,10 +159,45 @@ export class CreateProjectComponent {
         this.availableDevelopers = response.notWorking;
       }),
       catchError( error => {
-        this.swal.fireSwalError("Something went wrong while removing employee")
+        this.swal.fireSwalError("Something went wrong while adding employee")
         return throwError(() => error);
       })
     ).subscribe()
+  }
+
+  generateReport() {
+    const data = document.getElementById('pdf-content'); // The HTML element to capture
+    if(data){
+      const originalDisplay = data.style.display;
+      data.style.display = 'block'; // or 'inline-block' depending on your needs
+
+      html2canvas(data).then(canvas => {
+        // Restore the original display style
+        data.style.display = originalDisplay;
+
+        const imgWidth = 238;
+        const pageHeight = 295;
+        const imgHeight = (canvas.height * imgWidth) / canvas.width;
+        const position = 0;
+
+        const imgData = canvas.toDataURL('image/png');
+        const doc = new jsPDF();
+
+        doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+        doc.save(this.createProjectForm.get('title')?.value + ' Report');
+      });
+    }
+  }
+
+  getClientForReport(): string|undefined {
+    let id = this.createProjectForm.get('client')?.value
+    return this.clients.find(client => client.id === id)?.name;
+  }
+
+  getTeamLeadForReport(): string|undefined {
+    let id = this.createProjectForm.get('teamLead')?.value
+    let dev = this.workingDevelopers.find(dev => dev.id === id);
+    return dev?.name + " " + dev?.surname
   }
 
   ngOnDestroy(): void {

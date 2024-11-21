@@ -20,12 +20,13 @@ namespace EmployeeService.Presentation.Controllers.Employee
         public override void Configure()
         {
             Delete("employees/{id}");
-            AllowAnonymous(); 
+            Policies("ManagersOnly");
         }
 
         public override async Task HandleAsync(CancellationToken ct)
         {
-            var result = await _mediator.Send(new DeleteEmployeeCommand(Route<Guid>("id")), ct);
+            var authHeader = HttpContext.Request.Headers["Authorization"].ToString();
+            var result = await _mediator.Send(new DeleteEmployeeCommand(Route<Guid>("id"),authHeader), ct);
             if (!result)
                 await SendNotFoundAsync(ct);
             await SendOkAsync(ct);

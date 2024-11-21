@@ -14,6 +14,7 @@ namespace Core.Entities
         public DateTime? RefreshTokenValidTo { get; set; }
         public string? PasswordResetToken { get; set; }
         public DateTime? PasswordResetTokenValidTo { get; set; }
+        public bool IsBlocked { get; set; }
 
     }
 }

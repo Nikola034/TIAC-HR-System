@@ -18,7 +18,7 @@
         </button>
     </div>
     <div class="logout">
-        <button mat-button routerLink="profile">
+        <button mat-button (click)="editProfile()">
             Profile
         </button>
         <button mat-button routerLink="/" (click)="logOut()">

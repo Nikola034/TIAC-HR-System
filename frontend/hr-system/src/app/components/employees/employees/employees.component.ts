@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
-import { Employee } from '../../../core/models/employee.model';
+import { Employee, EmployeeRole } from '../../../core/models/employee.model';
 import {
   catchError,
   combineLatest,
+  concatMap,
+  debounceTime,
   forkJoin,
   map,
   Observable,
@@ -20,6 +22,7 @@ import Swal from 'sweetalert2';
 import { AccountService } from '../../../core/services/account.service';
 import { Account } from '../../../core/models/account.model';
 import { SendAccountIdsDto } from '../../../core/dtos/account/send-account-ids.dto';
+import { JwtService } from '../../../core/services/jwt.service';
 
 @Component({
   selector: 'app-employees',
@@ -27,11 +30,11 @@ import { SendAccountIdsDto } from '../../../core/dtos/account/send-account-ids.d
   styleUrl: './employees.component.css',
 })
 export class EmployeesComponent {
-  employees: Employee[] = [];
+  employees!: Employee[] 
   accounts: Account[] = [];
   pageNumber: number = 1;
   totalPages: number = 1;
-  itemsPerPage: number = 8;
+  itemsPerPage: number = 10;
   displayedColumns: string[] = [
     'name',
     'surname',
@@ -39,48 +42,98 @@ export class EmployeesComponent {
     'daysOff',
     'role',
     'details',
+    'block',
     'delete',
   ];
 
+  search = ''
+  searchCriteria = 'name'
+  roleFilter = 'all'
+
   private destroy$ = new Subject<void>();
+  private searchParamChangeSubject = new Subject<void>();
 
   constructor(
     private employeeService: EmployeeService,
     private router: Router,
     private swal: AlertService,
-    private accountservice: AccountService
-  ) {}
+    private jwtService: JwtService,
+    private accountService: AccountService
+  ) {
+    this.searchParamChangeSubject
+      .pipe(
+        debounceTime(250), 
+        switchMap(async () => this.loadNewPage(1)) 
+      )
+      .subscribe((response) => {
+        console.log('Response:', response);
+      });
+  }
 
   ngOnInit() {
     this.refreshData();
   }
 
+  onPropertyChange(): void{
+    this.searchParamChangeSubject.next();
+  }
+
   refreshData() {
     this.employeeService.getAllEmployees(this.getQueryString())
-      .pipe(
-        takeUntil(this.destroy$),
-        switchMap((employeesResponse) => {
-          const accountIds = this.getAccountIds(employeesResponse.employees);
-          this.employees = employeesResponse.employees;
+    .pipe(
+      takeUntil(this.destroy$),
+      switchMap((employeesResponse) => {
+        this.employees = employeesResponse.employees;
+        if(this.pageNumber > employeesResponse.totalPages && employeesResponse.totalPages > 0){
           this.totalPages = employeesResponse.totalPages
-          return combineLatest([
-            of(this.employees),
-            this.accountservice.getAccountsByIds(accountIds)
-          ]);
-        }),
-        tap(([employees, accountsResponse]) => {
-          this.accounts = accountsResponse.accounts;
-        }),
-        catchError((error) => {
-          this.swal.fireSwalError('Something went wrong');
-          return throwError(() => error);
-        })
-      )
-      .subscribe();
+          this.pageNumber = employeesResponse.totalPages;
+          this.loadNewPage(this.totalPages)
+        }
+        this.totalPages = employeesResponse.totalPages;
+        const accountIds = this.getAccountIds(employeesResponse.employees);
+
+        return this.accountService.getAccountsByIds(accountIds).pipe(
+          map((accountsResponse) => ({
+            employees: employeesResponse.employees,
+            accounts: accountsResponse.accounts,
+          }))
+        );
+      }),
+      tap(({ employees, accounts }) => {
+        this.employees = employees;
+        this.accounts = accounts;  
+      }),
+      catchError((error) => {
+        this.swal.fireSwalError('Something went wrong');
+        return throwError(() => error);
+      })
+    )
+    .subscribe();
+  }
+
+  getRoleString(role: EmployeeRole) : string{
+    switch(role) { 
+      case 0: { 
+        return 'Developer'
+      } 
+      case  1: { 
+        return 'Manager'
+      } 
+      default: { 
+         return ''
+      } 
+   } 
   }
 
   getQueryString(): string {
-    return '?page=' + this.pageNumber + '&items-per-page=' + this.itemsPerPage;
+    if(this.search == ''){
+      return '?page=' + this.pageNumber + '&items-per-page=' + this.itemsPerPage + '&role=' + this.roleFilter;
+    }
+    return '?page=' + this.pageNumber + '&items-per-page=' + this.itemsPerPage + `&${this.searchCriteria}=` + this.search.toLowerCase() + '&role=' + this.roleFilter;
+  }
+
+  isCurrentUser(employeeId: string) : boolean {
+    return employeeId == this.jwtService.getIdFromToken()
   }
 
   getAccountIds(employees: Employee[]): SendAccountIdsDto {
@@ -94,15 +147,37 @@ export class EmployeesComponent {
     return dto;
   }
 
-  editEmployee(employee: Employee): void {
+  editEmployee(employeeId: string): void {
     this.router.navigate(['edit-employee'], {
-      state: { employeeData: employee },
+      state: { employeeId: employeeId},
     });
   }
 
   loadNewPage(selectedPage: number): void {
     this.pageNumber = selectedPage;
     this.refreshData();
+  }
+
+  blockEmployee(email: string | undefined): void{
+    this.accountService
+          .blockAccount(email)
+          .pipe(
+            takeUntil(this.destroy$),
+            switchMap(() =>
+              this.employeeService.getAllEmployees(this.getQueryString()).pipe(
+                tap((response) => {
+                  this.employees = response.employees;
+                  this.totalPages = response.totalPages;
+                  this.refreshData()
+                }),
+                catchError((error) => {
+                  this.swal.fireSwalError('Something went wrong');
+                  return throwError(() => error);
+                })
+              )
+            )
+          )
+          .subscribe();
   }
 
   delete(id: string): void {
@@ -124,7 +199,13 @@ export class EmployeesComponent {
               this.employeeService.getAllEmployees(this.getQueryString()).pipe(
                 tap((response) => {
                   this.employees = response.employees;
+                  if(this.pageNumber > response.totalPages){
+                    this.totalPages = response.totalPages
+                    this.pageNumber = response.totalPages;
+                    this.loadNewPage(this.totalPages)
+                  }
                   this.totalPages = response.totalPages;
+                  this.refreshData()
                 }),
                 catchError((error) => {
                   this.swal.fireSwalError('Something went wrong');
@@ -140,7 +221,11 @@ export class EmployeesComponent {
   }
 
   getEmailForEmployee(accountId: string): string | undefined {
-    return this.accounts.find((account) => account.id == accountId)?.email;
+    return this.accounts.find(account => account.id === accountId)?.email || 'Loading...'
+  }
+
+  isBlocked(accountId: string) : boolean | undefined{
+    return this.accounts.find(account => account.id === accountId)?.isBlocked
   }
 
   ngOnDestroy(): void {

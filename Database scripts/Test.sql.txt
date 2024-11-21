@@ -1,1 +1,1 @@
-insert into holidayRequestApprovers(id, approverId, requestId, status) values('9b6c2715-84f8-4b66-a710-6fcf2a62caaa', '0d2a2715-84f8-4b66-a710-6fcf2a62cbbb', '16952663-8d0a-4e0d-8e7d-42e334de7b08', 1)
+select * from accounts

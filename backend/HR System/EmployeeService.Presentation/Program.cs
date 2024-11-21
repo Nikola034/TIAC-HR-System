@@ -7,6 +7,7 @@ using EmployeeService.Infrastructure.Persistance;
 using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
 using Common;
+using EmployeeService.Infrastructure.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.RegisterApplication()
@@ -30,6 +31,8 @@ var app = builder.Build();
 app.UseExceptionHandler();
 app.UseSwaggerGen();
 app.UseOpenApi();
+app.UseWebSockets();
+
 app
 .UseAuthentication()
 .UseAuthorization()

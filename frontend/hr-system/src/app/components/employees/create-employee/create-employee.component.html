@@ -43,22 +43,10 @@
         >
       </mat-form-field> 
       <mat-form-field appearance="fill" class="full-width">
-        <mat-label>Password</mat-label>
-        <input
-          matInput
-          formControlName="password"
-          type="password"
-          placeholder="Enter employee's password"
-        />
-        <mat-error *ngIf="createEmployeeForm.get('password')?.hasError('required')"
-        >Pasword is required</mat-error
-      >
-      </mat-form-field>
-      <mat-form-field appearance="fill" class="full-width">
         <mat-label>Select employee's role</mat-label>
         <mat-select formControlName="role">
-          <mat-option value="developer">Developer</mat-option>
-          <mat-option value="manager">Manager</mat-option>
+          <mat-option value="0">Developer</mat-option>
+          <mat-option value="1">Manager</mat-option>
         </mat-select>
         <mat-error *ngIf="createEmployeeForm.get('role')?.hasError('required')"
         >Role is required</mat-error

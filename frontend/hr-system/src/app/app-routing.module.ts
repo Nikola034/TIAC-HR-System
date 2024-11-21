@@ -12,27 +12,33 @@ import { LoginFormComponent } from './components/login/login-form/login-form.com
 import { ResetPasswordFormComponent } from './components/login/reset-password-form/reset-password-form.component';
 import { EmployeesComponent } from './components/employees/employees/employees.component';
 import { CreateEmployeeComponent } from './components/employees/create-employee/create-employee.component';
+import { EditEmployeeComponent } from './components/employees/edit-employee/edit-employee.component';
+import { ChangePasswordFormComponent } from './components/login/change-password-form/change-password-form.component';
+import { AuthGuardService } from './core/services/auth-guard.service';
+import { AdminGuardService } from './core/services/admin-guard.service';
+import { UserGuardService } from './core/services/user-guard.service';
 
 const routes: Routes = [
-  { path:'projects', component: AllProjectsComponent},
-  { path:'employees', component: EmployeesComponent},
-  { path:'create-employee', component: CreateEmployeeComponent},
-  { path:'clients', component: AllClientsComponent},
-  { path:'profile', component: EditProfileComponent},
-  { path:'create-client', component: CreateClientComponent},
-  { path:'edit-client', component: CreateClientComponent},
-  { path:'holiday-requests', component: HolidayRequestsComponent},
-  { path:'my-projects', component: MyProjectsComponent},
-  { path:'my-projects/:id', component: ProjectDetailsComponent},
-  { path:'profile', component: EditProfileComponent},
-  { path: 'create-project', component: CreateProjectComponent},
-  { path: 'edit-project', component: CreateProjectComponent},
-  { path: '', component: LoginFormComponent},
-  { path: 'reset-password', component: ResetPasswordFormComponent},
+  { path: 'projects', component: AllProjectsComponent,  canActivate: [AuthGuardService, AdminGuardService]},
+  { path: 'employees', component: EmployeesComponent, canActivate: [AuthGuardService, AdminGuardService]},
+  { path: 'create-employee', component: CreateEmployeeComponent, canActivate: [AuthGuardService, AdminGuardService] },
+  { path: 'edit-employee', component: EditEmployeeComponent, canActivate: [AuthGuardService, AdminGuardService]},
+  { path: 'clients', component: AllClientsComponent, canActivate: [AuthGuardService, AdminGuardService]},
+  { path: 'profile', component: EditProfileComponent, canActivate: [AuthGuardService]},
+  { path: 'create-client', component: CreateClientComponent, canActivate: [AuthGuardService, AdminGuardService]},
+  { path: 'edit-client', component: CreateClientComponent , canActivate: [AuthGuardService, AdminGuardService]},
+  { path: 'holiday-requests', component: HolidayRequestsComponent , canActivate: [AuthGuardService]},
+  { path: 'my-projects', component: MyProjectsComponent, canActivate: [AuthGuardService, UserGuardService]},
+  { path: 'my-projects/:id', component: ProjectDetailsComponent, canActivate: [AuthGuardService, UserGuardService] },
+  { path: 'create-project', component: CreateProjectComponent, canActivate: [AuthGuardService, AdminGuardService]},
+  { path: 'edit-project', component: CreateProjectComponent, canActivate: [AuthGuardService, AdminGuardService]},
+  { path: '', component: LoginFormComponent },
+  { path: 'reset-password', component: ResetPasswordFormComponent },
+  { path: 'passwordReset/:resetPasswordToken', component: ChangePasswordFormComponent }
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

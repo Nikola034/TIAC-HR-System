@@ -1,5 +1,3 @@
-version: '3.9'
-
 
 services:
   hrsystem-db:
@@ -70,6 +68,17 @@ services:
     environment: 
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:8083
+    networks:
+      - microservice-network
+
+  angular-app:
+    depends_on:
+      - api-gateway
+    build:
+      context: frontend
+      dockerfile: Dockerfile
+    ports:
+      - "4200:80"
     networks:
       - microservice-network
 

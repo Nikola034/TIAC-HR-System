@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { catchError, Subject, takeUntil, tap, throwError } from 'rxjs';
+import { catchError, of, Subject, switchMap, takeUntil, tap, throwError } from 'rxjs';
 import { Employee } from '../../../core/models/employee.model';
 import { CreateEmployeeDto } from '../../../core/dtos/employee/create-employee.dto';
 import { EmployeeService } from '../../../core/services/employee.service';
@@ -29,7 +29,6 @@ export class CreateEmployeeComponent {
       name: new FormControl('', Validators.required),
       surname: new FormControl('', Validators.required),
       email: new FormControl('', [Validators.required, Validators.email]),
-      password: new FormControl('', Validators.required),
       daysOff: new FormControl('', Validators.required),
       role: new FormControl('', Validators.required),
     });
@@ -40,39 +39,45 @@ export class CreateEmployeeComponent {
       if(!this.isEditMode){
         const accountDto: CreateAccountDto = {
           email: this.createEmployeeForm.get('email')?.value,
-          password: this.createEmployeeForm.get('password')?.value,
+          password: this.generateRandomString(20),
         };
-      this.accountService.createAccount(accountDto)
-        .pipe(takeUntil(this.destroy$), tap((response) => {
-          this.swal.fireSwalSuccess("Account created successfully")
-          }),
-          catchError( error => {
-            this.swal.fireSwalError("Something went wrong")
-            return throwError(() => error);
-          })).subscribe();
-
         const employeeDto: CreateEmployeeDto = {
             name: this.createEmployeeForm.get('name')?.value,
             surname: this.createEmployeeForm.get('surname')?.value,
-            role: this.createEmployeeForm.get('role')?.value,
+            role: Number(this.createEmployeeForm.get('role')?.value),
             daysOff: this.createEmployeeForm.get('daysOff')?.value,
-            accountId: this.account.id
+            accountId: ""
           };
-        this.employeeService.createEmployee(employeeDto)
-          .pipe(takeUntil(this.destroy$), tap((response) => {
-            this.swal.fireSwalSuccess("Employee created successfully")
+        this.accountService.createAccount(accountDto).pipe(
+          switchMap((accountResponse) => {
+            employeeDto.accountId = accountResponse.id
+            return this.employeeService.createEmployee(employeeDto);
+          }),
+          tap((employeeResponse) => {
+            this.swal.fireSwalSuccess('Success', 'Employee created successfully!');
             this.router.navigate(['employees'])
-            }),
-            catchError( error => {
-              this.swal.fireSwalError("Something went wrong")
-              return throwError(() => error);
-            })).subscribe();
+          }),
+          catchError((error) => {
+            this.swal.fireSwalError('Something went wrong');
+             return of(null); 
+          })
+        ).subscribe()
       }
       else
       {
         
       }
     }
+  }
+
+  generateRandomString(length: number): string {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let result = '';
+    for (let i = 0; i < length; i++) {
+      const randomIndex = Math.floor(Math.random() * characters.length);
+      result += characters[randomIndex];
+    }
+    return result;
   }
 
   ngOnDestroy(): void {

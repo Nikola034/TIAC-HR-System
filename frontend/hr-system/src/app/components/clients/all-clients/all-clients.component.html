@@ -1,6 +1,14 @@
-<div class="all-clients-container" *ngIf="clients.length > 0">
+<div class="all-clients-container" *ngIf="clients">
     <div class="header-div">
       <h1>All clients</h1>
+      <mat-form-field class="example-full-width">
+        <mat-label>Name</mat-label>
+        <input matInput placeholder="Ex. InnovaTech" [(ngModel)]="nameSearch" (input)="onPropertyChange()">
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <mat-label>Country</mat-label>
+        <input matInput placeholder="Ex. Spain" [(ngModel)]="countrySearch" (input)="onPropertyChange()">
+      </mat-form-field>
       <button mat-flat-button class="add-button" color="primary" routerLink="/create-client">
         <mat-icon>add</mat-icon>
         <mat-label>New Client</mat-label>
@@ -18,23 +26,23 @@
         </ng-container>
       
         <ng-container matColumnDef="numberOfProjects">
-          <th mat-header-cell *matHeaderCellDef> Number of projects </th>
-          <td mat-cell *matCellDef="let client"> {{client.numberOfProjects}} </td>
+          <th mat-header-cell *matHeaderCellDef style="text-align:center"> Number of projects </th>
+          <td mat-cell *matCellDef="let client" style="text-align:center"> {{client.numberOfProjects}} </td>
         </ng-container>
 
         <ng-container matColumnDef="edit">
-          <th mat-header-cell *matHeaderCellDef> Edit </th>
-          <td mat-cell *matCellDef="let client">
-             <button mat-icon-button matTooltip="Click to edit client" class="iconbutton" (click)="editClient(client.client)">
+          <th mat-header-cell *matHeaderCellDef style="text-align:center"> Edit </th>
+          <td mat-cell *matCellDef="let client" style="text-align:center">
+             <button mat-icon-button color="primary" matTooltip="Click to edit client" class="iconbutton" (click)="editClient(client.client)">
                 <mat-icon>edit</mat-icon>
             </button> 
           </td>
         </ng-container>
 
         <ng-container matColumnDef="projects">
-          <th mat-header-cell *matHeaderCellDef> View projects </th>
-          <td mat-cell *matCellDef="let client">
-             <button mat-icon-button matTooltip="Click to view projects" class="iconbutton"
+          <th mat-header-cell *matHeaderCellDef style="text-align:center"> View projects </th>
+          <td mat-cell *matCellDef="let client" style="text-align:center">
+             <button mat-icon-button color="primary" matTooltip="Click to view projects" class="iconbutton"
                (click)="viewProjects(client.client.id)" [disabled]="client.numberOfProjects==0">
                 <mat-icon>info_outline</mat-icon>
             </button> 
@@ -42,9 +50,9 @@
         </ng-container>
   
         <ng-container matColumnDef="delete">
-          <th mat-header-cell *matHeaderCellDef> Delete </th>
-          <td mat-cell *matCellDef="let client">
-             <button mat-icon-button matTooltip="Click to delete" class="iconbutton" (click)="delete(client.client.id)" color="warn">
+          <th mat-header-cell *matHeaderCellDef style="text-align:center"> Delete </th>
+          <td mat-cell *matCellDef="let client" style="text-align:center">
+             <button mat-icon-button matTooltip="Click to delete" class="iconbutton" (click)="delete(client.client.id)" color="primary">
                 <mat-icon>delete</mat-icon>
             </button> 
           </td>

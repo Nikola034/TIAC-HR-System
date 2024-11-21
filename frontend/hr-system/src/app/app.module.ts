@@ -37,6 +37,15 @@ import { CreateProjectComponent } from './components/projects/create-project/cre
 import { HttpInterceptorService } from './core/services/http-interceptor.service';
 import { EmployeesComponent } from './components/employees/employees/employees.component';
 import { ClientProjectsComponent } from './components/clients/client-projects/client-projects.component';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {MatRadioModule} from '@angular/material/radio'; 
+
+// Function to retrieve the token
+export function tokenGetter() {
+  return localStorage.getItem('access_token');
+}
+import { ChangePasswordFormComponent } from './components/login/change-password-form/change-password-form.component';
+import { LoaderComponent } from './components/shared/loader/loader.component';
 
 @NgModule({
   declarations: [
@@ -59,6 +68,8 @@ import { ClientProjectsComponent } from './components/clients/client-projects/cl
     CreateProjectComponent,
     EmployeesComponent,
     ClientProjectsComponent,
+    ChangePasswordFormComponent,
+    LoaderComponent,
   ],
   imports: [
     BrowserModule,
@@ -80,8 +91,10 @@ import { ClientProjectsComponent } from './components/clients/client-projects/cl
     MatSelectModule,
     FormsModule,
     MatDividerModule,
-    MatTooltipModule
-  ],
+    MatTooltipModule,
+    MatProgressSpinnerModule,
+    MatRadioModule
+    ],
   providers: [provideNativeDateAdapter(),
     {
       provide: HTTP_INTERCEPTORS,

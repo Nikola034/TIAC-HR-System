@@ -33,6 +33,7 @@ namespace Infrastructure.Services
                         new Claim(ClaimTypes.Name, username),
                         new Claim(ClaimTypes.Role, role),
                         new Claim("id",employeeId),
+                        new Claim(ClaimTypes.NameIdentifier, employeeId)
                     }
                 ),
                 Expires = DateTime.Now.AddMinutes(15),
@@ -53,7 +54,10 @@ namespace Infrastructure.Services
             using (var rng = RandomNumberGenerator.Create())
             {
                 rng.GetBytes(randomNumber);
-                return Convert.ToBase64String(randomNumber);
+                return Convert.ToBase64String(randomNumber).Replace("+", "-")   
+                    .Replace("/", "_")   
+                    .TrimEnd('=').ToLower();
+;
             }
         }
     }

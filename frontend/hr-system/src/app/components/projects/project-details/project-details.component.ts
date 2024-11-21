@@ -2,57 +2,50 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Project } from '../../../core/models/project.model';
 import { Employee, EmployeeRole } from '../../../core/models/employee.model';
+import { ProjectService } from '../../../core/services/project.service';
+import { catchError, forkJoin, map, Observable, of, Subject, switchMap, takeUntil, tap, throwError } from 'rxjs';
+import { EmployeeService } from '../../../core/services/employee.service';
+import { AlertService } from '../../../core/services/alert.service';
+import { EmployeeForProjectDto } from '../../../core/dtos/employee/employee-for-project.dto';
 
 @Component({
   selector: 'app-project-details',
   templateUrl: './project-details.component.html',
-  styleUrl: './project-details.component.css'
+  styleUrl: './project-details.component.css',
 })
-export class ProjectDetailsComponent implements OnInit{
+export class ProjectDetailsComponent implements OnInit {
   projectId!: string;
-  project: Project = {id:"id",title:"some title",description:"some description",teamLeadId:"teamlid",client:{id:"id",name:"Clients name",country:"cnt"}};
-  employees: Employee[] = [
-    {
-      id: 'E1',
-      name: 'Alice',
-      surname: 'Johnson',
-      daysOff: 5,
-      role: EmployeeRole.Developer,
-      accountId: 'A101'
-    },
-    {
-      id: 'E2',
-      name: 'Bob',
-      surname: 'Smith',
-      daysOff: 2,
-      role: EmployeeRole.Manager,
-      accountId: 'A102'
-    },
-    {
-      id: 'E3',
-      name: 'Charlie',
-      surname: 'Brown',
-      daysOff: 4,
-      role: EmployeeRole.Developer,
-      accountId: 'A103'
-    }
-  ];
-  teamLead: Employee = {
-    id: 'E3',
-    name: 'Debil',
-    surname: 'Brown',
-    daysOff: 4,
-    role: EmployeeRole.Developer,
-    accountId: 'A103'
-  }
+  project: Project | any;
+  employees: EmployeeForProjectDto[] = [];
+  teamLead: EmployeeForProjectDto | undefined
+  private destroy$ = new Subject<void>();
 
-  constructor(private route: ActivatedRoute, private router: Router) {}
+  constructor(private route: ActivatedRoute, private projectService: ProjectService, private employeeService: EmployeeService, private router: Router, private swal: AlertService) {}
 
   ngOnInit(): void {
     this.projectId = this.route.snapshot.paramMap.get('id')!;
+    this.loadProject();
   }
 
-  goBack(): void{
-    this.router.navigate(['/my-projects'])
+  getTeamLead() : string{
+    return this.teamLead?.name + ' ' + this.teamLead?.surname
+  }
+
+  loadProject(): void{
+    this.projectService.getProjectById(this.projectId)
+      .pipe(takeUntil(this.destroy$), tap((response) =>{
+        this.project = response
+        this.employees = response.working
+        this.teamLead = response.working.find(x => x.id == response.teamLeadId) || {id: '', name: '/', surname: ''}
+      })).subscribe();
+  }
+
+  goBack(): void {
+    this.router.navigate(['/my-projects']);
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
