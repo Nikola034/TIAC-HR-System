@@ -27,15 +27,12 @@ builder.Services.AddAuthorization(options =>
 });
 builder.Services.AddHttpServiceClients(builder.Configuration);
 
-builder.Services.AddSignalR();
-
-
 var app = builder.Build();
-app.MapHub<NotificationHub>("/notificationHub");
 app.UseExceptionHandler();
 app.UseSwaggerGen();
 app.UseOpenApi();
 app.UseWebSockets();
+
 app
 .UseAuthentication()
 .UseAuthorization()
