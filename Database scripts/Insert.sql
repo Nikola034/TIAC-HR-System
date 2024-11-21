@@ -25,18 +25,18 @@ VALUES
 ('dfbbd969-43f8-4963-a884-3bb4190ea888', 'Emily', 'Jones', 15, 0, '5a70e705-4c43-42fe-88f4-216e2598e97f'),
 ('40cd5083-14c1-4aa9-a0d9-7bf96eb64df6', 'Stan', 'Smith', 20, 0, '9eac01ad-37e5-4d49-82bf-ee445c691fad'),
 ('3e41e111-f297-4b85-aad5-7e97b23d8a29', 'Rachel', 'Moss', 18, 0, 'ae9071f9-1442-482d-8920-8e01b47d0c24'),
-('c7186c89-5592-4dc7-b161-48a67d853d39', 'Alan', 'Sadge', 20, 0, 'b12f1dfd-9dbe-4f21-85b1-283c312301df'),
+('c7186c89-5592-4dc7-b161-48a67d853d39', 'Alan', 'Sadge', 20, 1, 'b12f1dfd-9dbe-4f21-85b1-283c312301df'),
 ('814aef91-0da7-401c-ab7e-9cba8d05c531', 'Owen', 'Gray', 16, 0, 'cb601d30-1616-4e18-aadc-8ee2babd20fb'),
-('d1c1d1e9-22a5-4d99-933a-8a6589af291f', 'Lisa', 'Brown', 25, 1, 'f10490d7-29e1-4b3a-bd39-1c516cd7bcd3'),
+('d1c1d1e9-22a5-4d99-933a-8a6589af291f', 'Lisa', 'Brown', 25, 0, 'f10490d7-29e1-4b3a-bd39-1c516cd7bcd3'),
 ('94db6c43-f738-43e8-a9d4-7c4c7d1b3ed1', 'Mike', 'Green', 18, 0, 'ac59d6f0-7cde-4c57-82ad-799a5b9533e2'),
 ('8a70b3f2-4e3a-4c7d-aefe-383a118b9413', 'Susan', 'King', 22, 0, 'e543bd73-9296-4f0a-b5d4-7e30b90e63f6'),
-('27f1b0ec-b41a-471a-9b62-f01f18f7f68a', 'Robert', 'Johnson', 10, 1, '1e18b8f3-a478-4cf7-9d7c-12d34bcda1d8'),
+('27f1b0ec-b41a-471a-9b62-f01f18f7f68a', 'Robert', 'Johnson', 10, 0, '1e18b8f3-a478-4cf7-9d7c-12d34bcda1d8'),
 ('d4f1b8e3-ecb2-4142-a4d8-81739a3cd123', 'Nancy', 'Adams', 12, 0, 'beefab84-4e56-4eb9-89db-e614faeea70d'),
 ('b27cfde9-5d42-4b0f-9f7f-2e2951a3bb29', 'Frank', 'Moore', 20, 0, '34fba073-6bcf-4426-8be5-61fdc0e0c3ef'),
-('a67d95c2-587b-45f9-96d8-d7a2f9ebec90', 'Emma', 'Thompson', 18, 1, '9c01495c-9d12-44bb-95c1-2f7a111ca0ff'),
+('a67d95c2-587b-45f9-96d8-d7a2f9ebec90', 'Emma', 'Thompson', 18, 0, '9c01495c-9d12-44bb-95c1-2f7a111ca0ff'),
 ('6a8f57c3-4a0d-4c37-a66d-3af27e5f83a1', 'Noah', 'Davis', 16, 0, 'd2b0b282-1b74-4f0b-870f-cb978ee17f14'),
 ('c8d5d36a-e1f1-4cd3-a60b-97e6c6b19f44', 'Olivia', 'Garcia', 20, 0, '89eb64d9-54e7-4374-8532-345c65b77f26'),
-('f52a1b22-d711-4c56-b90f-1f57e678ba5b', 'Jason', 'Baker', 15, 1, 'f6074c6f-88d2-4514-8d1d-eebdc65314b1');
+('f52a1b22-d711-4c56-b90f-1f57e678ba5b', 'Jason', 'Baker', 15, 0, 'f6074c6f-88d2-4514-8d1d-eebdc65314b1');
 
 INSERT INTO clients (id, name, country)
 VALUES

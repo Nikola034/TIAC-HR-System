@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using EmployeeService.Infrastructure.Services;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.AspNetCore.Server.HttpSys;
+using System.Collections;
 
 namespace EmployeeService.Application.Commands.HolidayRequest
 {
@@ -44,8 +45,8 @@ namespace EmployeeService.Application.Commands.HolidayRequest
             domainEntity.Id = new Guid();
 
             var sender = await _employeeRepository.GetEmployeeByIdAsync(domainEntity.SenderId);
-            int wantedDays = (request.End - request.Start).Days;
-            if(sender.DaysOff >= wantedDays)
+            int wantedDays = (request.End - request.Start).Days - CountWeekendDays(request.Start, request.End) + 1;
+            if (sender.DaysOff >= wantedDays)
             {
                 sender.DaysOff -= wantedDays;
                 await _employeeRepository.UpdateEmployeeAsync(sender, cancellationToken);
@@ -84,7 +85,22 @@ namespace EmployeeService.Application.Commands.HolidayRequest
             }
             throw new NoAvailableDaysOffException();
         }
+        private int CountWeekendDays(DateTime start, DateTime end)
+        {
+            int weekendDays = 0;
 
+            // Iterate through each day in the range
+            for (DateTime date = start.Date; date <= end.Date; date = date.AddDays(1))
+            {
+                // Check if the day is Saturday or Sunday
+                if (date.DayOfWeek == DayOfWeek.Saturday || date.DayOfWeek == DayOfWeek.Sunday)
+                {
+                    weekendDays++;
+                }
+            }
+
+            return weekendDays;
+        }
     }
 
     public record CreateHolidayRequestCommand(DateTime Start, DateTime End, HolidayRequestStatus Status, Guid SenderId, string Token) : IRequest<Core.Entities.HolidayRequest>;

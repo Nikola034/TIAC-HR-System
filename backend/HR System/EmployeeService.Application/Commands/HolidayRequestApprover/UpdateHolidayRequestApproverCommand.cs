@@ -42,7 +42,7 @@ namespace EmployeeService.Application.Commands.HolidayRequestApprover
 
             if (request.Status == HolidayRequestStatus.Denied)
             {
-                int wantedDays = (holidayRequestForApproval.End - holidayRequestForApproval.Start).Days;
+                int wantedDays = (holidayRequestForApproval.End - holidayRequestForApproval.Start).Days + 1 - CountWeekendDays(holidayRequestForApproval.Start, holidayRequestForApproval.End);
                 employeeForApproval.DaysOff += wantedDays;
                 await _employeeRepository.UpdateEmployeeAsync(employeeForApproval, cancellationToken);
 
@@ -54,7 +54,6 @@ namespace EmployeeService.Application.Commands.HolidayRequestApprover
                 .Where(x => (x.Status == HolidayRequestStatus.Denied || x.Status == HolidayRequestStatus.Pending) && x.Id != domainEntity.Id)
                 .Any())
             {
-
                 holidayRequestForApproval.Status = HolidayRequestStatus.Approved;
                 await _holidayRequestRepository.UpdateHolidayRequestAsync(holidayRequestForApproval, cancellationToken);
             }
@@ -62,7 +61,22 @@ namespace EmployeeService.Application.Commands.HolidayRequestApprover
             var persistedHolidayRequestApprover = await _holidayRequestApproverRepository.UpdateHolidayRequestApproverAsync(domainEntity, cancellationToken);
             return persistedHolidayRequestApprover;
         }
+        private int CountWeekendDays(DateTime start, DateTime end)
+        {
+            int weekendDays = 0;
 
+            // Iterate through each day in the range
+            for (DateTime date = start.Date; date <= end.Date; date = date.AddDays(1))
+            {
+                // Check if the day is Saturday or Sunday
+                if (date.DayOfWeek == DayOfWeek.Saturday || date.DayOfWeek == DayOfWeek.Sunday)
+                {
+                    weekendDays++;
+                }
+            }
+
+            return weekendDays;
+        }
     }
 
     public record UpdateHolidayRequestApproverCommand(Guid RequestId, Guid ApproverId, HolidayRequestStatus Status) : IRequest<Core.Entities.HolidayRequestApprover>;
