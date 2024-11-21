@@ -1,16 +1,17 @@
 import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, Observable, switchMap, tap, throwError } from 'rxjs';
+import { catchError, finalize, Observable, switchMap, tap, throwError } from 'rxjs';
 import { AccountService } from './account.service';
 import { JwtService } from './jwt.service';
 import { RefreshTokenDto } from '../dtos/account/refresh-token.dto';
+import { LoadingService } from './loading.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class HttpInterceptorService implements HttpInterceptor {
 
-  constructor(private accountService : AccountService, private jwtService: JwtService) { }
+  constructor(private accountService : AccountService, private jwtService: JwtService, private loadingService: LoadingService) { }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const token = localStorage.getItem('access_token');
@@ -20,7 +21,11 @@ export class HttpInterceptorService implements HttpInterceptor {
           Authorization: `Bearer ${token}`,
         },
       });
+      this.loadingService.startLoading();
       return next.handle(authRequest).pipe(
+        finalize(() => {
+          this.loadingService.stopLoading();
+        }),
         catchError((error: HttpErrorResponse) => {
           if(error.status === 401){
             const refresh_token = localStorage.getItem('refresh_token')
