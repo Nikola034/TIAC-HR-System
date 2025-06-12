@@ -1,93 +1,112 @@
-# Tiac HR System
+# 🧑‍💼 TIAC HR System
 
+A modern HR management system developed as part of an internship, built using microservice architecture with cutting-edge .NET technologies and a rich Angular frontend. The system handles employee records, holiday requests, approvals, authentication, and real-time updates with clean, scalable, and maintainable code practices.
 
+---
 
-## Getting started
+## 📋 Table of Contents
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+- [Overview](#overview)
+- [Tech Stack](#tech-stack)
+- [Architecture](#architecture)
+- [Key Features](#key-features)
+- [Security](#security)
+- [Testing & Quality](#testing--quality)
+- [Team & Collaboration](#team--collaboration)
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+---
 
-## Add your files
+## 📖 Overview
 
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
+TIAC HR System provides an efficient and scalable platform for managing:
+- Employee records
+- Holiday request submissions
+- Approval workflows involving team leads and managers
 
-```
-cd existing_repo
-git remote add origin http://tiaclab.com:9009/microservices/tiac-hr-system.git
-git branch -M main
-git push -uf origin main
-```
+The system uses PostgreSQL for persistent storage and is designed around **microservices**, with each core domain separated into individual services and connected through internal APIs.
 
-## Integrate with your tools
+---
 
-- [ ] [Set up project integrations](http://tiaclab.com:9009/microservices/tiac-hr-system/-/settings/integrations)
+## 🛠️ Tech Stack
 
-## Collaborate with your team
+| Layer             | Technology                                                                 |
+|------------------|------------------------------------------------------------------------------|
+| Backend           | .NET 7, ASP.NET Core, FastEndpoints, FluentValidation, MediatR, CQRS        |
+| Frontend          | Angular, Angular Material, RxJS, WebSockets, JWT Auth                       |
+| Database          | PostgreSQL with Entity Framework Core (Code First)                          |
+| API Gateway       | YARP Reverse Proxy                                                          |
+| DevOps            | Docker (frontend and backend), Docker Compose, company-hosted server        |
+| Tools             | Postman, FluentAssertions, Visual Studio, VS Code                           |
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Set auto-merge](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
+---
 
-## Test and Deploy
+## 🧱 Architecture
 
-Use the built-in continuous integration in GitLab.
+- **Microservice-based**: Independent services for `Employees`, `HolidayRequests`, and other HR-related domains
+- **HTTP Communication**: Internal services communicate via HTTP Clients
+- **CQRS Pattern**: Clear separation of command and query operations
+- **Entity Framework Core**: Code-first migrations and database generation
+- **Modular Design**: Each service encapsulates its own business logic, DTOs, and infrastructure
+- **Clean Architecture Principles**: SOLID, separation of concerns, no "fat interfaces", and dependency injection via `HostBuilder`
 
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
+---
 
-***
+## 🚀 Key Features
 
-# Editing this README
+- 🧑‍💼 **Employee Management** – Create and manage employee data
+- 🌴 **Holiday Requests** – Submit and track leave requests
+- ✅ **Approval Workflow** – Requests routed to relevant team leads or managers via `HolidayRequestApprover`
+- 📬 **Notification Routing** – Request is approved by the first eligible manager in the hierarchy
+- 🌐 **WebSocket Integration** – Real-time updates for request status changes
+- 📊 **Admin Dashboard** – View request stats and employee overviews
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
+---
 
-## Suggestions for a good README
+## 🔐 Security
 
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+- ✅ JWT-based authentication
+- ✅ Role-based authorization
+- 🔒 Angular route guards on frontend
+- 🔐 Backend attribute-level protection and token validation
 
-## Name
-Choose a self-explaining name for your project.
+---
 
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
+## 🧪 Testing & Quality
 
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
+- 🧪 Postman collections for API testing
+- ✅ FluentAssertions for backend unit/integration tests
+- 🧹 Clean, documented code following company and community standards
+- ✅ Full DTO layers on frontend and backend for safe and structured data exchange
 
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+---
 
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
+## 🧭 Frontend Highlights
 
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
+- Developed using **Angular** with **Angular Material**
+- Structured feature-based modules for routing and state separation
+- Secure API calls via JWT
+- WebSocket service for live request status updates
+- Centralized DTO usage and HTTP services
 
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
+---
 
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
+## 🐳 Deployment
 
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
+- Dockerfiles for both frontend and backend
+- Docker Compose for local orchestration
+- Hosted on internal company server after containerization
 
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
+---
 
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
+## 🤝 Team & Collaboration
 
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
+- 👨‍💻 Developed collaboratively by **2 engineers** under the mentorship of a senior developer
+- 🔄 Daily check-ins, code reviews, and design discussions
+- 🧠 Shared responsibility across services — I worked on:
+  - `Employee` and `HolidayRequest` services
+  - DTOs, validations, approval logic
+  - WebSocket updates and authentication flow
+- 🔧 My colleague handled complementary microservices and integration
+- 📦 Final solution deployed and tested in a Dockerized environment hosted by the company
 
-## License
-For open source projects, say how it is licensed.
-
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+---
