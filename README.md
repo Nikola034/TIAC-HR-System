@@ -12,10 +12,13 @@ A modern HR management system developed as part of an internship, built using mi
 - [Key Features](#key-features)
 - [Security](#security)
 - [Testing & Quality](#testing--quality)
+- [Deployment](#deployment)
+- [Frontend Highlights](#frontend)
 - [Team & Collaboration](#team--collaboration)
 
 ---
 
+<a name="overview"></a>
 ## 📖 Overview
 
 TIAC HR System provides an efficient and scalable platform for managing:
@@ -27,6 +30,7 @@ The system uses PostgreSQL for persistent storage and is designed around **micro
 
 ---
 
+<a name="tech-stack"></a>
 ## 🛠️ Tech Stack
 
 | Layer             | Technology                                                                 |
@@ -40,6 +44,7 @@ The system uses PostgreSQL for persistent storage and is designed around **micro
 
 ---
 
+<a name="architecture"></a>
 ## 🧱 Architecture
 
 - **Microservice-based**: Independent services for `Employees`, `HolidayRequests`, and other HR-related domains
@@ -51,6 +56,7 @@ The system uses PostgreSQL for persistent storage and is designed around **micro
 
 ---
 
+<a name="key-features"></a>
 ## 🚀 Key Features
 
 - 🧑‍💼 **Employee Management** – Create and manage employee data
@@ -62,6 +68,7 @@ The system uses PostgreSQL for persistent storage and is designed around **micro
 
 ---
 
+<a name="security"></a>
 ## 🔐 Security
 
 - ✅ JWT-based authentication
@@ -71,6 +78,7 @@ The system uses PostgreSQL for persistent storage and is designed around **micro
 
 ---
 
+<a name="testing--quality"></a>
 ## 🧪 Testing & Quality
 
 - 🧪 Postman collections for API testing
@@ -80,6 +88,7 @@ The system uses PostgreSQL for persistent storage and is designed around **micro
 
 ---
 
+<a name="frontend"></a>
 ## 🧭 Frontend Highlights
 
 - Developed using **Angular** with **Angular Material**
@@ -90,6 +99,7 @@ The system uses PostgreSQL for persistent storage and is designed around **micro
 
 ---
 
+<a name="deployment"></a>
 ## 🐳 Deployment
 
 - Dockerfiles for both frontend and backend
@@ -98,6 +108,7 @@ The system uses PostgreSQL for persistent storage and is designed around **micro
 
 ---
 
+<a name="team--collaboration"></a>
 ## 🤝 Team & Collaboration
 
 - 👨‍💻 Developed collaboratively by **2 engineers** under the mentorship of a senior developer
