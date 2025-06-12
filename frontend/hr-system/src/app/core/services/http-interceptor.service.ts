@@ -27,7 +27,7 @@ export class HttpInterceptorService implements HttpInterceptor {
           this.loadingService.stopLoading();
         }),
         catchError((error: HttpErrorResponse) => {
-          if(error.status === 401){
+          if(error.status === 401 || error.status === 0){
             const refresh_token = localStorage.getItem('refresh_token')
             if(refresh_token){
               const dto : RefreshTokenDto = { refreshToken : refresh_token }

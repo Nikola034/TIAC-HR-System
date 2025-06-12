@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { EmployeeService } from '../../core/services/employee.service';
 import { AlertService } from '../../core/services/alert.service';
 import { environment } from '../../../environments/environment';
+import { Inject, PLATFORM_ID } from '@angular/core';
 
 @Component({
   selector: 'app-navbar',
@@ -14,7 +15,7 @@ export class NavbarComponent implements OnInit {
 
   userRole: string = '';
 
-  constructor(private router: Router, private jwtService: JwtService, private swal: AlertService) {}
+  constructor(@Inject(PLATFORM_ID) private platformId: object, private router: Router, private jwtService: JwtService, private swal: AlertService) {}
 
   ngOnInit(): void {
       if(this.jwtService.IsLoggedIn()){
