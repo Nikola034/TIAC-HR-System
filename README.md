@@ -23,6 +23,7 @@ A modern HR management system developed as part of an internship, built using mi
 
 TIAC HR System provides an efficient and scalable platform for managing:
 - Employee records
+- Projects and employees on projects
 - Holiday request submissions
 - Approval workflows involving team leads and managers
 
@@ -60,6 +61,7 @@ The system uses PostgreSQL for persistent storage and is designed around **micro
 ## 🚀 Key Features
 
 - 🧑‍💼 **Employee Management** – Create and manage employee data
+- 📝 **Projects** - Employee's engagement on projects
 - 🌴 **Holiday Requests** – Submit and track leave requests
 - ✅ **Approval Workflow** – Requests routed to relevant team leads or managers via `HolidayRequestApprover`
 - 📬 **Notification Routing** – Request is approved by the first eligible manager in the hierarchy
